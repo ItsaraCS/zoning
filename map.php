@@ -1,102 +1,182 @@
 <?php require('header.php'); ?>
-<?php require('nav.php');?>
-
-
-        <!-- Map -->
-        <div class="container-fluid">
-            <div class="row">
-                <div id="map" class="map" style="width:100%; height: 100%; position:fixed"></div>
+<?php require('nav.php'); ?>
+<!--SECTION-->
+<div class="section">
+	<!--MAP-->
+    <div class="container-fluid">
+        <div class="row">
+            <div id="map" class="map" style="position: fixed; width: 100%; height: 100%;"></div>
+            <!--POPUP-->
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
             </div>
+            
+            <!--MAP LEGEND AND LAYERS TOGGLERS-->
+            <div id="map_legend"><h3>สัญลักษณ์แผนที่</h3></div>
+            <div id="map_layer_toggler_container">
+				<div id="map_layer_title">ชั้นข้อมูล</div>
+				<div id="map_layer_toggler"></div>
+			</div>
         </div>
-        <!-- Loading -->
-        <div id="dvloading" class="loader"><div></div></div>
-        <!-- CHART GRAPH  -->   
+    </div>
 
-        <div id="chart_container" class="panel">
-            <div id="chart_group">
-                <div id="chart_title" class="panel text-center" data-toggle="collapse" href="#collapse1">กราฟข้อมูล</div>
-                <div id="collapse1" class="panel-collapse collapse">
-                    <div id="chartContainer" style="height: 180px; width: 100%;">
-                    </div>
+    <!--LOADING-->
+    <div id="dvloading" class="loader"><div></div></div>
+    
+    <!--CHART GRAPH-->
+    <div id="chart_container" class="panel">
+        <div id="chart_group">
+            <div id="chart_title" class="panel text-center" data-toggle="collapse" href="#collapse1">กราฟ</div>
+            <div id="collapse1" class="panel-collapse collapse">
+                <div id="chart_box">
+                    <canvas id="my_chart" height="45px"></canvas>
                 </div>
             </div>
         </div>
-       
+    </div>
+</div>
+<!--STYLE-->
 
+<!--ADD by AM-->
+<style>
+    .defaultZoom {
+        top: 70px;
+        left: 0.5em;
+    }
+    .ol-touch .defaultZoom {
+        top: 80px;
+    }
+</style>
+<!--ADD by AM-->
+
+
+<!--MAP LIBRARY-->
+<link href="css/popup.css" rel="stylesheet" type="text/css">
+<link href="css/map_legend.css" rel="stylesheet" type="text/css">
+<link href="css/layer_toggler.css" rel="stylesheet" type="text/css">
+<script src="js/mouselib.js" type="text/javascript"></script>
+<script src="js/mappopup.js" type="text/javascript"></script>
+<script src="js/local_map.js" type="text/javascript"></script>
+<!--JS-->
 <script type="text/javascript">
-        /* M A P*/
-            var filer_region = null;
-            var styleCache = {};
-            /* Load Data GeoJSON */
-            $('#dvloading').show();
-            getJSON('data/geojson/excise_region.geojson', function(data) {
-                dataGJson_region10 = data;
+    $(document).ready(function(e) {
+        //--Variable
+        var factory = new Factory();
+        var ajaxUrl = 'API/taxmapAPI.php';
+        var params = {};
+		var year = $('.nav-menu #year').val() || '';
+        var region = $('.nav-menu #region').val() || 0;
+        var area = $('.nav-menu #area').val() || 0;
 
-                 /* POLYGON Excise */
-                var features_poly_region10 = new ol.format.GeoJSON().readFeatures(dataGJson_region10, {
-                    featureProjection :  'EPSG:3857'
-                });
-                var tmpSourceRegion = new ol.source.Vector({
-                    features : features_poly_region10,
-                    wrapX : false
-                });
+        //--Page load
+		setInit();
 
-                vectorLayer_poly_region10 = new ol.layer.Vector({
-                    source : tmpSourceRegion,
-                    style : function (feature, resolution) { 
-                            var cat = feature.get('REG_CODE');
-                            styleCache[cat] = new ol.style.Style({
-                                fill : new ol.style.Fill({
-                                    color : categories[cat]
-                                }),
-                                stroke : new ol.style.Stroke({
-                                    color : '#000',
-                                    width : 1.0
-                                })
-                            });
-                            return [ styleCache[cat] ];
-                        }
-                });
-                var projection = ol.proj.get('EPSG:3857');
+        //--Function
+		function setInit() {
+            params = {
+                fn: 'filter',
+                job: 0,
+                src: 0
+            };
 
-                map = new ol.Map({
-                    layers : [ vectorLayer_poly_region10 ],
-                    //overlays: [overlay],//for popup
-                    target : 'map',
-                    view: new ol.View ({
-                        center: [100, 13],
-                        projection: projection,
-                        zoom: 3
-                    })
-                });
-                
-                $('#dvloading').hide();
-                map.getView().setCenter(ol.proj.transform([103.0, 8.5], 'EPSG:4326', 'EPSG:3857'));
-                map.getView().setZoom(5.5);
-            
-            }, function (xhr) {
-                console.error(xhr);
+            factory.connectDBService.sendJSONObj(ajaxUrl, params, false).done(function(res) {
+                if(res != undefined){
+                    var data = JSON.parse(res);
+
+                    $.each(data.year, function(index, item) {
+                        $('.nav-menu #year').append('<option value="'+ item.value +'">'+ item.label +'</option>');
+                    });
+
+                    $.each(data.region, function(index, item) {
+                        $('.nav-menu #region').append('<option value="'+ item.value +'">'+ item.label +'</option>');
+                    });
+                    
+                    $.each(data.province, function(index, item) {
+                        $('.nav-menu #area').append('<option value="'+ item.value +'">'+ item.label +'</option>');
+                    });
+
+                    $('.nav-menu #year, ' +
+                        '.nav-menu #region, ' +
+                        '.nav-menu #area').find('option:eq(1)').prop('selected', true);
+                }
             });
-            
-            /* Function */
-            function getJSON(path, success, error) {
-                var xhr = new XMLHttpRequest();
 
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            if (success)
-                                success(JSON.parse(xhr.responseText));
-                        } else {
-                            if (error)
-                                error(xhr);
+			on_page_loaded();
+        }
+        
+		//--Event
+		$(document).on('change', '.nav-menu #year', function(e) {
+            e.preventDefault();
+            
+            $('.nav-menu #region').find('option:eq(0)').prop('selected', true);
+            $('.nav-menu #area option[value!="-999"]').remove();
+            
+            year = $('.nav-menu #year').val() || '';
+
+            if(year != '') {
+                $('.nav-menu #region').find('option:eq(1)').prop('selected', true);
+                region = $('.nav-menu #region').val() || 0;
+
+                if(region != '') {
+                    params = {
+                        fn: 'filter',
+                        job: 0,
+                        src: 1,
+                        value: region || 0
+                    };
+
+                    factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
+                        if(res != undefined){
+                            var data = JSON.parse(res);
+
+                            $.each(data, function(index, item) {
+                                $('.nav-menu #area').append('<option value="'+ item.value +'">'+ item.label +'</option>');
+                            });
+
+                            $('.nav-menu #area').find('option:eq(1)').prop('selected', true);
                         }
-                    }
-                };
-                xhr.open("GET", path, true);
-                xhr.send();
+                    });
+                }
             }
+        });
+        
+        $(document).on('change', '.nav-menu #region', function(e) {
+            e.preventDefault();
+            
+            $('.nav-menu #area').find('option[value!="-999"]').remove();
+            region = $('.nav-menu #region').val() || 0;
+            
+            if(region != '') {
+                params = {
+                    fn: 'filter',
+                    job: 0,
+                    src: 1,
+                    value: region || 0
+                };
+                console.log(params);
+            
+                factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
+                    if(res != undefined){
+                        var data = JSON.parse(res);
+
+                        $.each(data, function(index, item) {
+                            $('.nav-menu #area').append('<option value="'+ item.value +'">'+ item.label +'</option>');
+                        });
+
+                        $('.nav-menu #area').find('option:eq(1)').prop('selected', true);
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.export-file', function(e) {
+            e.preventDefault();
+
+            factory.dataService.exportFile('map', {
+                menu: 'แผนที่'
+            });
+        });
+    });
 </script>
-<?php require('footer.php'); ?>   
-    </body>
-</html>
+<?php require('footer.php'); ?>    

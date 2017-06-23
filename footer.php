@@ -1,7 +1,11 @@
-
+        </div>
+    </div>
     <script type="text/javascript">
         $(document).ready(function(e) {
             //--Variable
+            var factory = new Factory();
+            var ajaxUrl = 'API/userAPI.php';
+            var params = {};
 
             //--Page load
             setInit();
@@ -40,6 +44,43 @@
                     $('.user-menu-detail').toggleClass('show');
             });
 
+            $(document).on('click', '#loginBtn', function(e) {
+                e.preventDefault();
+
+                params = {
+                    fn: 'login',
+                    user: $('form[name="loginForm"] #username').val() || '',
+                    password: $('form[name="loginForm"] #password').val() || ''
+                };
+                
+                factory.connectDBService.sendJSONObj(ajaxUrl, params, false).done(function(res) {
+                    if(res != undefined) {
+                        var data = JSON.parse(res);
+                        
+                        if(data.id == 0)
+                            window.open('login.php', '_self');
+                        else {
+                            sessionStorage.setItem('userID', data.id);
+                            window.open('map.php', '_self');
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '#logoutBtn', function(e) {
+                e.preventDefault();
+
+                factory.connectDBService.sendJSONObj(ajaxUrl, { fn: 'logout' }, false).done(function(res) {
+                    if(res != undefined){
+                        var data = JSON.parse(res);
+                        
+                        if(data.id == 0) {
+                            sessionStorage.removeItem('userID');
+                            window.open('login.php', '_self');
+                        }
+                    }
+                });
+            });
         });
     </script>
 </body>

@@ -502,7 +502,7 @@ function chartReport(chartReportData) {
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        return chartData.data.datasets[(chartData.data.datasets.length - 1)].label +': '+ Number(tooltipItem.yLabel).toLocaleString() +' '+ chartReportData.yAxes;
+                        return data.datasets[tooltipItem.datasetIndex].label +': '+ Number(tooltipItem.yLabel).toLocaleString() +' '+ chartReportData.yAxes;
                     }
                 }
             }
@@ -510,8 +510,8 @@ function chartReport(chartReportData) {
     };
 
     var colorPatternData = {
-        backgroundColor: ['#f1a59f', '#ab7d6b', '#3792ec', '#22ff91', '#ffdc9a'],
-        borderColor: ['#d62d20', '#4f372d', '#0c457d', '#008744', '#ffa700']
+        backgroundColor: ['#f1a59f', '#ab7d6b', '#3792ec', '#22ff91', '#ffdc9a', '#ff99cc', '#ff916f', '#d36ff2'],
+        borderColor: ['#d62d20', '#4f372d', '#0c457d', '#008744', '#ffa700', '#fc3468', '#ff4408', '#673888']
     };
     
     $.each(chartReportData.chartData, function(index, item) {

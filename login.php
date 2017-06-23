@@ -18,41 +18,52 @@
     </head>
     <body>
         <div class="container">
-
-            <div class="col-md-12 col-md-offset-2">
+            <div class="col-md-12 col-md-offset-1">
                 <div class="title" style="margin-top: 1.5vh;">
                 <img src="img/logoheader.png" class="img-responsive center-block"  style="width: 11vh;" />
                 </div>  
             </div>
-            
-            <div class="container ">
-                 <div class="col-md-6"><img src="img/menu3.png" class="img-responsive center-block" width="80%"/></div>
+            <div class="container">
+                <div class="col-md-6"><img src="img/menu3.png" class="img-responsive center-block" width="80%"/></div>
                 <div class="col-md-6">   
-                    <h6 style="color: white; font-size: 4.5vh;">ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา
-                    บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล
+                    <h6 style="color: white; font-size: 4.5vh;">ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล
                     </h6>
-                            <form method="post" name="login-form" action="checklogin.php">
-                                <div class="form-group row">
-                                    <div class="col-md-9">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                            <input type="text" class="form-control input-lg" id="username" name="username" autofocus placeholder="ชื่อเข้าใช้งาน">
-                                        </div>
-                                    </div>
+                    <form name="loginForm" novalidate>
+                        <div class="form-group row">
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input type="text" class="form-control input-lg" id="username" name="username" autofocus placeholder="ชื่อเข้าใช้งาน">
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-9 position-center">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                            <input type="password" class="form-control input-lg" id="password" name="password" placeholder="รหัสผ่าน">
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-9 position-center">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input type="password" class="form-control input-lg" id="password" name="password" placeholder="รหัสผ่าน">
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-offset-6 col-md-3">
-                                        <input type="submit" class="form-control btn-info input-lg" id="loginBtn" value="เข้าสู่ระบบ">
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-offset-6 col-md-3">
+                                <input type="submit" class="form-control btn-info input-lg" id="loginBtn" value="เข้าสู่ระบบ">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+<!--JS-->
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        //--Page load
+        getInit();
+
+        //--Function
+        function getInit() {
+            $('#username, #password').val('');
+            $('#username, #password').attr('autocomplete', 'off');
+        }
+    });
+</script>
+<?php require('footer.php'); ?>

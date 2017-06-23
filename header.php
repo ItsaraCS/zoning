@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoning</title>
-    <!--bootstrap-select-->
     <!--jQuery-->
     <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>
     <script src="lib/jquery/jquery-ui-1.12.1.custom/jquery-ui.js" type="text/javascript"></script>
@@ -25,47 +24,93 @@
     <link href="img/logoheader.png" rel="shortcut icon" type="image/x-icon">
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <!--JS-->
-    <script src="js/categories.js" type="text/javascript"></script>
     <script src="js/chart.js" type="text/javascript"></script>
     <script src="js/factory.js" type="text/javascript"></script>
-      <script type="text/javascript" src="lib/canvasjs-1.9.8/jquery.canvasjs.min.js"></script>
+    <script src="js/table_to_excel.js" type="text/javascript"></script>
+    <!--MAP-->
+    <link href="css/layer_toggler.css" rel="stylesheet" type="text/css">
+	<link href="css/search_layer_toggler.css" rel="stylesheet" type="text/css">
+    <script src="js/categories.js" type="text/javascript"></script>
+    <script src="js/getJson.js" type="text/javascript"></script>
+    <script src="js/olmaplib.js" type="text/javascript"></script>
+    <script src="js/local_shared.js" type="text/javascript"></script>
+    <script src="js/search_map_lib.js" type="text/javascript"></script>
+    <script src="js/e_map_lib.js" type="text/javascript"></script>
+    <!--HTML2Canvas-->
+    <script src="lib/html2canvas/html2canvas.js" type="text/javascript"></script>
+    <!--CHECK USER-->
+    <script type="text/javascript">
+        var factory = new Factory();
+        var ajaxUrl = 'API/userAPI.php';
+        var userData;
+        var path = (window.location.pathname).split('/');
+        var pathFile = path[path.length - 1];
+        var userID = JSON.parse(sessionStorage.getItem('userID'));
+        
+        if(userID == null)
+            window.open('login.php', '_self');
+        else {
+            if(pathFile != 'login.php') {
+                factory.connectDBService.sendJSONObj(ajaxUrl, {}, false).done(function(res) {
+                    if(res != undefined){
+                        var data = JSON.parse(res);
+                        userData = data;
+
+                        if(userData.id == 0)
+                            window.open('login.php', '_self');
+                        else {
+                            $(document).ready(function(e) {
+                                $('.user-menu img, .user-menu-detail-avatar img').attr('src', ((userData.Gender == 0) ? 'img/user-female.png' : 'img/user-male.png'));
+                                $('.user-menu-detail-label p').html(userData.Fullname);
+                                $('#ProvinceTXT').html(userData.ProvinceTXT);
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 </head>
 <body>
-        <div class="header">
-            <nav class="navbar navbar-default header-menu" role="navigation">
-                <div class="container-fluid">
-                     <div class="navbar-header">
+    <div class="container-fluid">
+        <div class="row">
+            <!--HEADER-->
+            <div class="header">
+                <nav class="navbar navbar-default header-menu" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                                <span class="sr-only">Toggle navigation</span>
+                            <span class="sr-only">Toggle navigation</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                         <a class="navbar-brand" href="#" style="padding-top: 5px;margin-bottom: 20px; "><img src="img/logoheader.png"></a>
-                     </div>
+                                <a class="navbar-brand header-logo" href="#" style="padding-top: 5px; margin-top: 0px;"><img height="60" src="img/logoheader.png" ></a>
+                        </div>
+
                         <ul class="nav navbar-nav navbar-left">
                             <li>
-                                <h4 style="margin: 5px;font-size: 3.0vh; font-weight: bold;">ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</h4>
-                                <h4 class="header-menu-title" style="margin-top: 0px;"><i class="fa fa-caret-right text-right-indent"></i> <span></span></h4>
+                                <h2 style="margin-top: 5px; font-size: 20px; margin-left: 10px;">ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</h2>
+                                <h3 class="header-menu-title" style="margin-top: 0px; margin-left: 10px;"><i class="fa fa-caret-right text-right-indent"></i> <span style="font-size: 18px;"></span></h3>
                             </li>
                         </ul>
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="navbar-icon"><a href="map.php" data-header-menu="แผนที่"><span style="font-size: 2.5vh;"><i class="glyphicon glyphicon-map-marker"></i> แผนที่</span></a></li>
-                            <li class="navbar-icon"><a href="search_license1.php" data-header-menu="ค้นหา"><span style="font-size: 2.5vh;"><i class="glyphicon glyphicon-search"></i> ค้นหา</span></a></li>
-                            <li class="navbar-icon"><a href="report.php" data-header-menu="รายงาน"><span style="font-size: 2.5vh;"><i class="glyphicon glyphicon-stats"></i> รายงาน</span></a></li>
-                             <li class="navbar-icon"><a href="e_form_academy.php" data-header-menu="E-Form"><span style="font-size: 2.5vh;"><i class="glyphicon glyphicon-list-alt"></i> E-Form</span></a></li>
-                             <li class="navbar-icon">
+                        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="navbar-icon"><a href="map.php" data-header-menu="แผนที่"><span style="font-size: 16px;"><i class="glyphicon glyphicon-map-marker"></i> แผนที่</span></a></li>
+                                <li class="navbar-icon"><a href="search_tax.php" data-header-menu="ค้นหา"><span style="font-size: 16px;"><i class="glyphicon glyphicon-search"></i> ค้นหา</span></a></li>
+                                <li class="navbar-icon"><a href="report_tax.php" data-header-menu="รายงาน"><span style="font-size: 16px;"><i class="glyphicon glyphicon-stats"></i> รายงาน</span></a></li>
+                                <li class="navbar-icon"><a href="e_form_academy.php" data-header-menu="e-Form"><span style="font-size: 16px;"><i class="glyphicon glyphicon-list-alt"></i> e-Form</span></a></li>
+                                <li class="navbar-icon">
                                     <a href="#" data-header-menu="ผู้ใช้งานระบบ">
                                         <div class="user-menu">
                                             <img> <i class="fa fa-caret-down"></i>
                                         </div>
                                     </a>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
                 <div class="user-menu-detail hide">
                     <div class="user-menu-detail-avatar text-center">
                         <img>
@@ -86,4 +131,4 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
