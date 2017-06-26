@@ -171,7 +171,7 @@ function update_layer_visibility() {
 	// Factories
 	if(vec_factory_point != null) {
 		toggle_map_layer_visibility(vec_factory_point, 
-									document.getElementById('chk_factory').checked);
+									document.getElementById('chk_academy').checked);
 	}
 	
 	// Law breakers
@@ -183,13 +183,13 @@ function update_layer_visibility() {
 	// Stores
 	if(vec_store_point != null) {
 		toggle_map_layer_visibility(vec_store_point, 
-									document.getElementById('chk_store').checked);
+									document.getElementById('chk_company').checked);
 	}
 	
 	// Thai whisky
 	if(vec_thaiwhisky_point != null) {
 		toggle_map_layer_visibility(vec_thaiwhisky_point, 
-									document.getElementById('chk_thaiwhisky').checked);
+									document.getElementById('chk_zoning').checked);
 	}
 }
 

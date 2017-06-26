@@ -15,8 +15,8 @@
                         <table class="table" style="margin-top: 0; margin-bottom: 0;">
                             <tbody>
                                 <tr>
-                                    <td class="col-md-12" colspan="6" style="padding: 10px !important;">
-                                        <input class="form-control input-sm" id="StampNumber" placeholder="ค้นหาเลขแสตมป์">
+                                    <td class="col-md-12" colspan="2" style="padding: 10px !important;">
+                                        <input class="form-control input-sm" id="FactoryName" placeholder="ค้นหาชื่อโรงงาน">
                                     </td>
                                 </tr>
                             </tbody>
@@ -113,7 +113,7 @@
         function getInit() {
             params = {
                 fn: 'filter',
-                job: 4,
+                job: 5,
                 src: 0
             };
 
@@ -360,7 +360,7 @@
             if(params == undefined) {
                 params = {
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region option:eq(1)').attr('value') || 0,
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
@@ -447,7 +447,7 @@
             if(params == undefined) {
                 params = {
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region option:eq(1)').attr('value') || 0,
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
@@ -592,8 +592,8 @@
                 if(region != '') {
                     params = {
                         fn: 'filter',
-                        job: 4,
-                        src: 4,
+                        job: 5,
+                        src: 5,
                         value: region || 0
                     };
 
@@ -608,7 +608,7 @@
 
                             getTableAll({
                                 fn: 'gettable',
-                                job: 4,
+                                job: 5,
                                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -622,7 +622,7 @@
             } else {
                 getTableAll({
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -645,8 +645,8 @@
             if(region != '') {
                 params = {
                     fn: 'filter',
-                    job: 4,
-                    src: 4,
+                    job: 5,
+                    src: 5,
                     value: region || 0
                 };
             
@@ -661,7 +661,7 @@
 
                         getTableAll({
                             fn: 'gettable',
-                            job: 4,
+                            job: 5,
                             year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                             region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                             province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -674,7 +674,7 @@
             } else {
                 getTableAll({
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -693,7 +693,7 @@
 
             getTableAll({
                 fn: 'gettable',
-                job: 4,
+                job: 5,
                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -713,13 +713,13 @@
 
             getTable({
                 fn: 'gettable',
-                job: 4,
+                job: 5,
                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $(this)[0].rowIndex || 0,
                 page: 1,
-                keyword: $('#StampNumber').val() || ''
+                keyword: $('#FactoryName').val() || ''
             });
         });
 
@@ -733,7 +733,7 @@
             lon = parseFloat($(this).attr('data-lon')) || 0;
             
             if((lat != 0) && (lon != 0)) {
-                e_set_factory_location(ol, map, lat, lon, marker_geom, 14, true);
+                e_set_factory_location(ol, map, lat, lon, marker_geom, 16, true);
 
                 marker_style = new ol.style.Style({
                     image: new ol.style.Icon(({
@@ -752,19 +752,19 @@
             }
         });
         
-        $(document).on('keyup', '#StampNumber', function(e) {
+        $(document).on('keyup', '#FactoryName', function(e) {
             e.preventDefault();
 
             if($(this).val() == '') {
                 getTable({
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: 1,
-                    keyword: $('#StampNumber').val() || ''
+                    keyword: $('#FactoryName').val() || ''
                 });
             }
         });
@@ -774,13 +774,13 @@
 
             getTable({
                 fn: 'gettable',
-                job: 4,
+                job: 5,
                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                 page: $(this).attr('data-page') || 1,
-                keyword: $('#StampNumber').val() || ''
+                keyword: $('#FactoryName').val() || ''
             });
         });
 
@@ -796,13 +796,13 @@
             if(($(this).val() != '') && (e.which == 13)) {
                 getTable({
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: ($(this).val()).replace(',', '') || 1,
-                    keyword: $('#StampNumber').val() || ''
+                    keyword: $('#FactoryName').val() || ''
                 });
             }
         });
@@ -836,15 +836,15 @@
             e.preventDefault();
 
             factory.dataService.exportFile('search', {
-                menu: 'ค้นหาข้อมูลแสตมป์'
+                menu: 'ค้นหาข้อมูลโรงงาน'
             });
         });
 
-        $('#StampNumber').autocomplete({ 
+        $('#FactoryName').autocomplete({ 
             source: function(req, res) {
                 params = {
                     fn: 'autocomplete', 
-                    src: 4, 
+                    src: 5, 
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     value: req.term || '',
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0
@@ -860,7 +860,7 @@
 
                 getTable({
                     fn: 'gettable',
-                    job: 4,
+                    job: 5,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),

@@ -582,7 +582,7 @@ function prepare_layer_toggler(e) {
 	// Factories
 	ctn_factory = document.createElement("div");
 	ctn_factory.className = 'layer_block';
-	ctn_factory.innerHTML = '<input type="checkbox" id="chk_factory" name="chk_factory" onclick="update_layer_visibility();" /> โรงงานสุรา';
+	ctn_factory.innerHTML = '<input type="checkbox" id="chk_academy" name="chk_academy" onclick="update_layer_visibility();" /> สถานศึกษา';
 	
 	// Illegal cases
 	ctn_case = document.createElement("div");
@@ -592,12 +592,12 @@ function prepare_layer_toggler(e) {
 	// Stores
 	ctn_store = document.createElement("div");
 	ctn_store.className = 'layer_block';
-	ctn_store.innerHTML = '<input type="checkbox" id="chk_store" name="chk_store" onclick="update_layer_visibility();" /> ร้านค้า';
+	ctn_store.innerHTML = '<input type="checkbox" id="chk_company" name="chk_company" onclick="update_layer_visibility();" /> สถานประกอบการ';
 	
 	// Thai whisky
 	ctn_whisky = document.createElement("div");
 	ctn_whisky.className = 'layer_block';
-	ctn_whisky.innerHTML = '<input type="checkbox" id="chk_thaiwhisky" name="chk_thaiwhisky" onclick="update_layer_visibility();" /> ร้านยาดอง';
+	ctn_whisky.innerHTML = '<input type="checkbox" id="chk_zoning" name="chk_zoning" onclick="update_layer_visibility();" /> พื้นที่โซนนิ่ง';
 	
 	// Add children
 	ele.appendChild(ctn_office);
