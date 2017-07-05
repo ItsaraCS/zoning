@@ -1,16 +1,16 @@
 <?php
 	include("../class/user.class.php");
 	require_once("../class/util.class.php");
-	require_once("../class/database.class.php");
+	require_once("../class/database.zoning.class.php");
 
 	$user = new exUser;
 
 	if(isset($_POST["fn"])){
-		$DB = new exDB;
+		$DB = new ezDB;
 		switch($_POST["fn"]){
 			case "login" :
-					$userdata = $DB->GetDataOneRow("SELECT `AdminID`, `adGender`, `adLevel`, `adUnder`, `adEform`, `adRegion`, `adProvince`, `adArea`, `adBranch`, `adUsername`, `adPassword`, `adFullname`, `pvName`, `arName`, `brName` FROM `Admin`,`Province`,`Area`, `Branch` WHERE adProvince = ProvinceID AND AreaID = adArea AND BranchID = adBranch AND adStatus = 1 AND adUsername = ? AND adPassword = BINARY ?",array("ss",$_POST["user"],$_POST["password"]));
-					if(isset($userdata["AdminID"])){
+					$userdata = $DB->GetDataOneRow("CALL checkuser(?, MD5(?));",array("ss",$_POST["user"],$_POST["password"]));
+					if(isset($userdata["member_id"])){
 						$user->UpdateProfile($userdata);
 						$user->Login(1);
 					}else{
@@ -178,6 +178,6 @@
 		if($user->id == 0) $user->Message = "กรุณาเข้าสู่ระบบก่อนใช้งาน";
 	}
 
-	header("Access-Control-Allow-Origin: *");
+//	header("Access-Control-Allow-Origin: *");
 	echo json_encode($user);
 ?>

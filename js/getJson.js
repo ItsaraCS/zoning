@@ -1,4 +1,4 @@
-function getJSON(path, success, error) {
+function getJSON(path, success, error, notLoadingRequired) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -12,8 +12,12 @@ function getJSON(path, success, error) {
         }
     };
     xhr.open("GET", path, true);
-    var beforeSend = function(){
-        $('#dvloading').show();
-    }();
+    
+    if(!notLoadingRequired) {
+        var beforeSend = function(){
+            $('#dvloading').show();
+        }();
+    }
+
     xhr.send();
 }

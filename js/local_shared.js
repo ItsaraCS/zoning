@@ -25,11 +25,10 @@ var b_region_polygon_loaded = false;
 var b_area_point_loaded = false;
 var b_area_polygon_loaded = false;
 var b_branch_point_loaded = false;
-var b_factory_point_loaded = false;
-var b_case_point_loaded = false;
-var b_lawbreaker_point_loaded = false;
+var b_academy_point_loaded = false;
+var b_zoning_point_loaded = false;
 var b_store_point_loaded = false;
-var b_thaiwhisky_point_loaded = false;
+var b_lawbreaker_point_loaded = false;
 var b_data_ready = false;
 
 // Generic layers
@@ -39,11 +38,10 @@ var vec_region_polygon = null;
 var vec_area_point = null;
 var vec_area_polygon = null;
 var vec_branch_point = null;
-var vec_factory_point = null;
-var vec_lawbreaker_point = false;
+var vec_academy_point = false;
+var vec_zoning_point = false;
 var vec_store_point = false;
-var vec_thaiwhisky_point = false;
-var vec_case_point = null;
+var vec_lawbreaker_point = false;
 
 // Case data
 var map_data = null; // total number of cases, sum by region code
@@ -167,17 +165,17 @@ function update_layer_visibility() {
 		toggle_map_layer_visibility(vec_branch_point, 
 									document.getElementById('chk_office').checked);
 	}
-	
-	// Factories
-	if(vec_factory_point != null) {
-		toggle_map_layer_visibility(vec_factory_point, 
-									document.getElementById('chk_factory').checked);
+
+	//--Academy
+	if(vec_academy_point != null) {
+		toggle_map_layer_visibility(vec_academy_point, 
+									document.getElementById('chk_academy').checked);
 	}
-	
-	// Law breakers
-	if(vec_lawbreaker_point != null) {
-		toggle_map_layer_visibility(vec_lawbreaker_point, 
-									document.getElementById('chk_lawbreaker').checked);
+
+	//--Zoning
+	if(vec_zoning_point != null) {
+		toggle_map_layer_visibility(vec_zoning_point, 
+									document.getElementById('chk_zoning').checked);
 	}
 	
 	// Stores
@@ -185,11 +183,11 @@ function update_layer_visibility() {
 		toggle_map_layer_visibility(vec_store_point, 
 									document.getElementById('chk_store').checked);
 	}
-	
-	// Thai whisky
-	if(vec_thaiwhisky_point != null) {
-		toggle_map_layer_visibility(vec_thaiwhisky_point, 
-									document.getElementById('chk_thaiwhisky').checked);
+
+	// Law breakers
+	if(vec_lawbreaker_point != null) {
+		toggle_map_layer_visibility(vec_lawbreaker_point, 
+									document.getElementById('chk_lawbreaker').checked);
 	}
 }
 
@@ -369,12 +367,51 @@ function load_data_thaiwhisky_point(url) {
 }
 
 /**
+ * Load branch data (polygon centroid)
+ */
+function load_data_academy_point(url) {
+	getJSON(
+		url,
+		function(data) {
+			// Create a new vector layer.
+			vec_academy_point = create_vector_layer(data, 
+											'EPSG:3857',
+											academy_point_style_function);
+			b_academy_point_loaded = true;
+			process_loaded_data();
+		}, 
+		function(xhr) {
+		}
+	);
+}
+
+/**
+ * Load branch data (polygon centroid)
+ */
+function load_data_zoning_polygon(url) {
+	getJSON(
+		url,
+		function(data) {
+			// Create a new vector layer.
+			vec_zoning_point = create_vector_layer(data, 
+											'EPSG:3857',
+											zoning_polygon_style_function);
+			b_zoning_point_loaded = true;
+			process_loaded_data();
+		}, 
+		function(xhr) {
+		}
+	);
+}
+
+/**
  * Load case data (attribute-only data)
  */
 function load_data_region(url) {
 	getJSON(
 		url,
 		function(data) {
+			console.log(data);
 			map_data = data;
 			b_map_data_loaded = true;
 			process_loaded_data();
@@ -410,6 +447,54 @@ function load_data_area(url) {
 			map_data_area = data;
 			b_map_data_area_loaded = true;
 			process_loaded_data();
+		}, 
+		function(xhr) {
+		}
+	);
+}
+
+/**
+ * Load case data (attribute-only data)
+ */
+function load_data_region_for_change_year(url) {
+	getJSON(
+		url,
+		function(data) {
+			map_data = data;
+			b_map_data_loaded = true;
+			process_loaded_data_for_change_year();
+		}, 
+		function(xhr) {
+		}
+	);
+}
+
+/**
+ * Load monthly case data (attribute-only data)
+ */
+function load_data_region_monthly_for_change_year(url) {
+	getJSON(
+		url,
+		function(data) {
+			map_data_monthly = data;
+			b_map_data_monthly_loaded = true;
+			process_loaded_data_for_change_year();
+		}, 
+		function(xhr) {
+		}
+	);
+}
+
+/**
+ * Load area data
+ */
+function load_data_area_for_change_year(url) {
+	getJSON(
+		url,
+		function(data) {
+			map_data_area = data;
+			b_map_data_area_loaded = true;
+			process_loaded_data_for_change_year();
 		}, 
 		function(xhr) {
 		}
@@ -460,7 +545,7 @@ function cal_region_extends(r, f, p) {
 	
 	// manual adjust
 	for( i = 0; i < r.length; i++ ) {
-		console.log(i, r[i]);
+		//console.log(i, r[i]);
 		r[i][0] -= p;
 		r[i][1] -= p;
 		r[i][2] += p;
@@ -756,7 +841,6 @@ function prepare_chart(options) {
 			tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-						console.log(data);
 						switch(data.datasets[tooltipItem.datasetIndex].label) {
 							case 'ภาษี':
 								return 'มูลค่ารวม: '+ Number(tooltipItem.yLabel).toLocaleString('en', { minimumFractionDigits: 2 }) +' บาท';
@@ -981,7 +1065,6 @@ function update_chart_data(ctx, ctn, data, field) {
 	var fi;
 	
 	// Clear
-	
 	// For each feature,...
 	for( i = 0; i < fm.length; i++ ) {
 		fi = fm[i];
@@ -994,7 +1077,7 @@ function update_chart_data(ctx, ctn, data, field) {
 		} else if(field == 'VAL_TOTAL') {
 			val = fi.properties.VAL_TOTAL;
 		}
-		console.log(fi.properties.REG_CODE, fi.properties.MONTH, val);
+		//console.log(fi.properties.REG_CODE, fi.properties.MONTH, val);
 		
 		// Accumulate the value
 		monthly_data[fi.properties.MONTH-1] = val;
@@ -1002,8 +1085,10 @@ function update_chart_data(ctx, ctn, data, field) {
 	}
 	
 	// Summary data
-	for( i = 0; i < monthly_sum_data.length; i++ ) {
-		ctn.data.datasets[0].data[i] = monthly_sum_data[i];
+	if(ctn.data.datasets.length > 0) {
+		for( i = 0; i < monthly_sum_data.length; i++ ) {
+			ctn.data.datasets[0].data[i] = monthly_sum_data[i];
+		}
 	}
 	
 	//var dummy = create_linechart_element('รวมssdf', 12, [80,200,255], [80,200,255],1.0, 0.95);

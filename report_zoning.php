@@ -3,7 +3,8 @@
 <!--SECTION-->
 <div class="section hide">
     <!--TABLE REPORT-->
-    <div class="col-md-12 table-responsive table-report" style="height: 32vh; margin-bottom: 15px;">
+    <div class="col-md-12 table-responsive table-report">
+        <h3 class="report-mobile">ตารางแสดงข้อมูล</h3>
         <table class="table table-striped table-bordered bg-info" id="getexc">
             <thead><tr></tr></thead>
             <tbody></tbody>
@@ -12,13 +13,9 @@
 
     <!--CHART-->
     <div class="col-md-12 my-chart" style="height: 35vh;">
-        <div class="col-md-12 text-center">
-            <h3 id="chartType" style="margin: 0;">กราฟรายเดือน</h3>
-        </div>
-        <div class="col-md-12 text-right" style="margin-bottom: 10px;">
-            <button type="button" class="btn btn-success btn-sm" id="changeChartBtn" data-chart-type="0">
-                <i class="fa fa-line-chart text-right-indent"></i> <span>เลือกกราฟรายปี</span>
-            </button>
+        <div class="col-md-12 text-center" style="margin-bottom: 10px;">
+             <h3 id="chartType" style="margin: 0;">กราฟรายเดือน</h3>
+            <button type="button" class="btn btn-success btn-sm" id="changeChartBtn" data-chart-type="0"><i class="fa fa-line-chart text-right-indent"></i> <span>เลือกกราฟรายปี</span></button>
         </div>
         <canvas id="myChart"></canvas>
     </div>
@@ -43,7 +40,7 @@
         function setInit() {
             params = {
                 fn: 'filter',
-                job: 5,
+                job: 6,
                 src: 0
             };
 
@@ -88,7 +85,7 @@
 
                 params = {
                     fn: 'gettable',
-                    job: 5,
+                    job: 6,
                     year: year,
                     region: region || 0,
                     province: province || 0,
@@ -143,7 +140,7 @@
                 monthData: [],
                 chartData: [],
                 xAxes: 'เดือน',
-                yAxes: 'โรง'
+                yAxes: 'บาท'
             };
             year = $('.nav-menu #year').val() || '';
             region = $('.nav-menu #region').val() || 0;
@@ -155,7 +152,7 @@
             if(year != '') {
                 params = {
                     fn: 'getgraph',
-                    job: 5,
+                    job: 6,
                     year: year,
                     region: region || 0,
                     province: province || 0,
@@ -192,8 +189,8 @@
                 if(region != '') {
                     params = {
                         fn: 'filter',
-                        job: 5,
-                        src: 1,
+                        job: 6,
+                        src: 6,
                         value: region || 0
                     };
 
@@ -229,8 +226,8 @@
             if(region != '') {
                 params = {
                     fn: 'filter',
-                    job: 5,
-                    src: 1,
+                    job: 6,
+                    src: 6,
                     value: region || 0
                 };
             
@@ -265,12 +262,6 @@
             getTable();
             getChart();
         });
-
-        /*$(document).on('click', '.export-file', function(e) {
-            e.preventDefault();
-
-            window.location.href = 'export/report/reportfactory.xlsx';
-        });*/
 
         $(document).on('click', '#changeChartBtn', function(e) {
             e.preventDefault();

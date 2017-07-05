@@ -73,7 +73,7 @@ var region_ext = [];
 /**
  * On document loaded.
  */
-function on_page_loaded() {
+function on_page_loaded(currentYear) {
 	// Show progress dialog
 	console.log('Loading...');
 	
@@ -162,17 +162,29 @@ function on_page_loaded() {
 	load_data_region_polygon('data/geojson/excise_region.geojson');
 	load_data_region_point('data/geojson/point_region.geojson');
 	load_data_area_point('data/geojson/excise_area_centroid_compact.geojson');
-	load_data_area_polygon('data/geojson/area_dissolved.geojson');
-	load_data_branch_point('data/geojson/excise_branch_centroid.geojson');
-	load_data_factory_point('data/geojson/factory_2126_point.geojson');
+	load_data_area_polygon('data/geojson-update/area_dissolved.geojson');
+
+	load_data_branch_point('data/geojson/excise_branch_centroid.geojson'); //--สำนักงานสรรพสามิต
+	load_data_academy_point('data/geojson-update/school_points.geojson'); //--สถานศึกษา
+	load_data_zoning_polygon('data/geojson-update/zoning_polygon.geojson'); //--พื้นที่โซนนิ่ง
+	load_data_store_point('data/geojson-update/shop_points.geojson'); //--ร้านค้า
+	load_data_lawbreaker_point('data/geojson-update/illigal_points.geojson'); //--ผู้กระทำผิด
 	
 	// Attribute data
-	load_data_region('API/taxmapAPI.php?data=illegal_reg&year=2017');
-	load_data_region_monthly('API/taxmapAPI.php?data=illegal_month&year=2017');
-	load_data_area('API/taxmapAPI.php?data=illegal_area&year=2017');
+	load_data_region('API/taxmapAPI.php?data=illegal_reg&year='+ currentYear);
+	load_data_region_monthly('API/taxmapAPI.php?data=illegal_month&year='+ currentYear);
+	load_data_area('API/taxmapAPI.php?data=illegal_area&year='+ currentYear);
 	
 	// Done
 	console.log('Done.');
+}
+
+function load_data_by_year(year) {
+	if(year != '' && year != undefined) {
+		load_data_region_for_change_year('API/taxmapAPI.php?data=illegal_reg&year='+ year);
+		load_data_region_monthly_for_change_year('API/taxmapAPI.php?data=illegal_month&year='+ year);
+		load_data_area_for_change_year('API/taxmapAPI.php?data=illegal_area&year='+ year);
+	}
 }
 
 /**
@@ -180,14 +192,17 @@ function on_page_loaded() {
  */
 function process_loaded_data() {
 	b_data_ready = b_region_polygon_loaded
-				&& b_region_point_loaded
-				&& b_area_point_loaded
-				&& b_branch_point_loaded
-				&& b_area_polygon_loaded
-				&& b_map_data_loaded
-				&& b_map_data_monthly_loaded
-				&& b_map_data_area_loaded
-				&& b_factory_point_loaded;
+					&& b_region_point_loaded
+					&& b_area_point_loaded
+					&& b_area_polygon_loaded
+					&& b_map_data_loaded
+					&& b_map_data_monthly_loaded
+					&& b_map_data_area_loaded	
+					&& b_branch_point_loaded			
+					&& b_academy_point_loaded
+					&& b_zoning_point_loaded
+					&& b_store_point_loaded
+					&& b_lawbreaker_point_loaded;
 	
 	if(b_data_ready == false) { 
 		console.log('...still loading...');
@@ -205,13 +220,11 @@ function process_loaded_data() {
 
 	var projection = ol.proj.get('EPSG:3857');
 
-	//ADD By AM
 	window.app = {};
     var app = window.app;
+
     app.defaultZoom = function(opt_options) {
-
         var options = opt_options || {};
-
         var defaultZoomBtn = document.createElement('button');
         defaultZoomBtn.innerHTML = '<i class="fa fa-globe" aria-hidden="true"></i>';
 
@@ -219,18 +232,17 @@ function process_loaded_data() {
             map.getView().setCenter(ol.proj.transform([103.0, 8.5], 'EPSG:4326', 'EPSG:3857'));
 			map.getView().setZoom(5);
         };
-
         defaultZoomBtn.addEventListener('click', handledefaultZoom, false);
 
         var element = document.createElement('div');
         element.className = 'defaultZoom ol-unselectable ol-control';
+		element.title = 'Zoom Full';
         element.appendChild(defaultZoomBtn);
 
         ol.control.Control.call(this, {
             element: element,
             target: options.target
         });
-
     };
     ol.inherits(app.defaultZoom, ol.control.Control);
 
@@ -243,7 +255,7 @@ function process_loaded_data() {
             new app.defaultZoom()
         ]),
 		layers : [vec_region_polygon],
-		overlays: [overlay],//for popup
+		overlays: [overlay], //--For popup
 		target : 'map',
 		view: new ol.View({
 			center: [100, 13],
@@ -251,7 +263,6 @@ function process_loaded_data() {
 			zoom: 3
 		})
 	});
-	//ADD By AM
 
 	// Map instance.
 	// map = new ol.Map({
@@ -267,16 +278,22 @@ function process_loaded_data() {
 	
 	// Add other layers
 	map.addLayer(vec_area_polygon);
-	map.addLayer(vec_branch_point);
 	map.addLayer(vec_area_point);
 	map.addLayer(vec_region_point);
-	map.addLayer(vec_factory_point);
+	map.addLayer(vec_branch_point);
+	map.addLayer(vec_academy_point);
+	map.addLayer(vec_zoning_point);
+	map.addLayer(vec_store_point);
+	map.addLayer(vec_lawbreaker_point);
 	
 	// Hide some layers by default
 	toggle_map_layer_visibility(vec_area_polygon, false);
 	toggle_map_layer_visibility(vec_area_point, false);
 	toggle_map_layer_visibility(vec_branch_point, false);
-	toggle_map_layer_visibility(vec_factory_point, false);
+	toggle_map_layer_visibility(vec_academy_point, false);
+	toggle_map_layer_visibility(vec_zoning_point, false);
+	toggle_map_layer_visibility(vec_store_point, false);
+	toggle_map_layer_visibility(vec_lawbreaker_point, false);
 	
 	$('#dvloading').hide().fadeOut();
 	
@@ -306,6 +323,33 @@ function process_loaded_data() {
 	cal_region_extends(region_ext,
 					   vec_region_polygon.getSource().getFeatures(),
 					   0.0);
+	
+	// Show chart
+	update_chart_data(chart_context, 
+					  chart_container, 
+					  map_data_monthly,
+					  'COUNT');
+}
+
+/**
+ * Process data for change year
+ */
+function process_loaded_data_for_change_year() {
+	b_data_ready = b_map_data_loaded
+					&& b_map_data_monthly_loaded
+					&& b_map_data_area_loaded
+	
+	if(b_data_ready == false) { 
+		console.log('...still loading...');
+		return; 
+	} else {
+		console.log('data is ready...');
+		$('#dvloading').hide();
+		$('#popup-closer').trigger('click');
+	}
+
+	map.getView().setCenter(ol.proj.transform([103.0, 8.5], 'EPSG:4326', 'EPSG:3857'));
+	map.getView().setZoom(5);
 	
 	// Show chart
 	update_chart_data(chart_context, 
@@ -486,7 +530,7 @@ function on_map_mouse_move(event) {
 		reg_code = parseInt(f[0].get('REG_CODE'));
 		ele.innerHTML = 'สำนักงานสรรพสามิตรภาคที่ ' + reg_code;
 	} else {
-		area_name = f[0].get('AREA_TNAME');
+		area_name = f[0].get('AREA_TNAME') || f[0].get('BRAN_TNAME');
 		ele.innerHTML = area_name;
 	}
 }
@@ -537,24 +581,52 @@ function show_feature_info(evt) {
 			ci = map_data.features[i].properties.REG_CODE;
 			
 			// Found
-			if(ci == cj) {
-				f_count = map_data.features[i].properties.COUNT;
-				f_sum = map_data.features[i].properties.SUM;
-				
-				str += "<h3><a href=\"search_tax.php\">สรรพสามิตภาคที่ " + cj + "</a></h3>";
-				str += "<table>";
-					str += "<tr>";
-						str += "<td>จำนวนคดี</td>";
-						str += "<td class=\"center\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คดี</td>";
-					str += "</tr>";
-				str += "</table>";
-				popup_content.innerHTML = str;
-				overlay.setPosition(coordinate);
-				
+			if(cj == ci) {
+				f_sum = map_data.features[i].properties;
+				f_sum1 = f_sum.SUM1;
+				f_sum2 = f_sum.SUM2;
+				f_sum3 = f_sum.SUM3;
+				f_sum4 = f_sum.SUM4;
+				f_sumAll = f_sum.SUMALL;
+
 				break;
+			} else {
+				f_sum1 = 0;
+				f_sum2 = 0;
+				f_sum3 = 0;
+				f_sum4 = 0;
+				f_sumAll = 0;
 			}
 		}
 		
+		str += "<h3><a href=\"search_tax.php\">สรรพสามิตภาคที่ " + cj + "</a></h3>";
+		str += "<table>";
+			str += "<tr>";
+				str += "<td colspan='2'><p style='font-weight: bold;'>จำนวนผู้กระทำผิดของผู้ประกอบการตาม พรบ.</p></td>";
+			str += "</tr>";
+			str += "<tr>";
+				str += "<td>พรบ.สุรา</td>";
+				str += "<td class=\"right\">" + Number(f_sum1).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+			str += "</tr>";
+			str += "<tr>";
+				str += "<td>พรบ.ยาสูบ</td>";
+				str += "<td class=\"right\">" + Number(f_sum2).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+			str += "</tr>";
+			str += "<tr>";
+				str += "<td>พรบ.ไพ่</td>";
+				str += "<td class=\"right\">" + Number(f_sum3).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+			str += "</tr>";
+			str += "<tr>";
+				str += "<td>พรบ.2527</td>";
+				str += "<td class=\"right\">" + Number(f_sum4).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+			str += "</tr>";
+			str += "<tr>";
+				str += "<td>รวม</td>";
+				str += "<td class=\"right\">" + Number(f_sumAll).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+			str += "</tr>";
+		str += "</table>";
+		popup_content.innerHTML = str;
+		overlay.setPosition(coordinate);
 	// User selects a region, check area selector
 	} else {
 		// User do not select any area.
@@ -583,8 +655,27 @@ function show_feature_info(evt) {
 				str += "<h3><a href=\"search_tax.php\">" + label + "</a></h3>";
 				str += "<table>";
 					str += "<tr>";
-						str += "<td>จำนวนคดี</td>";
-						str += "<td class=\"center\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คดี</td>";
+						str += "<td colspan='2'><p style='font-weight: bold;'>จำนวนผู้กระทำผิดของผู้ประกอบการตาม พรบ.</p></td>";
+					str += "</tr>";
+					str += "<tr>";
+						str += "<td>พรบ.สุรา</td>";
+						str += "<td class=\"right\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+					str += "</tr>";
+					str += "<tr>";
+						str += "<td>พรบ.ยาสูบ</td>";
+						str += "<td class=\"right\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+					str += "</tr>";
+					str += "<tr>";
+						str += "<td>พรบ.ไพ่</td>";
+						str += "<td class=\"right\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+					str += "</tr>";
+					str += "<tr>";
+						str += "<td>พรบ.2527</td>";
+						str += "<td class=\"right\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
+					str += "</tr>";
+					str += "<tr>";
+						str += "<td>รวม</td>";
+						str += "<td class=\"right\">" + Number(f_sum).toLocaleString('en', { minimumFractionDigits: 0 }) + " คน</td>";
 					str += "</tr>";
 				str += "</table>";
 				popup_content.innerHTML = str;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoning</title>
+    <title>Zoning - ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</title>
     <!--jQuery-->
     <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>
     <script src="lib/jquery/jquery-ui-1.12.1.custom/jquery-ui.js" type="text/javascript"></script>
@@ -97,13 +97,18 @@
                         <div class="collapse navbar-collapse navbar-ex1-collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="navbar-icon"><a href="map.php" data-header-menu="แผนที่"><span style="font-size: 16px;"><i class="glyphicon glyphicon-map-marker"></i> แผนที่</span></a></li>
-                                <li class="navbar-icon"><a href="search_tax.php" data-header-menu="ค้นหา"><span style="font-size: 16px;"><i class="glyphicon glyphicon-search"></i> ค้นหา</span></a></li>
-                                <li class="navbar-icon"><a href="report_tax.php" data-header-menu="รายงาน"><span style="font-size: 16px;"><i class="glyphicon glyphicon-stats"></i> รายงาน</span></a></li>
+                                <li class="navbar-icon"><a href="search_case.php" data-header-menu="ค้นหา"><span style="font-size: 16px;"><i class="glyphicon glyphicon-search"></i> ค้นหา</span></a></li>
+                                <li class="navbar-icon"><a href="report_case.php" data-header-menu="รายงาน"><span style="font-size: 16px;"><i class="glyphicon glyphicon-stats"></i> รายงาน</span></a></li>
                                 <li class="navbar-icon"><a href="e_form_academy.php" data-header-menu="e-Form"><span style="font-size: 16px;"><i class="glyphicon glyphicon-list-alt"></i> e-Form</span></a></li>
                                 <li class="navbar-icon">
                                     <a href="#" data-header-menu="ผู้ใช้งานระบบ">
                                         <div class="user-menu">
-                                            <img> <i class="fa fa-caret-down"></i>
+                                            <img class="img-responsive" style="display: inline-block;"><i class="fa fa-caret-down hidden-mobile"></i>
+                                            <ul>
+                                                <a class="btn btn-default" href="user.php" style="color: black;">ตั้งค่าบัญชี</a>
+                                                <a class="btn btn-default" id="logoutBtn" href="#" style="color: black;">ออกจากระบบ</a>
+                                            </ul>
+                                            
                                         </div>
                                     </a>
                                 </li>

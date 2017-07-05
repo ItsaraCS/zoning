@@ -2,7 +2,7 @@
     <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Zoning</title>
+        <title>Zoning - ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</title>
         <!--jQuery-->
         <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>
         <script src="lib/jquery/jquery-ui-1.12.1.custom/jquery-ui.js" type="text/javascript"></script>
@@ -11,8 +11,8 @@
         <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <script src="lib/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <!--CSS-->
-        <link href="css/style_login.css" rel="stylesheet" type="text/css">
         <link href="img/logoheader.png" rel="shortcut icon" type="image/x-icon">
+        <link href="css/style_login.css" rel="stylesheet" type="text/css">
         <!--JS-->
         <script src="js/factory.js" type="text/javascript"></script>
     </head>
@@ -24,10 +24,9 @@
                 </div>  
             </div>
             <div class="container">
-                <div class="col-md-6"><img src="img/menu3.png" class="img-responsive center-block" width="80%"/></div>
+                <div class="col-md-6"><img src="img/logo.png" class="img-responsive center-block" width="80%"/></div>
                 <div class="col-md-6">   
-                    <h6 style="color: white; font-size: 4.5vh;">ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล
-                    </h6>
+                    <h6 style="color: white; font-size: 4.5vh;">ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</h6>
                     <form name="loginForm" novalidate>
                         <div class="form-group row">
                             <div class="col-md-9">

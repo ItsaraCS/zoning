@@ -15,8 +15,8 @@
                         <table class="table" style="margin-top: 0; margin-bottom: 0;">
                             <tbody>
                                 <tr>
-                                    <td class="col-md-12" colspan="2" style="padding: 10px !important;">
-                                        <input class="form-control input-sm" id="FactoryName" placeholder="ค้นหาชื่อโรงงาน">
+                                    <td class="col-md-12" style="padding: 10px !important;">
+                                        <input class="form-control input-sm" id="FilterKeySearch" placeholder="ค้นหาผู้ประกอบการ (ร้านค้า) / เลขใบอนุญาต">
                                     </td>
                                 </tr>
                             </tbody>
@@ -48,9 +48,9 @@
     <!--TABLE DATA-->
     <div class="col-md-12" style="margin-top: 10px;">
         <div class="row">
-            <div class="panel panel-default" style="height: 36vh;">
+            <div class="panel panel-default panel-data-table-res">
                 <div class="panel-body" style="padding: 0;">
-                    <div class="table-responsive" style="height: 26vh;">
+                    <div class="table-responsive table-data-res">
                         <table class="table table-striped table-bordered search-table bg-info" style="margin-top: 0;"> 
                             <thead><tr></tr></thead>
                             <tbody></tbody>
@@ -113,24 +113,25 @@
         function getInit() {
             params = {
                 fn: 'filter',
-                job: 5,
+                job: 4,
                 src: 0
             };
 
             factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
-                if(res != undefined){
+                if(res != undefined) {
                     var data = JSON.parse(res);
+                    console.log(data);
 
                     $.each(data.year, function(index, item) {
                         $('.nav-menu #year').append('<option value="'+ item.value +'">'+ item.label +'</option>');
                     });
 
                     $.each(data.region, function(index, item) {
-                        $('.nav-menu #region').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                        $('.nav-menu #region').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                     });
                     
                     $.each(data.province, function(index, item) {
-                        $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                        $('.nav-menu #province').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                     });
 
                     $('.nav-menu #year, ' +
@@ -251,7 +252,7 @@
                     map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
                     map.getView().setZoom(4.5);
                 };
-                
+
                 defaultZoomBtn.addEventListener('click', handledefaultZoom, false);
 
                 var element = document.createElement('div');
@@ -289,7 +290,7 @@
                 })
             });
             
-			getJSON(
+			/*getJSON(
 				'data/geojson/factory_2126_point.geojson',
 				function(data) {
 					var v = create_vector_layer(data, 
@@ -299,7 +300,8 @@
 				}, 
 				function(xhr) {
 				}
-			);
+			);*/
+            search_load_point_layers();
 
             $('#dvloading').hide().fadeOut();
 
@@ -360,13 +362,13 @@
             if(params == undefined) {
                 params = {
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region option:eq(1)').attr('value') || 0,
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
                     menu: 0,
                     page: 1,
-                    keyword: $('#LicenseNumber').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 };
             }
             
@@ -374,16 +376,11 @@
                 if(res != undefined) {
                     var data = JSON.parse(res);
 
-                    map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
-                    map.getView().setZoom(4.5);
-                    
-                    marker_style = new ol.style.Style();
-                    marker_feature.setStyle(marker_style);
-                    map.getLayers().setAt(3, layers_marker);
+                    //zoomMapByArea();
 
                     var theadContent = '';
                     $.each(data.label, function(index, item) {
-                        theadContent += '<th class="text-center text-nowrap bg-primary">' +
+                        theadContent += '<th class="text-center text-nowrap bg-primary" data-index="'+ index +'">' +
                                 '<div class="checkbox checkbox-success" style="margin: 0 auto;">' +
                                     '<input id="'+ item +'" type="checkbox" class="select-export" checked="checked"><label for="'+ item +'" style="font-weight: bold;">'+ item +'</label>' +
                                 '</div>' +
@@ -447,26 +444,21 @@
             if(params == undefined) {
                 params = {
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region option:eq(1)').attr('value') || 0,
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
                     menu: 0,
                     page: 1,
-                    keyword: $('#LicenseNumber').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 };
             }
             
             factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
                 if(res != undefined) {
                     var data = JSON.parse(res);
-
-                    map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
-                    map.getView().setZoom(4.5);
                     
-                    marker_style = new ol.style.Style();
-                    marker_feature.setStyle(marker_style);
-                    map.getLayers().setAt(3, layers_marker);
+                    //zoomMapByArea();
                     
                     var searchDetailTableContent = '';
                     $.each(data.menu, function(index, item) {
@@ -501,7 +493,7 @@
 
                     var theadContent = '';
                     $.each(data.label, function(index, item) {
-                        theadContent += '<th class="text-center text-nowrap bg-primary">' +
+                        theadContent += '<th class="text-center text-nowrap bg-primary" data-index="'+ index +'">' +
                                 '<div class="checkbox checkbox-success" style="margin: 0 auto;">' +
                                     '<input id="'+ item +'" type="checkbox" class="select-export" checked="checked"><label for="'+ item +'" style="font-weight: bold;">'+ item +'</label>' +
                                 '</div>' +
@@ -513,13 +505,16 @@
                         var tbodyContent = '';
                         var alignContent = 0;
                         var index = 0;
+                        searchTableData = [];
+                        searchTableIndex = 0;
                         
                         $.each(data.latlong, function(latlongIndex, latlongItem) {
                             if(data.latlong.length != 0)
                                 tbodyContent = '<tr data-id="'+ data.data[index].id +'" data-lat="'+ latlongItem.Lat +'" data-lon="'+ latlongItem.Long +'">';
                             else
                                 tbodyContent = '<tr data-id="'+ data.data[index].id +'" data-lat="0" data-lon="0">';
-
+                            
+                            searchTableData[searchTableIndex] = {};
                             for(var j=1; j<=data.label.length; j++) {
                                 tdAlign = ({
                                     '0': 'text-left',
@@ -535,12 +530,15 @@
                                     tbodyContent += '<td class="'+ tdAlign +' text-nowrap"><a href="'+ data.data[index].text +'" class="show-link">ดูเพิ่มเติม</a></td>';
                                 else
                                     tbodyContent += '<td class="'+ tdAlign +' text-nowrap">'+ data.data[index].text +'</td>';
-
+                                
+                                searchTableData[searchTableIndex][j] = data.data[index];
                                 index += 1;
                             }
 
                             tbodyContent += '</tr>';
                             $('.search-table tbody').append(tbodyContent);
+
+                            searchTableIndex += 1;
                         });
 
                         getPagination({
@@ -568,10 +566,34 @@
             }
 
             factory.connectDBService.sendJSONStr('API/paginatorAPI.php', params).done(function(res) {
-                if(res != undefined){
+                if(res != undefined) {
                     $('.pagination').append(res);
                 }
             });
+        }
+
+        function zoomMapByArea() {
+            region = $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value');
+            province = $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value');
+            var regionLat = parseFloat($('.nav-menu #region option:selected').attr('data-lat')) || 13.231792;
+            var regionLon = parseFloat($('.nav-menu #region option:selected').attr('data-lon')) || 103.697123;
+            var provinceLat = parseFloat($('.nav-menu #province option:selected').attr('data-lat')) || 13.231792;
+            var provinceLon = parseFloat($('.nav-menu #province option:selected').attr('data-lon')) || 103.697123;
+
+            if(region != 0 && province != 0) {
+                map.getView().setCenter(ol.proj.transform([provinceLon, provinceLat], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(10);
+            } else if(region != 0) {
+                map.getView().setCenter(ol.proj.transform([regionLon, regionLat], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(7);
+            } else {
+                map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(4.5);
+            }
+
+            marker_style = new ol.style.Style();
+            marker_feature.setStyle(marker_style);
+            map.getLayers().setAt(3, layers_marker);
         }
 
         //--Event
@@ -581,7 +603,7 @@
             $('.nav-menu #region').find('option:eq(0)').prop('selected', true);
             $('.nav-menu #province option[value!=""]').remove();
             $('.search-detail-table thead tr').attr('data-menu', 0);
-            $('#LicenseNumber').val('');
+            $('#FilterKeySearch').val('');
             
             year = $('.nav-menu #year').val() || 0;
 
@@ -592,23 +614,23 @@
                 if(region != '') {
                     params = {
                         fn: 'filter',
-                        job: 5,
-                        src: 5,
+                        job: 4,
+                        src: 4,
                         value: region || 0
                     };
 
                     factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
-                        if(res != undefined){
+                        if(res != undefined) {
                             var data = JSON.parse(res);
 
                             $.each(data, function(index, item) {
-                                $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                                $('.nav-menu #province').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                             });
                             $('.nav-menu #province').find('option:eq(1)').prop('selected', true);
 
                             getTableAll({
                                 fn: 'gettable',
-                                job: 5,
+                                job: 4,
                                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -622,7 +644,7 @@
             } else {
                 getTableAll({
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -638,30 +660,30 @@
             
             $('.nav-menu #province').find('option[value!=""]').remove();
             $('.search-detail-table thead tr').attr('data-menu', 0);
-            $('#LicenseNumber').val('');
+            $('#FilterKeySearch').val('');
 
             region = $('.nav-menu #region').val() || 0;
             
             if(region != '') {
                 params = {
                     fn: 'filter',
-                    job: 5,
-                    src: 5,
+                    job: 4,
+                    src: 4,
                     value: region || 0
                 };
             
                 factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
-                    if(res != undefined){
+                    if(res != undefined) {
                         var data = JSON.parse(res);
 
                         $.each(data, function(index, item) {
-                            $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                            $('.nav-menu #province').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                         });
                         $('.nav-menu #province').find('option:eq(1)').prop('selected', true);
 
                         getTableAll({
                             fn: 'gettable',
-                            job: 5,
+                            job: 4,
                             year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                             region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                             province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -674,7 +696,7 @@
             } else {
                 getTableAll({
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -689,11 +711,11 @@
             e.preventDefault();
 
             $('.search-detail-table thead tr').attr('data-menu', 0);
-            $('#LicenseNumber').val('');
+            $('#FilterKeySearch').val('');
 
             getTableAll({
                 fn: 'gettable',
-                job: 5,
+                job: 4,
                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
@@ -713,13 +735,13 @@
 
             getTable({
                 fn: 'gettable',
-                job: 5,
+                job: 4,
                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $(this)[0].rowIndex || 0,
                 page: 1,
-                keyword: $('#FactoryName').val() || ''
+                keyword: $('#FilterKeySearch').val() || ''
             });
         });
 
@@ -733,7 +755,7 @@
             lon = parseFloat($(this).attr('data-lon')) || 0;
             
             if((lat != 0) && (lon != 0)) {
-                e_set_factory_location(ol, map, lat, lon, marker_geom, 16, true);
+                e_set_factory_location(ol, map, lat, lon, marker_geom, 13, true);
 
                 marker_style = new ol.style.Style({
                     image: new ol.style.Icon(({
@@ -743,7 +765,7 @@
                     }))
                 });
                 marker_feature.setStyle(marker_style);
-                map.getLayers().setAt(3, layers_marker);
+                map.getLayers().setAt(4, layers_marker);
             } else {
                 Factory.prototype.utilityService.getPopup({
                     infoMsg: 'ไม่พบค่าพิกัดที่ตั้ง',
@@ -751,20 +773,33 @@
                 });
             }
         });
+
+        $(document).on('click', '.search-table thead tr th label', function(e) {
+            var index = $(this).closest('th').attr('data-index');
+            var searchTableDataSort = [];
+            var itemSort = [];
+            var indexSort = [];
+
+            /*$.each(searchTableData, function(indexData, itemData) {
+                itemSort.push(itemData[indexData]);
+            });
+
+            console.log(itemSort);*/
+        });
         
-        $(document).on('keyup', '#FactoryName', function(e) {
+        $(document).on('keyup', '#FilterKeySearch', function(e) {
             e.preventDefault();
 
             if($(this).val() == '') {
                 getTable({
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: 1,
-                    keyword: $('#FactoryName').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 });
             }
         });
@@ -774,13 +809,13 @@
 
             getTable({
                 fn: 'gettable',
-                job: 5,
+                job: 4,
                 year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                 region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                 page: $(this).attr('data-page') || 1,
-                keyword: $('#FactoryName').val() || ''
+                keyword: $('#FilterKeySearch').val() || ''
             });
         });
 
@@ -796,13 +831,13 @@
             if(($(this).val() != '') && (e.which == 13)) {
                 getTable({
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: ($(this).val()).replace(',', '') || 1,
-                    keyword: $('#FactoryName').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 });
             }
         });
@@ -836,15 +871,15 @@
             e.preventDefault();
 
             factory.dataService.exportFile('search', {
-                menu: 'ค้นหาข้อมูลโรงงาน'
+                menu: 'ค้นหาสถานประกอบการ'
             });
         });
 
-        $('#FactoryName').autocomplete({ 
+        $('#FilterKeySearch').autocomplete({ 
             source: function(req, res) {
                 params = {
                     fn: 'autocomplete', 
-                    src: 5, 
+                    src: 4, 
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     value: req.term || '',
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0
@@ -860,7 +895,7 @@
 
                 getTable({
                     fn: 'gettable',
-                    job: 5,
+                    job: 4,
                     year: $('.nav-menu #year').val() || $('.nav-menu #year option:eq(1)').attr('value'),
                     region: $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value'),
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),

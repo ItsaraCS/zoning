@@ -3,7 +3,8 @@
 <!--SECTION-->
 <div class="section hide">
     <!--TABLE REPORT-->
-    <div class="col-md-12 table-responsive table-report" style="height: 32vh; margin-bottom: 15px;">
+    <div class="col-md-12 table-responsive table-report">
+        <h3 class="report-mobile">ตารางแสดงข้อมูล</h3>
         <table class="table table-striped table-bordered bg-info" id="getexc">
             <thead><tr></tr></thead>
             <tbody></tbody>
@@ -12,10 +13,8 @@
 
     <!--CHART-->
     <div class="col-md-12 my-chart" style="height: 35vh;">
-        <div class="col-md-12 text-center">
-            <h3 id="chartType" style="margin: 0;">กราฟรายเดือน</h3>
-        </div>
-        <div class="col-md-12 text-right" style="margin-bottom: 10px;">
+        <div class="col-md-12 text-center" style="margin-bottom: 10px;">
+             <h3 id="chartType" style="margin: 0;">กราฟรายเดือน</h3>
             <button type="button" class="btn btn-success btn-sm" id="changeChartBtn" data-chart-type="0"><i class="fa fa-line-chart text-right-indent"></i> <span>เลือกกราฟรายปี</span></button>
         </div>
         <canvas id="myChart"></canvas>
@@ -60,7 +59,7 @@
                     $.each(data.province, function(index, item) {
                         $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
                     });
-                    
+
                     $('.nav-menu #year, ' +
                         '.nav-menu #region, ' +
                         '.nav-menu #province').find('option:eq(1)').prop('selected', true);
@@ -141,7 +140,7 @@
                 monthData: [],
                 chartData: [],
                 xAxes: 'เดือน',
-                yAxes: 'ใบ'
+                yAxes: 'บาท'
             };
             year = $('.nav-menu #year').val() || '';
             region = $('.nav-menu #region').val() || 0;
@@ -191,7 +190,7 @@
                     params = {
                         fn: 'filter',
                         job: 3,
-                        src: 1,
+                        src: 3,
                         value: region || 0
                     };
 
@@ -228,7 +227,7 @@
                 params = {
                     fn: 'filter',
                     job: 3,
-                    src: 1,
+                    src: 3,
                     value: region || 0
                 };
             
@@ -263,12 +262,6 @@
             getTable();
             getChart();
         });
-
-        /*$(document).on('click', '.export-file', function(e) {
-            e.preventDefault();
-
-            window.location.href = 'export/report/reportlicense.xlsx';
-        });*/
 
         $(document).on('click', '#changeChartBtn', function(e) {
             e.preventDefault();

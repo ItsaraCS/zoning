@@ -74,40 +74,53 @@ class exSearch_Table{
 		switch($job){
 			case 1 :
 						$this->AddTitleMenu(array("รายการ","ภาษี"));
-						$this->AddcontentMenu(array("ก่อสร้าง",isset($data[0])?number_format($data[0],2):"-"));
-						$this->AddcontentMenu(array("ผลิต",isset($data[1])?number_format($data[1],2):"-"));
-						$this->AddcontentMenu(array("ขาย",isset($data[2])?number_format($data[2],2):"-"));
-						$this->AddcontentMenu(array("ขน",isset($data[3])?number_format($data[3],2):"-"));
-						$this->AddcontentMenu(array("แสตมป์",isset($data[4])?number_format($data[4],2):"-"));
-						$this->TerminateMenu(array(isset($data[5])?number_format($data[5],2):"-"));
+						$this->AddcontentMenu(array("ผู้ประกอบการ",isset($data[0])?number_format($data[0],2):"-"));
+						$this->AddcontentMenu(array("การหนีภาษี",isset($data[1])?number_format($data[1],2):"-"));
+						$this->AddcontentMenu(array("การประมาณการ",isset($data[2])?number_format($data[2],2):"-"));
+						$this->TerminateMenu(array(isset($data[3])?number_format($data[3],2):"-"));
 				break;
 			case 2 :
 						$this->AddTitleMenu(array("ประเภทคดี","จำนวนคดี"));
-						$this->AddcontentMenu(array("ไม่ทำบัญชี",isset($data[0])?number_format($data[0]):"-"));
-						$this->AddcontentMenu(array("ผลิต",isset($data[1])?number_format($data[1]):"-"));
-						$this->AddcontentMenu(array("ขาย",isset($data[2])?number_format($data[2]):"-"));
-						$this->AddcontentMenu(array("ขน",isset($data[3])?number_format($data[3]):"-"));
+						$this->AddcontentMenu(array("พรบ.สุรา",isset($data[0])?number_format($data[0]):"-"));
+						$this->AddcontentMenu(array("พรบ.ยาสูบ",isset($data[1])?number_format($data[1]):"-"));
+						$this->AddcontentMenu(array("พรบ.ไพ่",isset($data[2])?number_format($data[2]):"-"));
+						$this->AddcontentMenu(array("พรบ.2527",isset($data[3])?number_format($data[3]):"-"));
 						$this->TerminateMenu(array(isset($data[4])?number_format($data[4]):"-"));
 				break;
 			case 3 :
-						$this->AddTitleMenu(array("ประเภทใบอนุญาต","จำนวนใบอนุญาต"));
-						$this->AddcontentMenu(array("ก่อสร้าง",isset($data[0])?number_format($data[0]):"-"));
-						$this->AddcontentMenu(array("ผลิต",isset($data[1])?number_format($data[1]):"-"));
-						$this->AddcontentMenu(array("ขาย",isset($data[2])?number_format($data[2]):"-"));
-						$this->AddcontentMenu(array("ขน",isset($data[3])?number_format($data[3]):"-"));
-						$this->TerminateMenu(array(isset($data[4])?number_format($data[4]):"-"));
+						$this->AddTitleMenu(array("ประเภท","จำนวน"));
+						$this->AddcontentMenu(array("พรบ.สุรา",isset($data[0])?number_format($data[0]):"-"));
+						$this->AddcontentMenu(array("พรบ.ยาสูบ",isset($data[1])?number_format($data[1]):"-"));
+						$this->AddcontentMenu(array("พรบ.ไพ่",isset($data[2])?number_format($data[2]):"-"));
+						$this->AddcontentMenu(array("พรบ.2527",isset($data[3])?number_format($data[3]):"-"));
+						$this->AddcontentMenu(array("ใบอนุญาตรายวัน",isset($data[4])?number_format($data[4]):"-"));
+						$this->TerminateMenu(array(isset($data[5])?number_format($data[5]):"-"));
 				break;
 			case 4 :
-						$this->AddTitleMenu(array("ประเภทสุรา","28","30","35","40","รวม"));
-						$this->AddcontentMenu(array("สุรากลั่น",number_format($data[0]),number_format($data[1]),number_format($data[2]),number_format($data[3]),number_format($data[4])));
-						$this->AddcontentMenu(array("สุราแช่",number_format($data[5]),number_format($data[6]),number_format($data[7]),number_format($data[8]),number_format($data[9])));
-						$this->TerminateMenu(array(number_format($data[0]+$data[5]),number_format($data[1]+$data[6]),number_format($data[2]+$data[7]),number_format($data[3]+$data[8]),number_format($data[4]+$data[9])));
+						$this->AddTitleMenu(array("ประเภท","จำนวน"));
+						$this->AddcontentMenu(array("พรบ.สุรา",isset($data[0])?number_format($data[0]):"-"));
+						$this->AddcontentMenu(array("พรบ.ยาสูบ",isset($data[1])?number_format($data[1]):"-"));
+						$this->AddcontentMenu(array("พรบ.ไพ่",isset($data[2])?number_format($data[2]):"-"));
+						$this->AddcontentMenu(array("พรบ.2527",isset($data[3])?number_format($data[3]):"-"));
+						$this->AddcontentMenu(array("ใบอนุญาตรายวัน",isset($data[4])?number_format($data[4]):"-"));
+						$this->AddcontentMenu(array("ไม่ปรากฏประเภท",isset($data[5])?number_format($data[5]):"-"));
+						$this->TerminateMenu(array(isset($data[6])?number_format($data[6]):"-"));
 				break;
 			case 5 :
-						$this->AddTitleMenu(array("ประเภทโรงงาน","จำนวน"));
-						$this->AddcontentMenu(array("โรงงาน",isset($data[0])?number_format($data[0]):"-"));
-						$this->AddcontentMenu(array("ยี่ห้อ",isset($data[1])?number_format($data[1]):"-"));
-						$this->TerminateMenu(array(isset($data[2])?number_format($data[2]):"-"));
+						$this->AddTitleMenu(array("สถานศึกษา","จำนวนแห่ง"));
+						$this->AddcontentMenu(array("มหาวิทยาลัย",isset($data[0])?number_format($data[0]):"-"));
+						$this->AddcontentMenu(array("อาชีวะศึกษา",isset($data[1])?number_format($data[1]):"-"));
+						$this->AddcontentMenu(array("มัธยมศึกษา",isset($data[2])?number_format($data[2]):"-"));
+						$this->AddcontentMenu(array("ประถมศึกษา",isset($data[3])?number_format($data[3]):"-"));
+						$this->TerminateMenu(array(isset($data[4])?number_format($data[4]):"-"));
+				break;
+			case 6 :
+						$this->AddTitleMenu(array("เขตโซนนิง","จำนวนแห่ง"));
+						$this->AddcontentMenu(array("มหาวิทยาลัย",isset($data[0])?number_format($data[0]):"-"));
+						$this->AddcontentMenu(array("อาชีวะศึกษา",isset($data[1])?number_format($data[1]):"-"));
+						$this->AddcontentMenu(array("มัธยมศึกษา",isset($data[2])?number_format($data[2]):"-"));
+						$this->AddcontentMenu(array("ประถมศึกษา",isset($data[3])?number_format($data[3]):"-"));
+						$this->TerminateMenu(array(isset($data[4])?number_format($data[4]):"-"));
 				break;
 			default :
 		}

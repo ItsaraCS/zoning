@@ -119,7 +119,6 @@ Factory.prototype.initService = {
         var path = (window.location.pathname).split('/');
         var headerMenuTitle = path[path.length - 1];
         
-        $('.header .header-menu ul li a span').css({ 'color': '#2A7CBF' });
         $('.nav .nav-menu').find('a').removeClass('active disabled');
         $('.nav .nav-menu').find('a[href="'+ headerMenuTitle +'"]').addClass('active disabled');
         
@@ -174,6 +173,14 @@ Factory.prototype.initService = {
                 break;
             case 'report_case.php':
                 $('.header .header-menu-title span').html('รายงานงานปราบปราม');
+                $('.header .header-menu ul li').find('a[data-header-menu="รายงาน"] span').css({ 'color': '#f17022' });
+                break;
+            case 'report_academy.php':
+                $('.header .header-menu-title span').html('รายงานสถานศึกษา');
+                $('.header .header-menu ul li').find('a[data-header-menu="รายงาน"] span').css({ 'color': '#f17022' });
+                break;
+            case 'report_company.php':
+                $('.header .header-menu-title span').html('รายงานผู้ประกอบการ');
                 $('.header .header-menu ul li').find('a[data-header-menu="รายงาน"] span').css({ 'color': '#f17022' });
                 break;
             case 'report_license.php':

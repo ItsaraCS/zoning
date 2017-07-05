@@ -464,56 +464,67 @@ function area_point_style_function(feature, resolution) {
 				});
 }
 
-
 /**
  * Crate style
  */
 function branch_point_style_function(feature, resolution) {
 	return new ol.style.Style({
-				image: new ol.style.Circle({
-					radius: 3,
-					fill: new ol.style.Fill({color: 'rgba(80, 255, 80, 0.80)'}),
-					stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
-				}),
-				text: create_text_style(feature, 
-									  resolution,
-									  myDom.branch_points,
-									  'BRAN_TNAME')
-				});
+			image: new ol.style.Circle({
+				radius: 3,
+				fill: new ol.style.Fill({color: 'rgba(80, 255, 80, 0.80)'}),
+				stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
+			}),
+			text: create_text_style(feature, 
+				resolution,
+				myDom.branch_points,
+				'BRAN_TNAME')
+		});
 }
 
 /**
  * Crate style
  */
-function factory_point_style_function(feature, resolution) {
+function academy_point_style_function(feature, resolution) {
 	return new ol.style.Style({
-				image: new ol.style.Circle({
-					radius: 3,
-					fill: new ol.style.Fill({color: 'rgba(255, 0, 255, 0.80)'}),
-					stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
-				}),
-				/*text: create_text_style(feature, 
-									  resolution,
-									  myDom.factory_points,
-									  'FACTORY_TNAME')*/
-				});
+			image: new ol.style.Circle({
+				radius: 3,
+				fill: new ol.style.Fill({color: 'rgba(255, 0, 255, 0.80)'}),
+				stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
+			})
+		});
+}
+
+
+/**
+ * Crate styles
+ */
+function zoning_polygon_style_function(feature, resolution) {
+	return new ol.style.Style({
+			fill: new ol.style.Fill({
+				color: 'rgba(204, 0, 0, 0.80)',
+				stroke: new ol.style.Stroke({color: 'red', width: 1})
+			}),
+			stroke: new ol.style.Stroke({
+				color: 'rgba(153, 0, 0, 0.90)',
+				width: 2
+			})
+		});
 }
 
 /**
- * Crate style
+ * Crate styles
  */
-function lawbreaker_point_style_function(feature, resolution) {
+function school_polygon_style_function(feature, resolution) {
 	return new ol.style.Style({
-				image: new ol.style.Circle({
-					radius: 3,
-					fill: new ol.style.Fill({color: 'rgba(0, 255, 255, 0.80)'}),
-					stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
-				}),
-				/*text: create_text_style(feature, 
-									  resolution,
-									  myDom.branch_points,
-									  'ACCUSER_K_SUSPECT_T')*/
-				});
+			fill: new ol.style.Fill({
+				color: 'rgba(140, 140, 140, 0.80)',
+				stroke: new ol.style.Stroke({color: 'red', width: 1})
+			}),
+			stroke: new ol.style.Stroke({
+				color: 'rgba(115, 115, 115, 0.90)',
+				width: 2
+			})
+		});
 }
 
 /**
@@ -521,35 +532,26 @@ function lawbreaker_point_style_function(feature, resolution) {
  */
 function store_point_style_function(feature, resolution) {
 	return new ol.style.Style({
-				image: new ol.style.Circle({
-					radius: 3,
-					fill: new ol.style.Fill({color: 'rgba(0, 0, 255, 0.80)'}),
-					stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
-				}),
-				/*text: create_text_style(feature, 
-									  resolution,
-									  myDom.branch_points,
-									  'ID')*/
-				});
+			image: new ol.style.Circle({
+				radius: 3,
+				fill: new ol.style.Fill({color: 'rgba(0, 0, 255, 0.80)'}),
+				stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
+			})
+		});
 }
 
 /**
  * Crate style
  */
-function thaiwhisky_point_style_function(feature, resolution) {
+function lawbreaker_point_style_function(feature, resolution) {
 	return new ol.style.Style({
-				image: new ol.style.Circle({
-					radius: 3,
-					fill: new ol.style.Fill({color: 'rgba(255, 150, 0, 0.80)'}),
-					stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
-				}),
-				/*text: create_text_style(feature, 
-									  resolution,
-									  myDom.branch_points,
-									  'ADDRESS')*/
-				});
+			image: new ol.style.Circle({
+				radius: 3,
+				fill: new ol.style.Fill({color: 'rgba(255, 150, 0, 0.80)'}),
+				stroke: new ol.style.Stroke({color: 'rgba(0, 0, 0, 0.90)', width: 1})
+			})
+		});
 }
-
 
 /**
  * Toggle layer visibility.
@@ -569,42 +571,42 @@ function prepare_layer_toggler(e) {
 	var ele = document.getElementById(e);
 	
 	var ctn_office = null;
-	var ctn_factory = null;
-	var ctn_case = null;
+	var chk_academy = null;
+	var chk_zoning = null;
 	var ctn_store = null;
-	var ctn_whisky = null;
+	var chk_lawbreaker = null;
 
 	// Offices
 	ctn_office = document.createElement("div");
 	ctn_office.className = 'layer_block';
 	ctn_office.innerHTML = '<input type="checkbox" id="chk_office" name="chk_office" onclick="update_layer_visibility();" /> สำนักงานสรรพสามิต';
 	
-	// Factories
-	ctn_factory = document.createElement("div");
-	ctn_factory.className = 'layer_block';
-	ctn_factory.innerHTML = '<input type="checkbox" id="chk_factory" name="chk_factory" onclick="update_layer_visibility();" /> สถานศึกษา';
+	// Academy
+	chk_academy = document.createElement("div");
+	chk_academy.className = 'layer_block';
+	chk_academy.innerHTML = '<input type="checkbox" id="chk_academy" name="chk_academy" onclick="update_layer_visibility();" /> สถานศึกษา';
 	
-	// Illegal cases
-	ctn_case = document.createElement("div");
-	ctn_case.className = 'layer_block';
-	ctn_case.innerHTML = '<input type="checkbox" id="chk_lawbreaker" name="chk_lawbreaker" onclick="update_layer_visibility();" /> ผู้กระทำผิด';
+	// Zoning
+	chk_zoning = document.createElement("div");
+	chk_zoning.className = 'layer_block';
+	chk_zoning.innerHTML = '<input type="checkbox" id="chk_zoning" name="chk_zoning" onclick="update_layer_visibility();" /> พื้นที่โซนนิ่ง';
 	
 	// Stores
 	ctn_store = document.createElement("div");
 	ctn_store.className = 'layer_block';
-	ctn_store.innerHTML = '<input type="checkbox" id="chk_store" name="chk_store" onclick="update_layer_visibility();" /> สถานประกอบการ';
+	ctn_store.innerHTML = '<input type="checkbox" id="chk_store" name="chk_store" onclick="update_layer_visibility();" /> ร้านค้า';
 	
-	// Thai whisky
-	ctn_whisky = document.createElement("div");
-	ctn_whisky.className = 'layer_block';
-	ctn_whisky.innerHTML = '<input type="checkbox" id="chk_thaiwhisky" name="chk_thaiwhisky" onclick="update_layer_visibility();" /> พื้นที่โซนนิ่ง';
+	// Lawbreaker
+	chk_lawbreaker = document.createElement("div");
+	chk_lawbreaker.className = 'layer_block';
+	chk_lawbreaker.innerHTML = '<input type="checkbox" id="chk_lawbreaker" name="chk_lawbreaker" onclick="update_layer_visibility();" /> ผู้กระทำผิด';
 	
 	// Add children
 	ele.appendChild(ctn_office);
-	ele.appendChild(ctn_factory);
-	ele.appendChild(ctn_case);
+	ele.appendChild(chk_academy);
+	ele.appendChild(chk_zoning);
 	ele.appendChild(ctn_store);
-	ele.appendChild(ctn_whisky);
+	ele.appendChild(chk_lawbreaker);
 	
 	// Attach event listener
 	ele = document.getElementById('map_layer_title');

@@ -8,15 +8,38 @@
             <div class="col-md-4">
                 <div class="panel panel-default" style="border-radius: 0; border: 0;">
                     <div class="panel-body" style="padding: 0;">
-                        <table class="table table-striped search-detail-table bg-info" style="margin-top: 0; margin-bottom: 0;">
-                            <thead><tr></tr></thead>
-                            <tbody></tbody>
+                        <table class="table table-striped bg-info" style="margin-top: 0; margin-bottom: 0;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center text-nowrap bg-primary">รายการ</th>
+                                    <th class="text-center text-nowrap bg-primary">ภาษี</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">ผู้ประกอบการ</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">การหนีภาษี</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">การประมาณการ</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-center btn-success">รวมทั้งสิ้น</td>
+                                    <td class="text-center btn-success">-</td>
+                                </tr>
+
+                            </tbody>
                         </table>
                         <table class="table" style="margin-top: 0; margin-bottom: 0;">
                             <tbody>
                                 <tr>
                                     <td class="col-md-12" style="padding: 10px !important;">
-                                        <input class="form-control input-sm" id="FactoryName" placeholder="ค้นหาชื่อโรงงาน">
+                                        <input class="form-control input-sm" id="FilterKeySearch" placeholder="ค้นหาผู้ประกอบการ / เลขทะเบียนสรรสามิต">
                                     </td>
                                 </tr>
                             </tbody>
@@ -48,12 +71,60 @@
     <!--TABLE DATA-->
     <div class="col-md-12" style="margin-top: 10px;">
         <div class="row">
-            <div class="panel panel-default" style="height: 36vh;">
+            <div class="panel panel-default panel-data-table-res">
                 <div class="panel-body" style="padding: 0;">
-                    <div class="table-responsive" style="height: 26vh;">
-                        <table class="table table-striped table-bordered search-table bg-info" style="margin-top: 0;"> 
-                            <thead><tr></tr></thead>
-                            <tbody></tbody>
+                    <div class="table-responsive table-data-res">
+                        <table class="table table-striped table-bordered bg-info" style="margin-top: 0;"> 
+                            <thead>
+                                <tr>
+                                    <th class="text text-center bg-primary">ลำดับที่</th>
+                                    <th class="text text-center bg-primary">ชื่อผู้ประกอบการ</th>
+                                    <th class="text text-center bg-primary">ประเภทสินค้า</th>
+                                    <th class="text text-center bg-primary">ที่อยู่สถานประกอบการ</th>
+                                    <th class="text text-center bg-primary">ตำแหน่งพิกัด</th>
+                                    <th class="text text-center bg-primary">เลขทะเบียนสรรพสามิต</th>
+                                    <th class="text text-center bg-primary">ชำระภาษี</th>                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                </tr>
+
+                            </tbody>
                         </table>
                     </div>
                     <div class="col-md-12 pagination" style="padding: 0;"></div>
@@ -118,19 +189,20 @@
             };
 
             factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
-                if(res != undefined){
+                if(res != undefined) {
                     var data = JSON.parse(res);
+                    console.log(data);
 
                     $.each(data.year, function(index, item) {
                         $('.nav-menu #year').append('<option value="'+ item.value +'">'+ item.label +'</option>');
                     });
 
                     $.each(data.region, function(index, item) {
-                        $('.nav-menu #region').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                        $('.nav-menu #region').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                     });
                     
                     $.each(data.province, function(index, item) {
-                        $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                        $('.nav-menu #province').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                     });
 
                     $('.nav-menu #year, ' +
@@ -366,7 +438,7 @@
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
                     menu: 0,
                     page: 1,
-                    keyword: $('#LicenseNumber').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 };
             }
             
@@ -374,12 +446,7 @@
                 if(res != undefined) {
                     var data = JSON.parse(res);
 
-                    map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
-                    map.getView().setZoom(4.5);
-
-                    marker_style = new ol.style.Style();
-                    marker_feature.setStyle(marker_style);
-                    map.getLayers().setAt(3, layers_marker);
+                    zoomMapByArea();
 
                     var theadContent = '';
                     $.each(data.label, function(index, item) {
@@ -453,7 +520,7 @@
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
                     menu: 0,
                     page: 1,
-                    keyword: $('#LicenseNumber').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 };
             }
             
@@ -461,12 +528,7 @@
                 if(res != undefined) {
                     var data = JSON.parse(res);
                     
-                    map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
-                    map.getView().setZoom(4.5);
-
-                    marker_style = new ol.style.Style();
-                    marker_feature.setStyle(marker_style);
-                    map.getLayers().setAt(3, layers_marker);
+                    zoomMapByArea();
                     
                     var searchDetailTableContent = '';
                     $.each(data.menu, function(index, item) {
@@ -574,10 +636,34 @@
             }
 
             factory.connectDBService.sendJSONStr('API/paginatorAPI.php', params).done(function(res) {
-                if(res != undefined){
+                if(res != undefined) {
                     $('.pagination').append(res);
                 }
             });
+        }
+
+        function zoomMapByArea() {
+            region = $('.nav-menu #region').val() || $('.nav-menu #region option:eq(1)').attr('value');
+            province = $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value');
+            var regionLat = parseFloat($('.nav-menu #region option:selected').attr('data-lat')) || 13.231792;
+            var regionLon = parseFloat($('.nav-menu #region option:selected').attr('data-lon')) || 103.697123;
+            var provinceLat = parseFloat($('.nav-menu #province option:selected').attr('data-lat')) || 13.231792;
+            var provinceLon = parseFloat($('.nav-menu #province option:selected').attr('data-lon')) || 103.697123;
+
+            if(region != 0 && province != 0) {
+                map.getView().setCenter(ol.proj.transform([provinceLon, provinceLat], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(10);
+            } else if(region != 0) {
+                map.getView().setCenter(ol.proj.transform([regionLon, regionLat], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(7);
+            } else {
+                map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
+                map.getView().setZoom(4.5);
+            }
+
+            marker_style = new ol.style.Style();
+            marker_feature.setStyle(marker_style);
+            map.getLayers().setAt(3, layers_marker);
         }
 
         //--Event
@@ -587,7 +673,7 @@
             $('.nav-menu #region').find('option:eq(0)').prop('selected', true);
             $('.nav-menu #province option[value!=""]').remove();
             $('.search-detail-table thead tr').attr('data-menu', 0);
-            $('#LicenseNumber').val('');
+            $('#FilterKeySearch').val('');
             
             year = $('.nav-menu #year').val() || 0;
 
@@ -604,11 +690,11 @@
                     };
 
                     factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
-                        if(res != undefined){
+                        if(res != undefined) {
                             var data = JSON.parse(res);
 
                             $.each(data, function(index, item) {
-                                $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                                $('.nav-menu #province').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                             });
                             $('.nav-menu #province').find('option:eq(1)').prop('selected', true);
 
@@ -644,7 +730,7 @@
             
             $('.nav-menu #province').find('option[value!=""]').remove();
             $('.search-detail-table thead tr').attr('data-menu', 0);
-            $('#LicenseNumber').val('');
+            $('#FilterKeySearch').val('');
 
             region = $('.nav-menu #region').val() || 0;
             
@@ -657,11 +743,11 @@
                 };
             
                 factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
-                    if(res != undefined){
+                    if(res != undefined) {
                         var data = JSON.parse(res);
 
                         $.each(data, function(index, item) {
-                            $('.nav-menu #province').append('<option value="'+ item.id +'">'+ item.label +'</option>');
+                            $('.nav-menu #province').append('<option value="'+ item.id +'" data-lat="'+ item.lat +'" data-lon="'+ item.long +'">'+ item.label +'</option>');
                         });
                         $('.nav-menu #province').find('option:eq(1)').prop('selected', true);
 
@@ -695,7 +781,7 @@
             e.preventDefault();
 
             $('.search-detail-table thead tr').attr('data-menu', 0);
-            $('#LicenseNumber').val('');
+            $('#FilterKeySearch').val('');
 
             getTableAll({
                 fn: 'gettable',
@@ -725,7 +811,7 @@
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $(this)[0].rowIndex || 0,
                 page: 1,
-                keyword: $('#FactoryName').val() || ''
+                keyword: $('#FilterKeySearch').val() || ''
             });
         });
 
@@ -771,7 +857,7 @@
             console.log(itemSort);*/
         });
         
-        $(document).on('keyup', '#FactoryName', function(e) {
+        $(document).on('keyup', '#FilterKeySearch', function(e) {
             e.preventDefault();
 
             if($(this).val() == '') {
@@ -783,7 +869,7 @@
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: 1,
-                    keyword: $('#FactoryName').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 });
             }
         });
@@ -799,7 +885,7 @@
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                 page: $(this).attr('data-page') || 1,
-                keyword: $('#FactoryName').val() || ''
+                keyword: $('#FilterKeySearch').val() || ''
             });
         });
 
@@ -821,7 +907,7 @@
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: ($(this).val()).replace(',', '') || 1,
-                    keyword: $('#FactoryName').val() || ''
+                    keyword: $('#FilterKeySearch').val() || ''
                 });
             }
         });
@@ -859,7 +945,7 @@
             });
         });
 
-        $('#FactoryName').autocomplete({ 
+        $('#FilterKeySearch').autocomplete({ 
             source: function(req, res) {
                 params = {
                     fn: 'autocomplete', 

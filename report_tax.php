@@ -3,19 +3,62 @@
 <!--SECTION-->
 <div class="section hide">
     <!--TABLE REPORT-->
-    <div class="col-md-12 table-responsive table-report" style="height: 32vh; margin-bottom: 15px;">
+    <div class="col-md-12 table-responsive "><!-- ADD table-report -->
+        <h3 class="report-mobile">ตารางแสดงข้อมูล</h3>
         <table class="table table-striped table-bordered bg-info" id="getexc">
-            <thead><tr></tr></thead>
-            <tbody></tbody>
+            <thead>
+                <tr>
+                    <th class="text-center text-nowrap bg-primary">เดือน</th>
+                    <th class="text-center text-nowrap bg-primary">ค่าธรรมเนียมผู้ประกอบการ</th>
+                    <th class="text-center text-nowrap bg-primary">ค่าธรรมเนียมการหนีภาษี</th>
+                    <th class="text-center text-nowrap bg-primary">ค่าธรรมเนียมการประมาณการ</th>
+                    <th class="text-center text-nowrap bg-primary">ภาษีรวม</th>
+                </tr>
+            </thead>
+            <tbody>
+                   <tr>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                   </tr>
+                   <tr>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                   </tr>
+                   <tr>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                   </tr>
+                   <tr>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                   </tr>
+                   <tr>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                       <td class="text-center">-</td>
+                   </tr>
+            </tbody>
         </table>
     </div>
 
     <!--CHART-->
     <div class="col-md-12 my-chart" style="height: 35vh;">
-        <div class="col-md-12 text-center">
-            <h3 id="chartType" style="margin: 0;">กราฟรายเดือน</h3>
-        </div>
-        <div class="col-md-12 text-right" style="margin-bottom: 10px;">
+        <div class="col-md-12 text-center" style="margin-bottom: 10px;">
+             <h3 id="chartType" style="margin: 0;">กราฟรายเดือน</h3>
             <button type="button" class="btn btn-success btn-sm" id="changeChartBtn" data-chart-type="0"><i class="fa fa-line-chart text-right-indent"></i> <span>เลือกกราฟรายปี</span></button>
         </div>
         <canvas id="myChart"></canvas>
@@ -96,6 +139,7 @@
                 factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
                     if(res != undefined) {
                         var data = JSON.parse(res);
+                        console.log(data);
 
                         var theadContent = '';
                         $.each(data.label, function(index, item) {
@@ -263,12 +307,6 @@
             getTable();
             getChart();
         });
-
-        /*$(document).on('click', '.export-file', function(e) {
-            e.preventDefault();
-
-            window.location.href = 'export/report/reporttax.xlsx';
-        });*/
 
         $(document).on('click', '#changeChartBtn', function(e) {
             e.preventDefault();

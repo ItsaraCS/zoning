@@ -1,4 +1,5 @@
 <?php
+	require_once("../class/database.zoning.class.php");
 	require_once("../class/database.class.php");
 	require_once("../class/util.class.php");
 	require_once("../class/report.class.php");
@@ -16,35 +17,14 @@ switch($fn){
 				$job = isset($_GET["job"])?$_GET["job"]:0;
 				$menu = isset($_GET["menu"])?$_GET["menu"]:0;
 				$Keyword = isset($_GET["keyword"])?$_GET["keyword"]:"";
-				if(!in_array($job,array(1,2,3,4,5))) $job = 1;
+				if(!in_array($job,array(1,2,3,4,5,6))) $job = 1;
 				$title = array(
-					1 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					2 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","ของกลาง/จำนวน","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
-					3 => array("ลำดับที่","ชื่อสถานประกอบการโรงงาน","รหัสทะเบียนโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","เลขที่ใบอนุญาตผลิต","เลขที่ใบอนุญาตจำหน่ายสุรา","เลขที่ใบอนุญาตขนสุรา"),
-					4 => array("ลำดับที่","เล่มที่/เลขที่แสตมป์ที่จ่าย","ชื่อสถานประกอบการโรงงาน","รหัสทะเบียนโรงงาน","เลขรับที่และวันที่รับเรื่อง","ชื่อยี่ห่อ","ดีกรี","จำนวนขวด(ดวง)","ขนาดบรรจุ","ราคาแสตมป์ดวงละ","ปริมาณน้ำสุรา","ค่าภาษีสุรา","วันที่จ่ายแสตมป์"),
-					5 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขอก่อตั้งโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","ประเภท","วันที่อนุญาต","สถานที่ตั้งโรงงาน","ยี่ห้อ","รูปฉลาก","แผนผังโรงงานและอุปกรณ์","ผลตรวจโรงงาน"),
-/*					10 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					11 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					12 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					13 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					14 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					15 => array("ลำดับที่","ชื่อสถานประกอบการ","ค่าธรรมเนียมใบอนุญาตก่อสร้าง","ค่าธรรมเนียมใบอนุญาตผลิต","ค่าธรรมเนียมใบอนุญาตจำหน่าย","ค่าธรรมเนียมใบอนุญาตขน","จำหน่ายแสตมป์สุรา"),
-					20 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","ของกลาง/จำนวน","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
-					21 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","ของกลาง/จำนวน","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
-					22 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","ของกลาง/จำนวน","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
-					23 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","ของกลาง/จำนวน","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
-					24 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","ของกลาง/จำนวน","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
-					30 => array("ลำดับที่","ชื่อสถานประกอบการโรงงาน","รหัสทะเบียนโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","เลขที่ใบอนุญาตผลิต","เลขที่ใบอนุญาตจำหน่ายสุรา","เลขที่ใบอนุญาตขนสุรา"),
-/*					31 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขอก่อตั้งโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","ประเภท","วันที่อนุญาต","สถานที่ตั้งโรงงาน"),
-					32 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขออนุญาตผลิต","เลขที่ใบอนุญาตผลิต","ยี่ห่อที่ผลิต","ดีกรี","ประเภท","วันที่อนุญาต","วันที่ต่อใบอนุญาต","สถานที่ตั้ง"),
-					33 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขออนุญาตจำหน่าย","เลขที่ใบอนุญาตจำหน่ายสุรา","ประเภทใบอนุญาต","วันที่อนุญาต","วันที่ต่อใบอนุญาต","สถานที่ตั้งโรงงาน"),
-					34 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขออนุญาตออกใบขน","เลขที่ใบอนุญาตขนสุรา","ประเภท","วันที่ออกใบขน","ชื่อยี่ห่อสินค้า","ดีกรี","จำนวน(ขวด)","เล่มที่/เลขที่แสตมป์สุราที่ขน","สถานที่ปลายทางในการขนสุรา"),
-					40 => array("ลำดับที่","เล่มที่/เลขที่แสตมป์ที่จ่าย","ชื่อสถานประกอบการโรงงาน","รหัสทะเบียนโรงงาน","เลขรับที่และวันที่รับเรื่อง","ชื่อยี่ห่อ","ดีกรี","จำนวนขวด(ดวง)","ขนาดบรรจุ","ราคาแสตมป์ดวงละ","ปริมาณน้ำสุรา","ค่าภาษีสุรา","วันที่จ่ายแสตมป์"),
-					41 => array("ลำดับที่","เล่มที่/เลขที่แสตมป์ที่จ่าย","ชื่อสถานประกอบการโรงงาน","รหัสทะเบียนโรงงาน","เลขรับที่และวันที่รับเรื่อง","ชื่อยี่ห่อ","ดีกรี","จำนวนขวด(ดวง)","ขนาดบรรจุ","ราคาแสตมป์ดวงละ","ปริมาณน้ำสุรา","ค่าภาษีสุรา","วันที่จ่ายแสตมป์"),
-					42 => array("ลำดับที่","เล่มที่/เลขที่แสตมป์ที่จ่าย","ชื่อสถานประกอบการโรงงาน","รหัสทะเบียนโรงงาน","เลขรับที่และวันที่รับเรื่อง","ชื่อยี่ห่อ","ดีกรี","จำนวนขวด(ดวง)","ขนาดบรรจุ","ราคาแสตมป์ดวงละ","ปริมาณน้ำสุรา","ค่าภาษีสุรา","วันที่จ่ายแสตมป์"),
-					50 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขอก่อตั้งโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","ประเภท","วันที่อนุญาต","สถานที่ตั้งโรงงาน","ยี่ห้อ","รูปฉลาก","แผนผังโรงงานและอุปกรณ์","ผลตรวจโรงงาน"),
-					51 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขอก่อตั้งโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","ประเภท","วันที่อนุญาต","สถานที่ตั้งโรงงาน","ยี่ห้อ","รูปฉลาก","แผนผังโรงงานและอุปกรณ์","ผลตรวจโรงงาน"),
-					52 => array("ลำดับที่","ชื่อสถานประกอบการ","รหัสทะเบียนโรงงาน","ชื่อผู้ขอก่อตั้งโรงงาน","เลขที่ใบอนุญาตก่อตั้งโรงงาน","ประเภท","วันที่อนุญาต","สถานที่ตั้งโรงงาน","ยี่ห้อ","รูปฉลาก","แผนผังโรงงานและอุปกรณ์","ผลตรวจโรงงาน"),*/
+					1 => array("ลำดับที่","ชื่อผู้ประกอบการ","ประเภทสินค้า","ที่อยู่สถานประกอบการ","ตำแหน่งพิกัด","เลขทะเบียนสรรพสามิต","ชำระภาษี"),
+					2 => array("ลำดับที่","พรบ","วันที่เกิดเหตุ","ผู้กล่าวหา/ผู้ต้องหา","สถานที่เกิดเหตุ","ข้อกล่าวหา","เปรียบเทียบปรับ","ศาลปรับ","พนักงานสอบสวน","เงินสินบน","เงินรางวัล","เงินส่งคลัง"),
+					3 => array("ลำดับที่","ชื่อผู้ประกอบการ","เลขทะเบียนสรรพสามิต","พรบ.สุรา","พรบ.ยาสูบ","พรบ.ไพ่","พรบ.2527","ใบอนุญาตรายวัน"),
+					4 => array("ลำดับที่","ชื่อผู้ประกอบการ","ประเภทสินค้า","ที่อยู่สถานประกอบการ","ตำแหน่งพิกัด","เลขทะเบียนสรรพสามิต"),
+					5 => array("ลำดับที่","ชื่อสถานศึกษา","ที่ตั้ง","จังหวัด","ประเภท","ระดับ","ละติจูด","ลองติดจูด","จำนวนร้านค้าในโซนนิ่ง"),
+					6 => array("ลำดับที่","ชื่อสถานศึกษา","ชื่อผู้ประกอบการ","รหัสผู้ประกอบการ","พรบ.สุรา","พรบ.ยาสูบ","พรบ.ไพ่","พรบ.2527","ใบอนุญาตรายวัน"),
 				);
 				//$TitleShow = $title[$job*10 + $menu];
 				$TitleShow = $title[$job];
@@ -90,21 +70,36 @@ switch($fn){
 								}
 							break;
 						case 2:
-								$DB = new exDB;
-								$DB->GetData("SELECT ilCase, COUNT(IllegalID) AS C FROM Illegal WHERE YEAR(ilActDate + INTERVAL 3 MONTH) = ? AND ? IN (0,ilRegion) AND ? IN (0,MOD(FLOOR(ilArea/10),100)) AND CONCAT(ilOrator,'#',ilSuspect) LIKE ? GROUP BY ilCase ORDER BY ilCase",array("iiis",$year,$region,$province,"%".$Keyword."%"));
-                                                        
+								$prb = array("","สุรา","ยาสูบ","ไพ่");
+								$DB = new ezDB;
+								$DB->GetData("SELECT IF(`TYPE`='สุรา',1,IF(`TYPE`='ยาสูบ',2,IF(`TYPE`='ไพ่',3,4))) AS ilCase, COUNT(id) AS C FROM illigal_nopoint WHERE YEAR(DateApprove + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ? GROUP BY ilCase ORDER BY ilCase",array("iiis",$year,$region,$province,"%".$Keyword."%"));
 								$ldata = array();
 								while ($tdata = $DB->FetchData()) {
 									$ldata[$tdata["ilCase"]-1] = $tdata["C"];
 								}
                                                         
-								$total = $DB->GetDataOneField("SELECT COUNT(IllegalID) FROM `Illegal` WHERE YEAR(ilActDate + INTERVAL 3 MONTH) = ? AND ? IN (0,ilRegion) AND ? IN (0,MOD(FLOOR(ilArea/10),100)) AND ? IN (0,ilCase) AND CONCAT(ilOrator,'#',ilSuspect) LIKE ?",array("iiiis",$year,$region,$province,$menu,"%".$Keyword."%"));
+
+								switch($menu){
+									case 0:
+											$total = $DB->GetDataOneField("SELECT COUNT(id) FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ?",array("iiis",$year,$region,$province,"%".$Keyword."%"));
+											$DB->GetData("SELECT `TYPE`,DateApprove,CONCAT('\(ก\)',CHARGE_NAME,'/\(ต\)',SUSPECTS_NAME) AS Person,Address,allegation,Fine,court,employee,boodle,Reward,Remit,LAT,`LONG` FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) =  ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ? LIMIT ?,?",array("iiisii",$year,$region,$province,"%".$Keyword."%",$page*$RPP,$RPP));
+										break;
+									case 1:
+									case 2:
+									case 3:
+											$total = $DB->GetDataOneField("SELECT COUNT(id) FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND `TYPE` LIKE ? AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ?",array("iiiss",$year,$region,$province,$prb[$menu],"%".$Keyword."%"));
+											$DB->GetData("SELECT `TYPE`,DateApprove,CONCAT('\(ก\)',CHARGE_NAME,'/\(ต\)',SUSPECTS_NAME) AS Person,Address,allegation,Fine,court,employee,boodle,Reward,Remit,LAT,`LONG` FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) =  ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND `TYPE` LIKE ? AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ? LIMIT ?,?",array("iiissii",$year,$region,$province,$prb[$menu],"%".$Keyword."%",$page*$RPP,$RPP));
+										break;
+									default:
+											$total = $DB->GetDataOneField("SELECT COUNT(id) FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND `TYPE` NOT IN ('สุรา','ยาสูบ','ไพ่') AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ?",array("iiis",$year,$region,$province,"%".$Keyword."%"));
+											$DB->GetData("SELECT `TYPE`,DateApprove,CONCAT('\(ก\)',CHARGE_NAME,'/\(ต\)',SUSPECTS_NAME) AS Person,Address,allegation,Fine,court,employee,boodle,Reward,Remit,LAT,`LONG` FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) =  ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND `TYPE` NOT IN ('สุรา','ยาสูบ','ไพ่') AND CONCAT(CHARGE_NAME,'#',SUSPECTS_NAME) LIKE ? LIMIT ?,?",array("iiisii",$year,$region,$province,"%".$Keyword."%",$page*$RPP,$RPP));
+										break;
+								}
                                                         
 								array_push($ldata,$total);
 //								array_shift($ldata);
                                                         
                                                         
-								$DB->GetData("SELECT acName,ilActDate,CONCAT('\(ก\)',ilOrator,'/\(ต\)',ilSuspect) AS Person,ilAddress,ilAllegation,ilMaterial,ilComparativeMoney,ilFine,ilOfficer,ilBribe,IlReward,ilReturn,ilLat,ilLong FROM `Illegal`,`Act` WHERE ilActType = ActID AND YEAR(ilActDate + INTERVAL 3 MONTH) =  ? AND ? IN (0,ilRegion) AND ? IN (0,MOD(FLOOR(ilArea/10),100)) AND ? IN (0,ilCase) AND CONCAT(ilOrator,'#',ilSuspect) LIKE ? LIMIT ?,?",array("iiiisii",$year,$region,$province,$menu,"%".$Keyword."%",$page*$RPP,$RPP));
                                                         
 								$data = new exSearch_Table;
 								$data->Init(2,$page+1,$RPP,$total,$ldata);
@@ -116,19 +111,18 @@ switch($fn){
 									}
 									for($x=($page * $RPP + 1);$fdata = $DB->FetchData();$x++){
 										$data->AddCell($x,1);
-										$data->AddCell($fdata["acName"]);
-										$data->AddCell($etcObj->GetShortDate(exETC::C_TH,$fdata["ilActDate"]));
+										$data->AddCell($fdata["TYPE"]);
+										$data->AddCell($etcObj->GetShortDate(exETC::C_TH,$fdata["DateApprove"]));
 										$data->AddCell($fdata["Person"]);
-										$data->AddCell($fdata["ilAddress"]);
-										$data->AddCell($fdata["ilAllegation"]);
-										$data->AddCell($fdata["ilMaterial"]);
-										$data->AddCell(number_format($fdata["ilComparativeMoney"],2),1);
-										$data->AddCell(number_format($fdata["ilFine"],2),1);
-										$data->AddCell(number_format($fdata["ilOfficer"],2),1);
-										$data->AddCell(number_format($fdata["ilBribe"],2),1);
-										$data->AddCell(number_format($fdata["IlReward"],2),1);
-										$data->AddCell(number_format($fdata["ilReturn"],2),1);
-										$data->AddLatLong($x,$fdata["ilLat"],$fdata["ilLong"]);
+										$data->AddCell($fdata["Address"]);
+										$data->AddCell($fdata["allegation"]);
+										$data->AddCell(number_format($fdata["Fine"],2),1);
+										$data->AddCell(number_format($fdata["court"],2),1);
+										$data->AddCell(number_format($fdata["employee"],2),1);
+										$data->AddCell(number_format($fdata["boodle"],2),1);
+										$data->AddCell(number_format($fdata["Reward"],2),1);
+										$data->AddCell(number_format($fdata["Remit"],2),1);
+										$data->AddLatLong($x,$fdata["LAT"],$fdata["LONG"]);
 									}
 								}
 							break;
@@ -187,21 +181,16 @@ switch($fn){
 								}
 							break;
 						case 4:
-								$DB = new exDB;
-								$total = $DB->GetDataOneField("SELECT count(StampID) FROM `Stamp`,`Label` WHERE stLabel = LabelID AND ? IN (0,lbType) AND YEAR(stReleaseDate) = ? AND ? IN (0,lbRegion) AND ? IN (0,lbProvince) AND stBookNo LIKE ?",array("iiiis",$menu,$year,$region,$province,"%".$Keyword."%"));
-								$tdata = array(0,0,0,0,0,0,0,0,0,0,0);
-								$psum = array("128"=>0,"130"=>1,"135"=>2,"140"=>3,"150"=>4,"228"=>5,"230"=>6,"235"=>7,"240"=>8,"250"=>9);
-								$DB->GetData("SELECT lbDegree, lbType, SUM(stAmount) AS S FROM `Stamp` LEFT JOIN Label ON stLabel = LabelID WHERE lbDegree IN (28,30,35,40) GROUP BY lbDegree, lbType");
-								while($sumx = $DB->FetchData()){
-									$tdata[$psum[$sumx["lbType"].$sumx["lbDegree"]]] = $sumx["S"];
-								}
-								$tdata[4] = $tdata[0] + $tdata[1] + $tdata[2] + $tdata[3];
-								$tdata[9] = $tdata[5] + $tdata[6] + $tdata[7] + $tdata[8];
+								$DB = new ezDB;
+								$prb = array("","สุรา","ยาสูบ","ไพ่","2527","oneday","unknow");
+								$total = $DB->GetDataOneField("SELECT COUNT(COM_NAME) FROM (SELECT LIC_DATE, elRegion, elArea, ltTitle AS prb ,COM_NAME, ltTitle, `Lat`,`Lon`, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE GROUP BY `Excise_License`.`id` UNION SELECT cdate, ifRegion, ifArea, '2527' AS prb, name, type, `lat`,`lon`, regis_number FROM `Information_excise_registration` UNION SELECT cdate, REGCODE,EXCISECODE, 'unknow' AS  prb,COM_NAME,SHOPTYPE, `LAT`,`LONG`, '' AS regisno FROM `Bar_Data_New` WHERE EXCISECODE IS NOT NULL) AS AllCom WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? AND prb LIKE ? AND `COM_NAME` LIKE ?",array("iiiss",$region,$province,$year,"%".$prb[$menu]."%","%".$Keyword."%"));
+								$tdata = $DB->GetDataOneRow("SELECT SUM(IF(prb='สุรา',1,0)) AS C1,SUM(IF(prb='ยาสูบ',1,0)) AS C2,SUM(IF(prb='ไพ่',1,0)) AS C3,SUM(IF(prb='2527',1,0)) AS C4, 0 AS C5, SUM(IF(prb='unknow',1,0)) AS C6, COUNT(COM_NAME) AS SALL FROM (SELECT LIC_DATE, elRegion, elArea, ltTitle AS prb ,COM_NAME, ltTitle, `Lat`,`Lon`, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE GROUP BY `Excise_License`.`id` UNION SELECT cdate, ifRegion, ifArea, '2527' AS prb, name, type, `lat`,`lon`, regis_number FROM `Information_excise_registration` UNION SELECT cdate, REGCODE,EXCISECODE, 'unknow' AS  prb,COM_NAME,SHOPTYPE, `LAT`,`LONG`, '' AS regisno FROM `Bar_Data_New` WHERE EXCISECODE IS NOT NULL AND COM_NAME IS NOT NULL) AS AllCom WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) = ?",array("iii",$region,$province,$year));
+//								$tdata = $DB->GetDataOneRow("SELECT SUM(IF(LType = 'ส',1,0)) AS C1, SUM(IF(LType = 'ย',1,0)) AS C2, SUM(IF(LType = 'พ',1,0)) AS C3, SUM(IF(LType = '2',1,0)) AS C4, 0 AS C5, COUNT(regis_number) AS SALL FROM (SELECT `cdate`,`regis_number`,`ifRegion`,`ifProvince`,`ifArea`, '2' AS LType FROM Information_excise_registration UNION SELECT `LIC_DATE`,`LIC_NO`,`elRegion`,`elProvince`,`elArea`, SUBSTRING(`LIC_TYPE`,1,1) FROM Excise_License) AS X WHERE YEAR(cdate + INTERVAL 3 MONTH) = ? AND ? IN (0, ifArea) AND ? IN (0, ifRegion)",array("iii",$year,$province,$region));
 
-								$DB->GetData("SELECT lbFacName, stFacCode, stNumber, lbBrand, lbDegree, stAmount, stSize, stPrice, stVolume, stTax, stBookNo, stReleaseDate, faLat, faLong FROM `Stamp`,`Label`,`Factory` WHERE FactoryID = stFacCode AND stLabel = LabelID AND ? IN (0,lbType) AND YEAR(stReleaseDate) = ? AND ? IN (0,lbRegion) AND ? IN (0,lbProvince) AND stBookNo LIKE ? LIMIT ?,?",array("iiiisii",$menu,$year,$region,$province,"%".$Keyword."%",$page*$RPP,$RPP));
+								$DB->GetData("SELECT * FROM (SELECT LIC_DATE, elRegion, elArea, ltTitle AS prb ,COM_NAME, ltTitle, CONCAT(IF(`ADDNO`IS NULL,'',`ADDNO`), IF(`BUILDING` IS NULL,'',CONCAT(' ',`BUILDING`)), IF(`FLOORNO` IS NULL,'',CONCAT(' ชั้น ',`FLOORNO`)), IF(`VILLAGE` IS NULL,'',CONCAT(' หมู่บ้าน',`VILLAGE`)),IF(`MOONO` IS NULL,'',CONCAT(' หมู่ที่ ',`MOONO`)), IF(`SOINAME` IS NULL,'',CONCAT(' ซอย',`SOINAME`)), IF(`TAMBOL_NAME` IS NULL,'',CONCAT(' ',`TAMBOL_NAME`)), IF(`AMPHUR_NAME` IS NULL,'',CONCAT(' ',`AMPHUR_NAME`)), IF(`PROVINCE_NAME` IS NULL,'',CONCAT(' ',`PROVINCE_NAME`)), ' ',IF(`POSCODE` IS NULL,'',`POSCODE`)) AS address, `Lat`,`Lon`, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE GROUP BY `Excise_License`.`id` UNION SELECT cdate, ifRegion, ifArea, '2527' AS prb, name, type, fac_address, `lat`,`lon`, regis_number FROM `Information_excise_registration` UNION SELECT cdate, REGCODE,EXCISECODE, 'unknow' AS  prb,COM_NAME,SHOPTYPE,ADDRESS, `LAT`,`LONG`, '' AS regisno FROM `Bar_Data_New` WHERE EXCISECODE IS NOT NULL) AS AllCom WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? AND prb LIKE ? AND `COM_NAME` LIKE ? LIMIT ?,?",array("iiissii",$region,$province,$year,"%".$prb[$menu]."%","%".$Keyword."%",$page*$RPP,$RPP));
                 
 								$data = new exSearch_Table;
-								$data->Init(4,$page+1,$RPP,$total,$tdata);
+								$data->Init(4,$page+1,$RPP,$total,array($tdata["C1"],$tdata["C2"],$tdata["C3"],$tdata["C4"],$tdata["C5"],$tdata["C6"],$tdata["SALL"]));
 								if($total > 0){
 									$etcObj = new exETC;
 									for($i=0;$i<$colnum;$i++){
@@ -209,32 +198,30 @@ switch($fn){
 									}
 									for($x=($page * $RPP + 1);$fdata = $DB->FetchData();$x++){
 										$data->AddCell($x,1);
-										$data->AddCell(is_null($fdata["stBookNo"])?"-":$fdata["stBookNo"],2);
-										$data->AddCell($fdata["lbFacName"]);
-										$data->AddCell($fdata["stFacCode"]);
-										$data->AddCell($etcObj->GetShortDate(exETC::C_TH,$fdata["stReleaseDate"]));
-										$data->AddCell($fdata["lbBrand"]);
-										$data->AddCell($fdata["lbDegree"],2);
-										$data->AddCell(number_format($fdata["stAmount"]),1);
-										$data->AddCell(number_format($fdata["stSize"],3),1);
-										$data->AddCell(number_format($fdata["stPrice"],4),1);
-										$data->AddCell(number_format($fdata["stVolume"],2),1);
-										$data->AddCell(number_format($fdata["stTax"],2),1);
-										$data->AddCell($etcObj->GetShortDate(exETC::C_TH,$fdata["stReleaseDate"]));
-										$data->AddLatLong($x,$fdata["faLat"],$fdata["faLong"]);
+										$data->AddCell($fdata["COM_NAME"]);
+										$data->AddCell($fdata["ltTitle"]);
+										$data->AddCell($fdata["address"]);
+										$data->AddCell($fdata["Lat"].",".$fdata["Lon"],2);
+										$data->AddCell($fdata["LIC_NO"],2);
+										$data->AddLatLong($x,$fdata["Lat"],$fdata["Lon"]);
 									}
 								}
 							break;
 						case 5:
-									$DB = new exDB;
-									$total = $DB->GetDataOneField("SELECT count(FactoryID) FROM `Factory` WHERE YEAR(faIssueDate) = ? AND ? IN (0,faRegion) AND ? IN (0,faProvince) AND ? IN (0,faSuraType) AND faName LIKE ?",array("iiiis",$year,$region,$province,$menu,"%".$Keyword."%"));
+									$DB = new ezDB;
+									$LV = array(0,0,0,0,0);
+									$LvText = array("","อุดม","อาชีว","มัธยม","ประถม");
+/*									$DB->GetData("SELECT IF(`Level`='อุดมศึกษา',1,IF(`Level`='อาชีวศึกษา',2,IF(`Level`='มัธยมศึกษา',3,4))) AS L, COUNT(`no`) AS C FROM `Academy` WHERE ? IN (0, REGCODE) AND ? IN (0,EXCISECODE) GROUP BY `Level`",array("ii",$region,$province));
+									while($fdata = $DB->FetchData()){
+										$LV[$fdata["L"]] = $fdata["C"];
+										$LV[0] += $fdata["C"];
+									}*/
+									$LV = $DB->GetDataOneRow("SELECT SUM(acPrimary+acSecounary+acHigh+acUniversity),SUM(acUniversity), SUM(acHigh), SUM(acSecounary), SUM(acPrimary) FROM `AcademyCount` WHERE ? IN (0,acRegion) AND ? IN (0,acArea)",array("ii",$region,$province));
+									$total = $DB->GetDataOneField("SELECT COUNT(Name) FROM `Academy` WHERE ? IN (0, REGCODE) AND ? IN (0,EXCISECODE) AND `Level` LIKE ? AND Name LIKE ?",array("iiss",$region,$province,"%".$LvText[$menu]."%","%".$Keyword."%"));
+									$DB->GetData("SELECT `Name`, `Address`, `Province`, `Type`, `Level`,`Lat`,`Lon`,COUNT(id) AS C FROM (SELECT `no`, Name, CONCAT(TAMTNAME, ' ', AMPTNAME, ' ',Province) AS Address, Province, `Type`, `Level`, `Lat`,`Lon` FROM `Academy` WHERE ? IN (0, REGCODE) AND ? IN (0,EXCISECODE) AND `Level` LIKE ? AND Name LIKE ?) AS X LEFT JOIN Bar_Data_Zoning_Mapping ON id_acadamy_zone = `no` GROUP BY `no` LIMIT ?,?",array("iissii",$region,$province,"%".$LvText[$menu]."%","%".$Keyword."%",$page*$RPP,$RPP));
 
-									$tdata = $DB->GetDataOneRow("SELECT ? AS Y, ? AS R, ? AS P, (SELECT COUNT(LabelID) FROM Label WHERE R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(lbExpireDate + INTERVAL 3 MONTH) = Y) AS brand, (SELECT COUNT(FactoryID) FROM `Factory` WHERE R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(faIssueDate + INTERVAL 3 MONTH) = Y) AS FAC
-",array("iii",$year,$region,$province));
-									$DB->GetData("SELECT faName, FactoryID, faContact, faLicenseNo, faIssueDate, faAddress,suName, lbBrand, lbPicture, faLat, faLong FROM `Factory`,`SuraType`,`Label` WHERE faSuraType = SuraTypeID AND lbFacCode = FactoryID AND ? IN (0,faSuraType) AND YEAR(faIssueDate) = ? AND ? IN (0,faRegion) AND ? IN (0,faProvince) AND faName LIKE ? LIMIT ?,?",array("iiiisii",$menu,$year,$region,$province,"%".$Keyword."%",$page*$RPP,$RPP));
-                
 									$data = new exSearch_Table;
-									$data->Init(5,$page+1,$RPP,$total,array($tdata["FAC"],$tdata["brand"],$tdata["FAC"]+$tdata["brand"]));
+									$data->Init(5,$page+1,$RPP,$total,array($LV[1],$LV[2],$LV[3],$LV[4],$LV[0]));
 									if($total > 0){
 										$etcObj = new exETC;
 										for($i=0;$i<$colnum;$i++){
@@ -242,18 +229,50 @@ switch($fn){
 										}
 										for($x=($page * $RPP + 1);$fdata = $DB->FetchData();$x++){
 											$data->AddCell($x,1);
-											$data->AddCell($fdata["faName"]);
-											$data->AddCell($fdata["FactoryID"]);
-											$data->AddCell($fdata["faContact"]);
-											$data->AddCell($fdata["faLicenseNo"],2);
-											$data->AddCell($fdata["suName"]);
-											$data->AddCell($etcObj->GetShortDate(exETC::C_TH,$fdata["faIssueDate"]));
-											$data->AddCell($fdata["faAddress"]);
-											$data->AddCell($fdata["lbBrand"]);
-											$data->AddCell("",3);
-											$data->AddCell("",3);
-											$data->AddCell("",4);
-											$data->AddLatLong($x,$fdata["faLat"],$fdata["faLong"]);
+											$data->AddCell($fdata["Name"]);
+											$data->AddCell($fdata["Address"]);
+											$data->AddCell($fdata["Province"]);
+											$data->AddCell(is_null($fdata["Type"])==true?"-":$fdata["Type"],2);
+											$data->AddCell($fdata["Level"],2);
+											$data->AddCell($fdata["Lat"]);
+											$data->AddCell($fdata["Lon"]);
+											$data->AddCell($fdata["C"],1);
+											$data->AddLatLong($x,$fdata["Lat"],$fdata["Lon"]);
+										}
+									}
+						break;
+						case 6:
+									$DB = new ezDB;
+									$LV = array(0,0,0,0,0,0);
+									$LvText = array("","อุดม","อาชีว","มัธยม","ประถม");
+									$DB->GetData("SELECT IF(`Level`='อุดมศึกษา',1,IF(`Level`='อาชีวศึกษา',2,IF(`Level`='มัธยมศึกษา',3,4))) AS L, COUNT(`no`) AS C FROM Academy, (SELECT AcademyID, `name`,regis_number, '-' AS C1, '-' AS C2, '-' AS C3, regis_number AS C4, '-' AS C5 FROM `Information_excise_registration`,ACademyLink WHERE id = CompanyID AND TableID = 2
+UNION SELECT AcademyID, COM_NAME, FAC_ID, IF(SUBSTR(LIC_TYPE,1,1)='ส',LIC_NO,'-') AS C1, IF(SUBSTR(LIC_TYPE,1,1)='ย',LIC_NO,'-') AS C2, IF(SUBSTR(LIC_TYPE,1,1)='พ',LIC_NO,'-') AS C3, '-' AS C4, '-' AS C5 FROM Excise_License, ACademyLink WHERE id = CompanyID AND TableID = 1 UNION SELECT AcademyID, COM_NAME, LIC_ID, '-' AS C1, '-' AS C2, '-' AS C3, '-' AS C4, '-' AS C5 FROM `Bar_Data_New`,ACademyLink WHERE ID = CompanyID AND TableID = 3) AS X1 WHERE `no` = AcademyID AND ? IN (0, REGCODE) AND ? IN (0,EXCISECODE) GROUP BY `Level`",array("ii",$region,$province));
+									while($fdata = $DB->FetchData()){
+										$LV[$fdata["L"]] = $fdata["C"];
+										$LV[0] += $fdata["C"];
+									}
+
+									$total = $DB->GetDataOneField("SELECT COUNT(*) FROM Academy, (SELECT AcademyID, `name`,regis_number FROM `Information_excise_registration`,ACademyLink WHERE id = CompanyID AND TableID = 2 UNION SELECT AcademyID, COM_NAME, FAC_ID FROM Excise_License, ACademyLink WHERE id = CompanyID AND TableID = 1 UNION SELECT AcademyID, COM_NAME, LIC_ID FROM `Bar_Data_New`,ACademyLink WHERE ID = CompanyID AND TableID = 3) AS X1 WHERE `no` = AcademyID AND ? IN (0, REGCODE) AND ? IN (0,EXCISECODE) AND `Level` LIKE ? AND Academy.Name LIKE ?",array("iiss",$region,$province,"%".$LvText[$menu]."%","%".$Keyword."%"));
+
+									$DB->GetData("SELECT Academy.Name AS AName, X1.* FROM Academy, (SELECT AcademyID, Lat AS fLat, Lon AS fLong, COM_NAME, FAC_ID, IF(SUBSTR(LIC_TYPE,1,1)='ส',LIC_NO,'-') AS C1, IF(SUBSTR(LIC_TYPE,1,1)='ย',LIC_NO,'-') AS C2, IF(SUBSTR(LIC_TYPE,1,1)='พ',LIC_NO,'-') AS C3, '-' AS C4, '-' AS C5 FROM Excise_License, ACademyLink WHERE id = CompanyID AND TableID = 1 UNION SELECT AcademyID, lat AS fLat, lon AS fLong, `name`,regis_number, '-' AS C1, '-' AS C2, '-' AS C3, regis_number AS C4, '-' AS C5 FROM `Information_excise_registration`,ACademyLink WHERE id = CompanyID AND TableID = 2 UNION SELECT AcademyID, LAT AS fLat, `LONG` AS fLong, COM_NAME, LIC_ID, '-' AS C1, '-' AS C2, '-' AS C3, '-' AS C4, '-' AS C5 FROM `Bar_Data_New`,ACademyLink WHERE ID = CompanyID AND TableID = 3) AS X1 WHERE `no` = AcademyID AND ? IN (0, REGCODE) AND ? IN (0,EXCISECODE) AND `Level` LIKE ? AND Academy.Name LIKE ? LIMIT ?,?",array("iissii",$region,$province,"%".$LvText[$menu]."%","%".$Keyword."%",$page*$RPP,$RPP));
+									$data = new exSearch_Table;
+									$data->Init(6,$page+1,$RPP,$total,array($LV[1],$LV[2],$LV[3],$LV[4],$LV[0]));
+									if($total > 0){
+										$etcObj = new exETC;
+										for($i=0;$i<$colnum;$i++){
+											$data->AddLabel($TitleShow[$i]);
+										}
+										for($x=($page * $RPP + 1);$fdata = $DB->FetchData();$x++){
+											$data->AddCell($x,1);
+											$data->AddCell($fdata["AName"]);
+											$data->AddCell($fdata["COM_NAME"]);
+											$data->AddCell($fdata["FAC_ID"]);
+											$data->AddCell($fdata["C1"],2);
+											$data->AddCell($fdata["C2"],2);
+											$data->AddCell($fdata["C3"],2);
+											$data->AddCell($fdata["C4"],2);
+											$data->AddCell($fdata["C5"],2);
+											$data->AddLatLong($x,$fdata["fLat"],$fdata["fLong"]);
 										}
 									}
 						break;
@@ -274,7 +293,7 @@ switch($fn){
 				}
 			break;
 	case "filter" :
-				$DB = new exDB;
+				$DB = new ezDB;
 				if($_GET["src"] == 0){
 					$data = new exFilter_Bar;
 					$data->year = array();
@@ -283,35 +302,41 @@ switch($fn){
 					$data->job = isset($_GET["job"])?$_GET["job"]:1;
 
 
-					if(($data->job == 1)||($data->job == 4)||($data->job == 3)){
-						$DB->GetData("SELECT YEAR(faIssueDate) AS fYear FROM Factory GROUP BY YEAR(faIssueDate) ORDER BY fYear DESC");
-						for($x=1;$fdata = $DB->FetchData();$x++){
-							$sdata = new exItem;
-							$sdata->id = $x;
-							$sdata->value = $fdata["fYear"];
-							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
-							array_push($data->year,$sdata);
-						}
-					}elseif(($data->job == 5)||($data->job == 31)){
-						$DB->GetData("SELECT YEAR(faIssueDate) AS fYear FROM Factory GROUP BY YEAR(faIssueDate) ORDER BY fYear DESC");
-						for($x=1;$fdata = $DB->FetchData();$x++){
-							$sdata = new exItem;
-							$sdata->id = $x;
-							$sdata->value = $fdata["fYear"];
-							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
-							array_push($data->year,$sdata);
-						}
-					}elseif($data->job == 33){
-						$DB->GetData("SELECT YEAR(slExtendDate) AS fYear FROM `SaleLicense` GROUP BY fYear ORDER BY fYear DESC");
-						for($x=1;$fdata = $DB->FetchData();$x++){
-							$sdata = new exItem;
-							$sdata->id = $x;
-							$sdata->value = $fdata["fYear"];
-							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
-							array_push($data->year,$sdata);
-						}
+					if($data->job == 1){
+						$sdata = new exItem;
+						$sdata->id = 1;
+						$sdata->value = 2017;
+						$sdata->label = "ปีงบประมาณ 2560";
+						array_push($data->year,$sdata);
 					}elseif($data->job == 2){
-						$DB->GetData("SELECT YEAR(ilActDate + INTERVAL 3 MONTH) AS fYear FROM `Illegal` GROUP BY fYear DESC");
+						$DB->GetData("SELECT DISTINCT YEAR(DateApprove + INTERVAL 3 MONTH) AS fYear FROM `illigal_nopoint` WHERE REGCODE IS NOT NULL AND EXCISECODE IS NOT NULL AND YEAR(DateApprove) BETWEEN 1900 AND YEAR(NOW() + INTERVAL 3 MONTH) ORDER BY fYear DESC");
+						for($x=1;$fdata = $DB->FetchData();$x++){
+							$sdata = new exItem;
+							$sdata->id = $x;
+							$sdata->value = $fdata["fYear"];
+							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
+							array_push($data->year,$sdata);
+						}
+					}elseif($data->job == 3){
+						$DB->GetData("SELECT DISTINCT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS fYear FROM `Excise_License` UNION SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Information_excise_registration` GROUP BY fYear ORDER BY fYear DESC");
+						for($x=1;$fdata = $DB->FetchData();$x++){
+							$sdata = new exItem;
+							$sdata->id = $x;
+							$sdata->value = $fdata["fYear"];
+							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
+							array_push($data->year,$sdata);
+						}
+					}elseif(($data->job == 4)){
+						$DB->GetData("SELECT DISTINCT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS fYear FROM `Excise_License` UNION SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Information_excise_registration` GROUP BY fYear ORDER BY fYear DESC");
+						for($x=1;$fdata = $DB->FetchData();$x++){
+							$sdata = new exItem;
+							$sdata->id = $x;
+							$sdata->value = $fdata["fYear"];
+							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
+							array_push($data->year,$sdata);
+						}
+					}elseif(($data->job == 5)){
+						$DB->GetData("SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Academy` ORDER BY fYear DESC");
 						for($x=1;$fdata = $DB->FetchData();$x++){
 							$sdata = new exItem;
 							$sdata->id = $x;
@@ -322,11 +347,10 @@ switch($fn){
 					}else{
 						$sdata = new exItem;
 						$sdata->id = 1;
-						$sdata->value = 2017;
-						$sdata->label = "ปีงบประมาณ 2560";
+						$sdata->value = date("Y");
+						$sdata->label = "ปีงบประมาณ ".(date("Y") + 543);
 						array_push($data->year,$sdata);
 					}
-
 
 					$sdata = new exItem;
 					$sdata->id = 0;
@@ -334,46 +358,52 @@ switch($fn){
 					$sdata->label = "ทุกภาค";
 					array_push($data->region,$sdata);
 
-					$DB->GetData("SELECT RegionID, rgNameTH FROM `Region`");
+					$DB->GetData("SELECT REG_CODE, LPAD(`REG_CODE`,2,0) AS RegionID, `REG_TNAME`,`LAT`,`LONG` FROM `Excise_REGION`");
 					while($fdata = $DB->FetchData()){
 						$sdata = new exItem;
-						$sdata->id = $fdata["RegionID"];
-						$sdata->value = $fdata["RegionID"];
-						$sdata->label = $fdata["rgNameTH"];
+						$sdata->id = $fdata["REG_CODE"];
+						$sdata->value = $fdata["REG_CODE"];
+						$sdata->label = $fdata["REG_TNAME"];
+						$sdata->lat = $fdata["LAT"];
+						$sdata->long = $fdata["LONG"];
 						array_push($data->region,$sdata);
 					}
 
 					$sdata = new exItem;
 					$sdata->id = 0;
 					$sdata->value = 0;
-					$sdata->label = "ทุกจังหวัด";
+					$sdata->label = "ทุกพื้นที่";
 					array_push($data->province,$sdata);
 
-					$DB->GetData("SELECT `ProvinceID`, `pvName` FROM `Province`");
+					$DB->GetData("SELECT EXCISECODE, LPAD(`EXCISECODE`,5,0) AS AreaID, `EXCISETNAME`, `LAT`,`LONG`  FROM `Excise_Area`");
 					while($fdata = $DB->FetchData()){
 						$sdata = new exItem;
-						$sdata->id = $fdata["ProvinceID"];
-						$sdata->value = $fdata["ProvinceID"];
-						$sdata->label = $fdata["pvName"];
+						$sdata->id = $fdata["EXCISECODE"];
+						$sdata->value = $fdata["EXCISECODE"];
+						$sdata->label = $fdata["EXCISETNAME"];
+						$sdata->lat = $fdata["LAT"];
+						$sdata->long = $fdata["LONG"];
 						array_push($data->province,$sdata);
 					}
 				}else{
 					$S_region = isset($_GET["value"])?intval($_GET["value"]):0;
-					$DB->GetData("SELECT `ProvinceID`, `pvName` FROM `Province` WHERE ? IN (0,pvRegion)",array("i",$S_region));
+					$DB->GetData("SELECT `EXCISECODE`, LPAD(`EXCISECODE`,5,0) AS AreaID, `EXCISETNAME`, `LAT`, `LONG` FROM `Excise_Area` WHERE ? IN (0,REGCODE)",array("i",$S_region));
 
 					if($DB->GetNumRows()>0){
 						$data = array();
 						$sdata = new exItem;
 						$sdata->id = 0;
 						$sdata->value = 0;
-						$sdata->label = "ทุกจังหวัด";
+						$sdata->label = "ทุกพื้นที่";
 						array_push($data,$sdata);
 
 						while($fdata = $DB->FetchData()){
 							$sdata = new exItem;
-							$sdata->id = $fdata["ProvinceID"];
-							$sdata->value = $fdata["ProvinceID"];
-							$sdata->label = $fdata["pvName"];
+							$sdata->id = $fdata["EXCISECODE"];
+							$sdata->value = $fdata["EXCISECODE"];
+							$sdata->label = $fdata["EXCISETNAME"];
+							$sdata->lat = $fdata["LAT"];
+							$sdata->long = $fdata["LONG"];
 							array_push($data,$sdata);
 						}
 					}else{
@@ -384,7 +414,7 @@ switch($fn){
 
 	case "autocomplete" :
 				$year = isset($_GET["year"])?$_GET["year"]:date("Y");
-				$menu = isset($_GET["menu"])?$_GET["menu"]:0;
+				$menu = isset($_GET["menu"])?intval($_GET["menu"]):0;
 				switch($_GET["src"]){
 					case 1: //โรงงาน
 							$data = array();
@@ -442,30 +472,45 @@ switch($fn){
 								array_push($data,$sdata);
 							}
 						break;
-					case 4:
-							$data = array();
-							$sdata = new exItem;
-							$sdata->id = 0;
-							$sdata->value = $_GET["value"];
-							$sdata->label = "ค้นหาแสมป์หมายเลข ".$_GET["value"];
-							array_push($data,$sdata);
-						break;
-					case 5: //โรงงาน
+					case 4: //สถานประกอบการ
 							$menu = isset($_GET["menu"])?$_GET["menu"]:0;
 							$data = array();
-        
-							$DB = new exDB;
-							if($menu < 2){
-								$DB->GetData("SELECT `FactoryID` AS FID, `faName` AS FVALUE FROM `Factory` WHERE YEAR(faIssueDate + INTERVAL 3 MONTH) = ? AND faName LIKE ? LIMIT 10",array("is",$year,"%".$_GET["value"]."%"));
-							}else{
-								$DB->GetData("SELECT `LabelID` AS FID, `lbBrand` AS FVALUE FROM `Label` WHERE YEAR(lbExpireDate + INTERVAL 3 MONTH) = ? AND lbBrand LIKE ?",array("is",$year,"%".$_GET["value"]."%"));
+							$DB = new ezDB;
+							switch($menu){
+								case 1:
+								case 2:
+								case 3:
+									$lt = array("","ส","ย","พ");
+									$DB->GetData("SELECT `id`, COM_NAME AS fName FROM `Excise_License` WHERE YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? AND SUBSTRING(LIC_TYPE,1,1) LIKE ? AND (`COM_NAME` LIKE ? OR TRIM(`LIC_NO`) = ?) GROUP BY COM_NAME LIMIT 10",array("isss",$year,$lt[$menu],"%".$_GET["value"]."%",$_GET["value"]));
+								break;
+								case 4:
+									$DB->GetData("SELECT `id`, `name` AS fName FROM `Information_excise_registration` WHERE YEAR(cdate + INTERVAL 3 MONTH) = ? AND (`name` LIKE ? OR `regis_number` = ?) GROUP BY `name` LIMIT 10",array("iss",$year,"%".$_GET["value"]."%",$_GET["value"]));
+								break;
+								default:
+									$DB->GetData("SELECT COM_NAME FROM (SELECT LIC_DATE, COM_NAME FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE GROUP BY `Excise_License`.`id` UNION SELECT cdate, name FROM `Information_excise_registration` UNION SELECT cdate, COM_NAME FROM `Bar_Data_New` WHERE EXCISECODE IS NOT NULL) AS AllCom WHERE YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? AND `COM_NAME` LIKE ? LIMIT 10",array("is",$year,"%".$_GET["value"]."%"));
 							}
+							while($fdata = $DB->FetchData()){
+								$sdata = new exItem;
+								$sdata->id = $fdata["COM_NAME"];
+								$sdata->value = $fdata["COM_NAME"];
+								$sdata->label = $fdata["COM_NAME"];
+								array_push($data,$sdata);
+							}
+						break;
+					case 5: //สถานศึกษา
+					case 6: //โซนนิ่ง
+							$menu = isset($_GET["menu"])?$_GET["menu"]:0;
+							$LvText = array("","อุดม","อาชีว","มัธยม","ประถม");
+							$data = array();
+        
+							$DB = new ezDB;
+							$DB->GetData("SELECT `no`, `Name` FROM Academy WHERE `Level` LIKE ? AND `Name` LIKE ? LIMIT 10",array("ss","%".$LvText[$menu]."%","%".$_GET["value"]."%"));
         
 							while($fdata = $DB->FetchData()){
 								$sdata = new exItem;
-								$sdata->id = $fdata["FID"];
-								$sdata->value = $fdata["FVALUE"];
-								$sdata->label = $fdata["FVALUE"];
+								$sdata->id = $fdata["no"];
+								$sdata->value = $fdata["Name"];
+								$sdata->label = $fdata["Name"];
 								array_push($data,$sdata);
 							}
 						break;

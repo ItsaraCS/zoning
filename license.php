@@ -14,7 +14,7 @@
             
             <!--MAP LEGEND AND LAYERS TOGGLERS-->
             <div id="map_legend"><h3>สัญลักษณ์แผนที่</h3></div>
-            <div id="map_layer_toggler_container">
+			<div id="map_layer_toggler_container">
 				<div id="map_layer_title">ชั้นข้อมูล</div>
 				<div id="map_layer_toggler"></div>
 			</div>
@@ -73,13 +73,16 @@
 		function setInit() {
             params = {
                 fn: 'filter',
-                job: 3,
+                job: 2,
                 src: 0
             };
 
             factory.connectDBService.sendJSONObj(ajaxUrl, params, false).done(function(res) {
                 if(res != undefined){
                     var data = JSON.parse(res);
+
+                    var currentYear = data.year[0].value || 2017;
+                    on_page_loaded(currentYear);
 
                     $.each(data.year, function(index, item) {
                         $('.nav-menu #year').append('<option value="'+ item.value +'">'+ item.label +'</option>');
@@ -98,8 +101,6 @@
                         '.nav-menu #area').find('option:eq(1)').prop('selected', true);
                 }
             });
-
-			on_page_loaded();
         }
         
 		//--Event
@@ -118,8 +119,8 @@
                 if(region != '') {
                     params = {
                         fn: 'filter',
-                        job: 3,
-                        src: 1,
+                        job: 2,
+                        src: 3,
                         value: region || 0
                     };
 
@@ -132,6 +133,8 @@
                             });
 
                             $('.nav-menu #area').find('option:eq(1)').prop('selected', true);
+                            
+                            load_data_by_year(year);
                         }
                     });
                 }
@@ -147,8 +150,8 @@
             if(region != '') {
                 params = {
                     fn: 'filter',
-                    job: 3,
-                    src: 1,
+                    job: 2,
+                    src: 3,
                     value: region || 0
                 };
                 console.log(params);

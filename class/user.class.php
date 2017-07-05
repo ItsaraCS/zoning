@@ -23,25 +23,23 @@ class exUser_Profile{//สำหรับดึงข้อมูลฉลาก
 	public $Mobile;//หมายเลขโทรศัพท์มือถือ
 
 	public function Load2Profile($DBData){
-		$this->id = $DBData["AdminID"];
-		$this->Gender = $DBData["adGender"];
-		$this->Status = $DBData["adStatus"];
-		$this->Username = $DBData["adUsername"];
-		$this->Fullname = $DBData["adFullname"];
-		$this->Level = $DBData["adLevel"];
-		$this->Under = $DBData["adUnder"];
-		$this->Eform = $DBData["adEform"];
-		$this->Region = $DBData["adRegion"];
-		$this->Province = $DBData["adProvince"];
-		$this->Area = $DBData["adArea"];
-		$this->Branch = $DBData["adBranch"];
-		$this->RegionTXT = "ศรรพสามิตภาค ".$DBData["adRegion"];
-		$this->ProvinceTXT = $DBData["pvName"];
-		$this->AreaTXT = $DBData["arName"];
-		$this->BranchTXT = $DBData["brName"];
-		$this->Email = $DBData["adEmail"];
-		$this->Tel = $DBData["adTel"];
-		$this->Mobile = $DBData["adMobile"];
+		$this->id = $DBData["member_id"];
+		$this->firstname = $DBData["firstname"];
+		$this->lastname = $DBData["lastname"];
+		$this->nickname = $DBData["nickname"];
+		$this->Group = $DBData["role_id"];
+		$this->Department = $DBData["dep_id"];
+		$this->Language = $DBData["lastlang"];
+		$this->Picture = $DBData["userimg"];
+		$this->Email = $DBData["useremail"];
+		$this->Tel = $DBData["usertel"];
+		$this->Region = $DBData["userRegion"];
+		$this->Area = $DBData["userArea"];
+		$this->CitizenID = $DBData["userIdentify"];
+	}
+
+	public function Loadpermission($ArrayData){
+		$this->Permission = $ArrayData;
 	}
 
 	public function Export2JSON(){
@@ -50,25 +48,24 @@ class exUser_Profile{//สำหรับดึงข้อมูลฉลาก
 }
 
 class exUser{//สำหรับดึงข้อมูลฉลากขึ้นมาแสดง
-	public $id;//User ID หากมีค่าเป็น 0 ให้ทำการ Logout
-	public $Gender;//เพศ
-	public $Fullname;//ชื่อจริง
-	public $Level;//ณะดับการเข้าถึงข้อมูล
-	public $Under;//อยู่ภายใต้
-	public $Eform;//สิทธิ์ในการเข้าถึง e-form
-	public $Region;//ภาคที่สังกัด
-	public $Province;//จังหวัดที่สังกัด
-	public $Area;//พื้นที่ที่สังกัด
-	public $Branch;//สาขาที่สังกัด
-	public $RegionTXT;//ภาคที่สังกัด(ตัวหนังสือ)
-	public $ProvinceTXT;//จังหวัดที่สังกัด(ตัวหนังสือ)
-	public $AreaTXT;//พื้นที่ที่สังกัด(ตัวหนังสือ)
-	public $BranchTXT;//สาขาที่สังกัด(ตัวหนังสือ)
-	public $Message;//ข้อความที่ให้แสดง
+	public $id; //UserID
+	public $firstname;//ชื่อจริง
+	public $lastname;//นามสกุลจริง
+	public $nickname;//ชื่อเล่น
+	public $Group;//กลุ่มผู้ใช้
+	public $Department;//แผนก ส่วนงาน
+	public $Language;//ภาษาที่ใช้
+	public $Picture;//ภาพโปรไฟล์
+	public $Email;//email
+	public $Tel;//หมายเลขติดต่อ
+	public $Region;//ภาค
+	public $Area;//พื้นที่
+	public $CitizenID;//หมายเลขบัตรประชาชน
+	public $Permission;//สิทธิ์ในการเข้าถึง
 
 	function __construct() {//Initital variable in class
-		if(!session_is_registered('surathai')){
-			session_is_registered('surathai');
+		if(!session_is_registered('Zonning')){
+			session_is_registered('Zonning');
 			$this->clearProfile();
 			$this->SavetoSession();
 		}else{
@@ -80,70 +77,54 @@ class exUser{//สำหรับดึงข้อมูลฉลากขึ�
 	}
 
 	private function LoadFromSession(){
-		$this->id = $_SESSION['surathai']["id"];
-		$this->Gender = $_SESSION['surathai']["Gender"];
-		$this->Fullname = $_SESSION['surathai']["Fullname"];
-		$this->Level = $_SESSION['surathai']["Level"];
-		$this->Under = $_SESSION['surathai']["under"];
-		$this->Eform = $_SESSION['surathai']["eform"];
-		$this->Region = $_SESSION['surathai']["region"];
-		$this->Province = $_SESSION['surathai']["province"];
-		$this->Area = $_SESSION['surathai']["area"];
-		$this->Branch = $_SESSION['surathai']["branch"];
-		$this->RegionTXT = $_SESSION['surathai']["regionTXT"];
-		$this->ProvinceTXT = $_SESSION['surathai']["provinceTXT"];
-		$this->AreaTXT = $_SESSION['surathai']["areaTXT"];
-		$this->BranchTXT = $_SESSION['surathai']["branchTXT"];
+		$this->id = $_SESSION['Zonning']["id"];
+		$this->firstname = $_SESSION['Zonning']["firstname"];
+		$this->lastname = $_SESSION['Zonning']["lastname"];
+		$this->nickname = $_SESSION['Zonning']["nickname"];
+		$this->Group = $_SESSION['Zonning']["Group"];
+		$this->Department = $_SESSION['Zonning']["Department"];
+		$this->Language = $_SESSION['Zonning']["Language"];
+		$this->Picture = $_SESSION['Zonning']["Picture"];
+		$this->Email = $_SESSION['Zonning']["Email"];
+		$this->Tel = $_SESSION['Zonning']["Tel"];
+		$this->Region = $_SESSION['Zonning']["Region"];
+		$this->Area = $_SESSION['Zonning']["Area"];
+		$this->CitizenID = $_SESSION['Zonning']["CitizenID"];
+		$this->Permission = $_SESSION['Zonning']["Permission"];
 	}
 
         private function SavetoSession(){
-		$_SESSION['surathai']["id"] = $this->id;
-		$_SESSION['surathai']["Gender"] = $this->Gender;
-		$_SESSION['surathai']["Fullname"] = $this->Fullname;
-		$_SESSION['surathai']["Level"] = $this->Level;
-		$_SESSION['surathai']["under"] = $this->Under;
-		$_SESSION['surathai']["eform"] = $this->Eform;
-		$_SESSION['surathai']["region"] = $this->Region;
-		$_SESSION['surathai']["province"] = $this->Province;
-		$_SESSION['surathai']["area"] = $this->Area;
-		$_SESSION['surathai']["branch"] = $this->Branch;
-		$_SESSION['surathai']["regionTXT"] = $this->RegionTXT;
-		$_SESSION['surathai']["provinceTXT"] = $this->ProvinceTXT;
-		$_SESSION['surathai']["areaTXT"] = $this->AreaTXT;
-		$_SESSION['surathai']["branchTXT"] = $this->BranchTXT;
+		$_SESSION['Zonning']["id"] = $this->id;
+		$_SESSION['Zonning']["firstname"] = $this->firstname;
+		$_SESSION['Zonning']["lastname"] = $this->lastname;
+		$_SESSION['Zonning']["nickname"] = $this->nickname;
+		$_SESSION['Zonning']["Group"] = $this->Group;
+		$_SESSION['Zonning']["Department"] = $this->Department;
+		$_SESSION['Zonning']["Language"] = $this->Language;
+		$_SESSION['Zonning']["Picture"] = $this->Picture;
+		$_SESSION['Zonning']["Email"] = $this->Email;
+		$_SESSION['Zonning']["Tel"] = $this->Tel;
+		$_SESSION['Zonning']["Region"] = $this->Region;
+		$_SESSION['Zonning']["Area"] = $this->Area;
+		$_SESSION['Zonning']["CitizenID"] = $this->CitizenID;
+		$_SESSION['Zonning']["Permission"] = $this->Permission;
 	}
 
 	private function clearProfile(){
 		$this->id = 0;
-		$this->Gender = 0;
-		$this->Fullname = "";
-		$this->Level = 99;
-		$this->Under = 9;
-		$this->Eform = 0;
-		$this->Region = 0;
-		$this->Province = 0;
-		$this->Area = 0;
-		$this->Branch = 0;
-		$this->RegionTXT = "";
-		$this->ProvinceTXT = "";
-		$this->AreaTXT = "";
-		$this->BranchTXT = "";
-		$this->Message = "";
-/*		$this->id = 1;
-		$this->Gender = 0;
-		$this->Fullname = "ทดสอบ ครั้งแรก";
-		$this->Level = 1;
-		$this->Under = 0;
-		$this->Eform = 1;
-		$this->Region = 5;
-		$this->Province = 50;
-		$this->Area = 5501;
-		$this->Branch = "0550101";
-		$this->RegionTXT = "สรรพาสามิตภาค 5";
-		$this->ProvinceTXT = "เชียงใหม่";
-		$this->AreaTXT = "เชียงใหม่";
-		$this->BranchTXT = "สาขาเมืองเชียงใหม่";
-		$this->Message = "";*/
+		$this->firstname = "";
+		$this->lastname = "";
+		$this->nickname = "";
+		$this->Group = 0;
+		$this->Department = 0;
+		$this->Language = "";
+		$this->Picture = "";
+		$this->Email = "";
+		$this->Tel = "";
+		$this->Region = "";
+		$this->Area = "";
+		$this->CitizenID = "";
+		$this->Permission = array();
 	}
 
 	public function Login($status){	
@@ -157,9 +138,13 @@ class exUser{//สำหรับดึงข้อมูลฉลากขึ�
 
 	public function Logout(){
 		$this->clearProfile();
-		if(session_is_registered('surathai')){
-			session_unregister('surathai');
+		if(session_is_registered('Zonning')){
+			session_unregister('Zonning');
 		}
+	}
+
+	public function isCanAccess($PermissionID){
+		return in_array($Permission,$this->Permission);
 	}
 
 	public function CanAccessEform(){
@@ -171,20 +156,19 @@ class exUser{//สำหรับดึงข้อมูลฉลากขึ�
 	}
 
 	public function UpdateProfile($DBData){
-		$this->id = $DBData["AdminID"];
-		$this->Gender = $DBData["adGender"];
-		$this->Fullname = $DBData["adFullname"];
-		$this->Level = $DBData["adLevel"];
-		$this->Under = $DBData["adUnder"];
-		$this->Eform = $DBData["adEform"];
-		$this->Region = $DBData["adRegion"];
-		$this->Province = $DBData["adProvince"];
-		$this->Area = $DBData["adArea"];
-		$this->Branch = $DBData["adBranch"];
-		$this->RegionTXT = "ศรรพสามิตภาค ".$DBData["adRegion"];
-		$this->ProvinceTXT = $DBData["pvName"];
-		$this->AreaTXT = $DBData["arName"];
-		$this->BranchTXT = $DBData["brName"];
+		$this->id = $DBData["member_id"];
+		$this->firstname = $DBData["firstname"];
+		$this->lastname = $DBData["lastname"];
+		$this->nickname = $DBData["nickname"];
+		$this->Group = $DBData["role_id"];
+		$this->Department = $DBData["dep_id"];
+		$this->Language = $DBData["lastlang"];
+		$this->Picture = $DBData["userimg"];
+		$this->Email = $DBData["useremail"];
+		$this->Tel = $DBData["usertel"];
+		$this->Region = $DBData["userRegion"];
+		$this->Area = $DBData["userArea"];
+		$this->CitizenID = $DBData["userIdentify"];
 	}
 }
 
