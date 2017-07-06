@@ -120,7 +120,6 @@
             factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
                 if(res != undefined) {
                     var data = JSON.parse(res);
-                    console.log(data);
 
                     $.each(data.year, function(index, item) {
                         $('.nav-menu #year').append('<option value="'+ item.value +'">'+ item.label +'</option>');
@@ -251,6 +250,8 @@
                 var handledefaultZoom = function(e) {
                     map.getView().setCenter(ol.proj.transform([103.697123, 13.231792], 'EPSG:4326', 'EPSG:3857'));
                     map.getView().setZoom(4.5);
+
+                    zoomMapByArea();
                 };
 
                 defaultZoomBtn.addEventListener('click', handledefaultZoom, false);
@@ -325,14 +326,13 @@
                     });
                     
                     if(hit) {
-                        console.log(hit.get('FACTORY_TNAME'));
-                        if(hit.get('FACTORY_TNAME') != undefined) {
+                        if(hit.get('CHARGE_NAM') != undefined) {
                             jTarget.css('cursor', 'pointer');
 
                             $(element).popover({
                                 placement: 'top',
                                 html: true,
-                                content: '<h4 style="width: 200px; color: #333333; margin: 0; font-weight: normal; text-align: center;">' + hit.get('FACTORY_TNAME') +'</h4>'
+                                content: '<h4 style="width: 200px; color: #333333; margin: 0; font-weight: normal; text-align: center;">' + hit.get('CHARGE_NAM') +'</h4>'
                             });
                             $(element).popover('show');
                         }
@@ -366,7 +366,7 @@
                 if(res != undefined) {
                     var data = JSON.parse(res);
 
-                    //zoomMapByArea();
+                    zoomMapByArea();
 
                     var theadContent = '';
                     $.each(data.label, function(index, item) {
@@ -448,7 +448,7 @@
                 if(res != undefined) {
                     var data = JSON.parse(res);
                     
-                    //zoomMapByArea();
+                    zoomMapByArea();
                     
                     var searchDetailTableContent = '';
                     $.each(data.menu, function(index, item) {
@@ -583,7 +583,9 @@
 
             marker_style = new ol.style.Style();
             marker_feature.setStyle(marker_style);
-            map.getLayers().setAt(3, layers_marker);
+            
+            if(map.getLayers().getArray().length == 3)
+                map.getLayers().setAt(3, layers_marker);
         }
 
         //--Event

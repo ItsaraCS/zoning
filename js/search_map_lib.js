@@ -181,8 +181,6 @@ var my_dom = {
 };
 
 function case_point_style_function(feature, resolution) {
-	console.log(feature);
-
 	if(resolution < 100) {
 		image = new ol.style.Icon({
 			opacity: 1,
@@ -202,7 +200,7 @@ function case_point_style_function(feature, resolution) {
 		resolution,
 		my_dom,
 		'CHARGE_NAM'
-	)
+	);
 
 	return new ol.style.Style({
 		image,
@@ -211,7 +209,7 @@ function case_point_style_function(feature, resolution) {
 }
 
 function license_point_style_function(feature, resolution) {
-	if(resolution < 350) {
+	if(resolution < 100) {
 		image = new ol.style.Icon({
 			opacity: 1,
 			scale: 0.05,
@@ -222,8 +220,8 @@ function license_point_style_function(feature, resolution) {
 			feature, 
 			resolution,
 			my_dom,
-			'COM_NAME'
-		)
+			'CUS_NAME'
+		);
 
 		return new ol.style.Style({
 			image,
@@ -246,8 +244,8 @@ function shop_point_style_function(feature, resolution) {
 			feature, 
 			resolution,
 			my_dom,
-			'COM_NAME'
-		)
+			'CUS_NAME'
+		);
 
 		return new ol.style.Style({
 			image,
@@ -270,8 +268,8 @@ function school_point_style_function(feature, resolution) {
 			feature, 
 			resolution,
 			my_dom,
-			'SCHOOLNAME'
-		)
+			'NAME'
+		);
 
 		return new ol.style.Style({
 			image,
