@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="msapplication-tap-highlight" content="no">
+     <meta name="theme-color" content="#428bca">
     <title>Zoning - ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</title>
     <!--jQuery-->
     <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>
@@ -23,6 +25,7 @@
     <!--CSS-->
     <link href="img/logoheader.png" rel="shortcut icon" type="image/x-icon">
     <link href="css/style.css" rel="stylesheet" type="text/css">
+
     <!--JS-->
     <script src="js/chart.js" type="text/javascript"></script>
     <script src="js/factory.js" type="text/javascript"></script>
@@ -52,7 +55,7 @@
         else {
             if(pathFile != 'login.php') {
                 factory.connectDBService.sendJSONObj(ajaxUrl, {}, false).done(function(res) {
-                    if(res != undefined){
+                    if(res != undefined) {
                         var data = JSON.parse(res);
                         userData = data;
 

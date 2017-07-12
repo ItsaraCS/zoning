@@ -38,10 +38,10 @@ var vec_region_polygon = null;
 var vec_area_point = null;
 var vec_area_polygon = null;
 var vec_branch_point = null;
-var vec_academy_point = false;
-var vec_zoning_point = false;
-var vec_store_point = false;
-var vec_lawbreaker_point = false;
+var vec_academy_point = null;
+var vec_zoning_point = null;
+var vec_store_point = null;
+var vec_lawbreaker_point = null;
 
 // Case data
 var map_data = null; // total number of cases, sum by region code
@@ -139,6 +139,7 @@ function prepare_region_and_area(url) {
 				r_code = parseInt(fi.properties.REG_CODE);
 				idx = r_code - 1;
 				
+				regions_info.regions[idx] = [];
 				regions_info.regions[idx].push({
 					REG_CODE:  "",
 					REG_TNAME:  "",
@@ -159,35 +160,43 @@ function prepare_region_and_area(url) {
 /**
  *
  */
-function update_layer_visibility() {
-	// Branches
-	if(vec_branch_point != null) {
-		toggle_map_layer_visibility(vec_branch_point, 
-									document.getElementById('chk_office').checked);
-	}
+function update_layer_visibility(layerType) {
+	switch(layerType) {
+		case 'branch': //--สำนักงานสรรพสามิต
+			if(vec_branch_point != null)
+				toggle_map_layer_visibility(vec_branch_point, document.getElementById('chk_office').checked);
+			else
+				load_data_branch_point('data/geojson-layer/branch_points.geojson', document.getElementById('chk_office').checked); 
 
-	//--Academy
-	if(vec_academy_point != null) {
-		toggle_map_layer_visibility(vec_academy_point, 
-									document.getElementById('chk_academy').checked);
-	}
-
-	//--Zoning
-	if(vec_zoning_point != null) {
-		toggle_map_layer_visibility(vec_zoning_point, 
-									document.getElementById('chk_zoning').checked);
-	}
-	
-	// Stores
-	if(vec_store_point != null) {
-		toggle_map_layer_visibility(vec_store_point, 
-									document.getElementById('chk_store').checked);
-	}
-
-	// Law breakers
-	if(vec_lawbreaker_point != null) {
-		toggle_map_layer_visibility(vec_lawbreaker_point, 
-									document.getElementById('chk_lawbreaker').checked);
+			break;
+		case 'academy': //--สถานศึกษา
+			if(vec_academy_point != null) 
+				toggle_map_layer_visibility(vec_academy_point, document.getElementById('chk_academy').checked);
+			else
+				load_data_academy_point('data/geojson-layer/school_points.geojson', document.getElementById('chk_academy').checked); 
+			
+			break;
+		case 'zoning': //--พื้นที่โซนนิ่ง
+			if(vec_zoning_point != null)
+				toggle_map_layer_visibility(vec_zoning_point, document.getElementById('chk_zoning').checked);
+			else
+				load_data_zoning_polygon('data/geojson-layer/zoning_polygon.geojson', document.getElementById('chk_zoning').checked); 
+			
+			break;
+		case 'store': //--ร้านค้า
+			if(vec_store_point != null) 
+				toggle_map_layer_visibility(vec_store_point, document.getElementById('chk_store').checked);
+			else 
+				load_data_store_point('data/geojson-layer/shop_points.geojson', document.getElementById('chk_store').checked); 
+			
+			break;
+		case 'lawbreaker': //--ผู้กระทำผิด
+			if(vec_lawbreaker_point != null)
+				toggle_map_layer_visibility(vec_lawbreaker_point, document.getElementById('chk_lawbreaker').checked);
+			else
+				load_data_lawbreaker_point('data/geojson-layer/illigal_points.geojson', document.getElementById('chk_lawbreaker').checked); 
+			
+			break;
 	}
 }
 
@@ -274,7 +283,7 @@ function load_data_area_point(url) {
 /**
  * Load branch data (polygon centroid)
  */
-function load_data_branch_point(url) {
+function load_data_branch_point(url, checked) {
 	getJSON(
 		url,
 		function(data) {
@@ -283,7 +292,8 @@ function load_data_branch_point(url) {
 											'EPSG:3857',
 											branch_point_style_function);
 			b_branch_point_loaded = true;
-			process_loaded_data();
+			//process_loaded_data();
+			load_layer_point('branch', checked);
 		}, 
 		function(xhr) {
 		}
@@ -312,7 +322,7 @@ function load_data_factory_point(url) {
 /**
  * Load branch data (polygon centroid)
  */
-function load_data_lawbreaker_point(url) {
+function load_data_lawbreaker_point(url, checked) {
 	getJSON(
 		url,
 		function(data) {
@@ -321,7 +331,8 @@ function load_data_lawbreaker_point(url) {
 											'EPSG:3857',
 											lawbreaker_point_style_function);
 			b_lawbreaker_point_loaded = true;
-			process_loaded_data();
+			//process_loaded_data();
+			load_layer_point('lawbreaker', checked);
 		}, 
 		function(xhr) {
 		}
@@ -331,7 +342,7 @@ function load_data_lawbreaker_point(url) {
 /**
  * Load branch data (polygon centroid)
  */
-function load_data_store_point(url) {
+function load_data_store_point(url, checked) {
 	getJSON(
 		url,
 		function(data) {
@@ -340,7 +351,8 @@ function load_data_store_point(url) {
 											'EPSG:3857',
 											store_point_style_function);
 			b_store_point_loaded = true;
-			process_loaded_data();
+			//process_loaded_data();
+			load_layer_point('store', checked);
 		}, 
 		function(xhr) {
 		}
@@ -369,7 +381,7 @@ function load_data_thaiwhisky_point(url) {
 /**
  * Load branch data (polygon centroid)
  */
-function load_data_academy_point(url) {
+function load_data_academy_point(url, checked) {
 	getJSON(
 		url,
 		function(data) {
@@ -378,7 +390,8 @@ function load_data_academy_point(url) {
 											'EPSG:3857',
 											academy_point_style_function);
 			b_academy_point_loaded = true;
-			process_loaded_data();
+			//process_loaded_data();
+			load_layer_point('academy', checked);
 		}, 
 		function(xhr) {
 		}
@@ -388,7 +401,7 @@ function load_data_academy_point(url) {
 /**
  * Load branch data (polygon centroid)
  */
-function load_data_zoning_polygon(url) {
+function load_data_zoning_polygon(url, checked) {
 	getJSON(
 		url,
 		function(data) {
@@ -397,7 +410,8 @@ function load_data_zoning_polygon(url) {
 											'EPSG:3857',
 											zoning_polygon_style_function);
 			b_zoning_point_loaded = true;
-			process_loaded_data();
+			//process_loaded_data();
+			load_layer_point('zoning', checked);
 		}, 
 		function(xhr) {
 		}
@@ -411,7 +425,6 @@ function load_data_region(url) {
 	getJSON(
 		url,
 		function(data) {
-			console.log(data);
 			map_data = data;
 			b_map_data_loaded = true;
 			process_loaded_data();
@@ -1106,7 +1119,7 @@ function update_chart_data(ctx, ctn, data, field) {
  * @param data		Chart data
  * @param field		Field to be used
  */
-function update_chart_data_region(ctx, ctn, data, field, reg_code = -999, area_code = '') {
+function update_chart_data_region(ctx, ctn, data, field, reg_code, area_code) {
 	var i;
 	var k;
 	var j;
@@ -1123,6 +1136,8 @@ function update_chart_data_region(ctx, ctn, data, field, reg_code = -999, area_c
 	var areas = 0;
 	var label;
 	var color = [0,0,0];
+	reg_code = reg_code || -999;
+	area_code = area_code || '';
 	
 	console.log('update chart:', reg_code);
 	console.log('c0', categories[1]);
@@ -1310,8 +1325,16 @@ function show_thematic_map_region(vf, data) {
 	for( i = 0; i < vf.length; i++ ) {
 		// Get region code of i-th feature
 		vi = vf[i];
-		ri = vi.get('REG_CODE'); 
-		val = data.features[ri-1].properties.COUNT;
+		ri = vi.get('REG_CODE');
+		val = 0;
+
+		for(var f=0; f<data.features.length; f++) {
+			if((ri - 1) == f) {
+				val = data.features[f].properties.SUMALL;
+				break;
+			}
+		}
+		
 		classes.push({
 				VAL:val, 
 				COLOR_INDEX:-1});

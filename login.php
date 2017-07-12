@@ -2,6 +2,8 @@
     <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="theme-color" content="#428bca">
         <title>Zoning - ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</title>
         <!--jQuery-->
         <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>
@@ -20,7 +22,7 @@
         <div class="container">
             <div class="col-md-12 col-md-offset-1">
                 <div class="title" style="margin-top: 1.5vh;">
-                <img src="img/logoheader.png" class="img-responsive center-block"  style="width: 11vh;" />
+                <img src="img/logo-main.png" class="img-responsive center-block"  style="width: 11vh;" />
                 </div>  
             </div>
             <div class="container">

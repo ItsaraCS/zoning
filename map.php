@@ -2,28 +2,40 @@
 <?php require('nav.php'); ?>
 <!--SECTION-->
 <div class="section">
-	<!--MAP-->
+    <!--MAP-->
     <div class="container-fluid">
         <div class="row">
-            <div id="map" class="map" style="position: fixed; width: 100%; height: 100%;"></div>
-            <!--POPUP-->
-            <div id="popup" class="ol-popup">
-                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content"></div>
+            <div class="col-md-12">
+                <h3 class="report-mobile">แผนที่</h3>
+                <div class="panel panel-default panel-map" style="border-radius: 0; padding: 0;">
+                    <div class="panel-body panel-body-mobile" style="padding-top: 0; padding-bottom: 0;">
+                        <div class="row">
+                            <div id="map" class="map map-mobile"></div>
+                            <!--POPUP-->
+                            <div id="popup" class="ol-popup">
+                                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                                <div id="popup-content"></div>
+                            </div>
+                            
+                            <!--MAP LEGEND AND LAYERS TOGGLERS-->
+                            <div id="map_legend"><h3>สัญลักษณ์แผนที่</h3></div>
+                            <div id="map_layer_toggler_container">
+                                <div id="map_layer_title"><h3>ชั้นข้อมูล</h3></div>
+                                <div id="map_layer_toggler"></div>
+                            </div>
+                            <div id="map_feature_name" style="display: none;"></div>
+                        </div>
+                                  <!--LOADING-->
+                                <div id="dvloading" class="loader"><div></div></div>
+                    </div>
+                </div>
+
+
             </div>
-            
-            <!--MAP LEGEND AND LAYERS TOGGLERS-->
-            <div id="map_legend"><h3>สัญลักษณ์แผนที่</h3></div>
-			<div id="map_layer_toggler_container">
-				<div id="map_layer_title">ชั้นข้อมูล</div>
-				<div id="map_layer_toggler"></div>
-			</div>
-            <div id="map_feature_name" style="display: none;"></div>
         </div>
     </div>
 
-    <!--LOADING-->
-    <div id="dvloading" class="loader"><div></div></div>
+  
     
     <!--CHART GRAPH-->
     <div id="chart_container" class="panel">
@@ -62,15 +74,15 @@
         var factory = new Factory();
         var ajaxUrl = 'API/taxmapAPI.php';
         var params = {};
-		var year = $('.nav-menu #year').val() || '';
+        var year = $('.nav-menu #year').val() || '';
         var region = $('.nav-menu #region').val() || 0;
         var area = $('.nav-menu #area').val() || 0;
 
         //--Page load
-		setInit();
+        setInit();
 
         //--Function
-		function setInit() {
+        function setInit() {
             params = {
                 fn: 'filter',
                 job: 0,
@@ -78,7 +90,7 @@
             };
 
             factory.connectDBService.sendJSONObj(ajaxUrl, params, false).done(function(res) {
-                if(res != undefined){
+                if(res != undefined) {
                     var data = JSON.parse(res);
 
                     var currentYear = data.year[0].value || 2017;
@@ -103,8 +115,8 @@
             });
         }
         
-		//--Event
-		$(document).on('change', '.nav-menu #year', function(e) {
+        //--Event
+        $(document).on('change', '.nav-menu #year', function(e) {
             e.preventDefault();
             
             $('.nav-menu #region').find('option:eq(0)').prop('selected', true);

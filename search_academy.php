@@ -301,15 +301,33 @@
             var target = map.getTarget();
             var jTarget = typeof target === 'string' ? $("#" + target) : $(target);
 
-            var element = document.getElementById('label-popup');
+            var labelPopup = document.querySelector('#label-popup');
             var popup = new ol.Overlay({
-                element: element,
+                element: labelPopup,
                 positioning: 'bottom-center',
-                stopEvent: false
+                stopEvent: true
             });
             map.addOverlay(popup);
-            
+
             $(map.getViewport()).on('mousemove', function(e) {
+                var view = map.getView();
+                var resolution = view.getResolution();
+
+                if(resolution < 100) {
+                    var pixel = map.getEventPixel(e.originalEvent);
+                    var hit = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                        return feature;
+                    });
+                    
+                    if(hit) {
+                        if(hit.get('NAME') != undefined) 
+                            jTarget.css('cursor', 'pointer');
+                    } else 
+                        jTarget.css('cursor', '');
+                }
+            });
+            
+            $(map.getViewport()).on('click', function(e) {
                 var view = map.getView();
                 var resolution = view.getResolution();
 
@@ -329,16 +347,50 @@
                         if(hit.get('NAME') != undefined) {
                             jTarget.css('cursor', 'pointer');
 
-                            $(element).popover({
+                            var contentPopup = '<div class="text-center" style="width: 300px;">' +
+                                    '<div class="text-right" style="width: 240px;"><a href="#" id="popup-closer"><i class="fa fa-close"></i></a></div>' +
+                                    '<h4 style="width: 240px; margin-top: 0; color: #333333;">' + hit.get('NAME') +'</h4>' +
+                                    '<div class="table-responsive" style="width: 240px;">' +
+                                        '<table class="table table-bordered" style="margin: 0;">' +
+                                            '<thead>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ชื่อสถานศึกษา</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ที่ตั้ง</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">จังหวัด</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ประเภท</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ระดับ</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ละติจูด</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ลองติดจูด</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">จำนวนร้านค้าในโซนนิ่ง</th>' +
+                                            '</thead>' +
+                                            '<tbody>' +
+                                                '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('NAME') +'</th>' +
+                                                '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('TAMTNAME') +' '+ hit.get('AMPTNAME') +' '+ hit.get('PROVINCE') +'</th>' +
+                                                '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('PROVINCE') +'</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + ((hit.get('TYPE') != 'NULL') ? hit.get('TYPE') : '-') +'</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + hit.get('LEVEL') +'</th>' +
+                                                '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('LAT') +'</th>' +
+                                                '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('LON') +'</th>' +
+                                                '<th class="text-nowrap text-right" style="font-size: 10px;">' + Number(hit.get('NO')).toLocaleString('en', { minimumFractionDigits: 0 }) +'</th>' +
+                                            '</tbody>' +
+                                        '</table>' +
+                                    '</div>' +
+                                '</div>';
+
+                            $(labelPopup).popover({
                                 placement: 'top',
                                 html: true,
-                                content: '<h4 style="width: 200px; color: #333333; margin: 0; font-weight: normal; text-align: center;">' + hit.get('NAME') +'</h4>'
+                                content: contentPopup
                             });
-                            $(element).popover('show');
+                            $(labelPopup).popover('show');
+
+                            $('#popup-closer').click(function(e) {
+                                jTarget.css('cursor', '');
+                                $(labelPopup).popover('destroy');
+                            });
                         }
                     } else {
                         jTarget.css('cursor', '');
-                        $(element).popover('destroy');
+                        $(labelPopup).popover('destroy');
                     }
                 }
             });
@@ -751,13 +803,16 @@
 
                 marker_style = new ol.style.Style({
                     image: new ol.style.Icon(({
+                        anchor: [0.5, 1.7],
                         opacity: 1,
-                        scale: 1,
+                        scale: 0.5,
                         src: 'img/marker-search.png'
                     }))
                 });
                 marker_feature.setStyle(marker_style);
                 map.getLayers().setAt(4, layers_marker);
+
+                $('#label-popup').popover('destroy');
             } else {
                 Factory.prototype.utilityService.getPopup({
                     infoMsg: 'ไม่พบค่าพิกัดที่ตั้ง',

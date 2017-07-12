@@ -29,80 +29,14 @@ switch($fn){
 				$TitleShow = $title[$job];
 				if($mode==1) $TitleShow[0] = "ปี";
 				$colnum = count($TitleShow);
+				$DB = new ezDB;
 
 				switch($job){
-					case 1:
-							$DB = new exDB;
-
-							if($mode==0){
-								$total = 12;
-								$rdata = array(10,11,12,1,2,3,4,5,6,7,8,9);
-								$DB->GetData("SELECT ? AS Y, ? AS R, ? AS P,gmValue AS M,(SELECT SUM(stTax) FROM (SELECT lbRegion, lbProvince, stTax, stReleaseDate FROM `Label`,`Stamp` WHERE LabelID = stLabel) AS ST WHERE MONTH(stReleaseDate) = gmValue AND R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(stReleaseDate + INTERVAL 3 MONTH) = Y) AS STAX FROM GovMonth",array("iii",$year,$region,$province));
-								$data = new exReport_Table;
-								$data->Init(1,$total,$total);
-								if($total > 0){
-									$tdata = array(array());
-									$etcObj = new exETC;
-									for($i=0;$i<$colnum;$i++){
-										$data->AddLabel($TitleShow[$i]);
-									}
-
-									for($x=1;$x<=$total;$x++){
-										$tdata[$x][0] = $etcObj->GetMonthFullName($x)." ".($x>9?$year+542:$year+543);
-										for($y=1;$y<=6;$y++){
-											$tdata[$x][$y] = "-";
-										}
-									}
-
-									while($fdata = $DB->FetchData()){
-										$tdata[$fdata["M"]][1] = 0;
-										$tdata[$fdata["M"]][2] = 0;
-										$tdata[$fdata["M"]][3] = 0;
-										$tdata[$fdata["M"]][4] = 0;
-										$tdata[$fdata["M"]][5] = $fdata["STAX"];
-										$tdata[$fdata["M"]][6] = $fdata["STAX"];
-									}
-
-									foreach($rdata as $x){
-										$data->AddCell($tdata[$x][0]);
-										for($y=1;$y<=6;$y++){
-											$data->AddCell(number_format($tdata[$x][$y],2),1);
-										}
-									}
-								}
-							}else{
-								$total = 5;
-								$rdata = array(1,2,3,4,5);
-
-								$data = new exReport_Table;
-								$data->Init(1,$total,$total);
-								$tdata = array(array());
-								$etcObj = new exETC;
-								for($i=0;$i<$colnum;$i++){
-									$data->AddLabel($TitleShow[$i]);
-								}
-
-								for($Y=$year-4;$Y<=$year;$Y++){
-									$fdata = $DB->GetDataOneRow("SELECT ? AS Y, ? AS R, ? AS P,0,0,0,0,(SELECT SUM(stTax) FROM (SELECT lbRegion, lbProvince, stTax, stReleaseDate FROM `Label`,`Stamp` WHERE LabelID = stLabel) AS ST WHERE R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(stReleaseDate + INTERVAL 3 MONTH) = Y) AS STAX ",array("iii",$Y,$region,$province));
-
-
-									$data->AddCell("ปีงบประมาณ ".($Y + 543));
-									$data->AddCell("0.00",1);
-									$data->AddCell("0.00",1);
-									$data->AddCell("0.00",1);
-									$data->AddCell("0.00",1);
-									$data->AddCell(number_format($fdata["STAX"]),1);
-									$data->AddCell(number_format($fdata["STAX"]),1);
-								}
-							}
-
-						break;
 					case 2:
-								$DB = new ezDB;
 								if($mode==0){
 									$total = 12;
 									$rdata = array(10,11,12,1,2,3,4,5,6,7,8,9);
-									$DB->GetData("SELECT MONTH(DateApprove) AS M, IF(`TYPE`='ศุรา',1,IF(`TYPE`='ยาสูบ',2,IF(`TYPE`='ไพ่',3,4))) AS T, COUNT(`id`) AS S FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) GROUP BY M,T ORDER BY DateApprove",array("iii",$year,$region,$province));
+									$DB->GetData("SELECT MONTH(DateApprove) AS M, IF(`TYPE`='สุรา',1,IF(`TYPE`='ยาสูบ',2,IF(`TYPE`='ไพ่',3,4))) AS T, SUM(`Fine`) AS S FROM `illigal_nopoint` WHERE YEAR(DateApprove + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) GROUP BY M,T ORDER BY DateApprove",array("iii",$year,$region,$province));
 								}else{
 									$total = 5;
 									$rdata = array(1,2,3,4,5);
@@ -125,7 +59,7 @@ switch($fn){
 											$tdata[$x][0] = $etcObj->GetMonthFullName($x)." ".($x>9?$year+542:$year+543);
 										}
 										for($y=1;$y<=5;$y++){
-											$tdata[$x][$y] = "-";
+											$tdata[$x][$y] = 0;
 										}
 									}
 
@@ -133,101 +67,73 @@ switch($fn){
 										if($total==5){
 											$x = $fdata["Y"] - $year+5;
 											$tdata[$x][$fdata["T"]] = $fdata["S"];
-											$tdata[$x][5] = intval($tdata[$x][5]) + $fdata["S"];
+											$tdata[$x][5] = floatval($tdata[$x][5]) + $fdata["S"];
 										}else{
 											$tdata[$fdata["M"]][$fdata["T"]] = $fdata["S"];
-											$tdata[$fdata["M"]][5] = intval($tdata[$fdata["M"]][5]) + $fdata["S"];
+											$tdata[$fdata["M"]][5] = floatval($tdata[$fdata["M"]][5]) + $fdata["S"];
 										}
 									}
 
 									foreach($rdata as $x){
 										$data->AddCell($tdata[$x][0]);
 										for($y=1;$y<=5;$y++){
-											$data->AddCell($tdata[$x][$y],1);
+											$data->AddCell(number_format($tdata[$x][$y],2),1);
 										}
 									}
 								}
 						break;
 					case 3:
-								$DB = new ezDB;
-
 								if($mode==0){
 									$total = 12;
 									$rdata = array(10,11,12,1,2,3,4,5,6,7,8,9);
-									//$DB->GetData("SELECT ? AS Y, ? AS R, ? AS P,gmValue AS M,(SELECT COUNT(FactoryID) FROM `Factory` WHERE MONTH(faIssueDate) = gmValue AND R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(faIssueDate + INTERVAL 3 MONTH) = Y) AS Construction,(SELECT COUNT(lbLicense) FROM `Label` WHERE MONTH(lbIssueDate) = gmValue AND R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(lbIssueDate + INTERVAL 3 MONTH) = Y) AS Production,(SELECT COUNT(SaleLicenseID) FROM (SELECT `SaleLicenseID`, `slIssueDate`, `faProvince`,`faRegion` FROM `SaleLicense`,`Factory` WHERE FactoryID = slFactoryID) AS SL WHERE MONTH(slIssueDate) = gmValue AND R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(slIssueDate + INTERVAL 3 MONTH) = Y) AS Sale, (SELECT COUNT(TransportID) FROM Transport WHERE MONTH(tpDate) = gmValue AND YEAR(tpDate + INTERVAL 3 MONTH) = Y AND R IN (0,tpRegion) AND P IN (0,tpProvince)) AS Transpot FROM GovMonth",array("iii",$year,$region,$province));
-									$DB->GetData("SELECT X FROM (SELECT 0 AS X) AS Y WHERE X = 1");
-									$data = new exReport_Table;
-									$data->Init(1,$total,$total);
-									if($total > 0){
-										$tdata = array(array());
-										$etcObj = new exETC;
-										for($i=0;$i<$colnum;$i++){
-											$data->AddLabel($TitleShow[$i]);
-										}
-
-										for($x=1;$x<=$total;$x++){
-											if($total==6){
-												$tdata[$x][0] = "ปีงบประมาณ ".(($year + 539) + $x);
-											}else{
-												$tdata[$x][0] = $etcObj->GetMonthFullName($x)." ".($x>9?$year+542:$year+543);
-											}
-											for($y=1;$y<=6;$y++){
-												$tdata[$x][$y] = "-";
-											}
-										}
-
-										while($fdata = $DB->FetchData()){
-											if($total==5){
-												$x = $fdata["Y"] - $year+5;
-												$tdata[$x][$degree[$fdata["lbDegree"]]] = $fdata["S"];
-												$tdata[$x][5] = intval($tdata[$x][5]) + $fdata["S"];
-											}else{
-												$tdata[$fdata["M"]][1] = $fdata["Construction"];
-												$tdata[$fdata["M"]][2] = $fdata["Production"];
-												$tdata[$fdata["M"]][3] = $fdata["Sale"];
-												$tdata[$fdata["M"]][4] = $fdata["Transpot"];
-												$tdata[$fdata["M"]][5] = $fdata["Construction"] + $fdata["Production"] + $fdata["Sale"] + $fdata["Transpot"];
-												$tdata[$fdata["M"]][6] = $fdata["Construction"] + $fdata["Production"] + $fdata["Sale"] + $fdata["Transpot"];
-											}
-										}
-
-										foreach($rdata as $x){
-											$data->AddCell($tdata[$x][0]);
-											for($y=1;$y<7;$y++){
-												$data->AddCell(number_format($tdata[$x][$y]),1);
-											}
-										}
-									}
+									$DB->GetData("SELECT MONTH(LIC_DATE) AS M, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS T, COUNT(LIC_NO) AS C FROM ( SELECT LIC_DATE, elRegion, elArea, ltTitle, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE UNION SELECT cdate,ifRegion,ifArea,'2527',`regis_number` FROM Information_excise_registration) AS AllData WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? GROUP BY M,T ORDER BY M,T",array("iii",$region,$province,$year));
 								}else{
 									$total = 5;
 									$rdata = array(1,2,3,4,5);
-
-									$data = new exReport_Table;
-									$data->Init(1,$total,$total);
+									$DB->GetData("SELECT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS Y, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS T, COUNT(LIC_NO) AS C FROM ( SELECT LIC_DATE, elRegion, elArea, ltTitle, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE UNION SELECT cdate,ifRegion,ifArea,'2527',`regis_number` FROM Information_excise_registration) AS AllData WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) BETWEEN ? AND ? GROUP BY Y,T ORDER BY Y, T",array("iiii",$region,$province,$year-4,$year));
+								}
+        
+								$data = new exReport_Table;
+								$data->Init(1,$total,$total);
+								if($total > 0){
 									$tdata = array(array());
 									$etcObj = new exETC;
 									for($i=0;$i<$colnum;$i++){
 										$data->AddLabel($TitleShow[$i]);
 									}
 
-									for($Y=$year-4;$Y<=$year;$Y++){
-										$DB->GetData("SELECT X FROM (SELECT 0 AS X) AS Y WHERE X = 1");
-//										$fdata = $DB->GetDataOneRow("SELECT ? AS Y, ? AS R, ? AS P,(SELECT COUNT(FactoryID) FROM `Factory` WHERE R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(faIssueDate + INTERVAL 3 MONTH) = Y) AS Construction,(SELECT COUNT(lbLicense) FROM `Label` WHERE R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(lbIssueDate + INTERVAL 3 MONTH) = Y) AS Production,(SELECT COUNT(SaleLicenseID) FROM (SELECT `SaleLicenseID`, `slIssueDate`, `faProvince`,`faRegion` FROM `SaleLicense`,`Factory` WHERE FactoryID = slFactoryID) AS SL WHERE R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(slIssueDate + INTERVAL 3 MONTH) = Y) AS Sale, (SELECT COUNT(TransportID) FROM Transport WHERE YEAR(tpDate + INTERVAL 3 MONTH) = Y AND R IN (0,tpRegion) AND P IN (0,tpProvince)) AS Transpot ",array("iii",$Y,$region,$province));
+									for($x=1;$x<=$total;$x++){
+										if($total==5){
+											$tdata[$x][0] = "ปีงบประมาณ ".(($year + 538) + $x);
+										}else{
+											$tdata[$x][0] = $etcObj->GetMonthFullName($x)." ".($x>9?$year+542:$year+543);
+										}
+										for($y=1;$y<=6;$y++){
+											$tdata[$x][$y] = "-";
+										}
+									}
 
+									while($fdata = $DB->FetchData()){
+										if($total==5){
+											$x = $fdata["Y"] - $year+5;
+											$tdata[$x][$fdata["T"]] = $fdata["C"];
+											$tdata[$x][6] = intval($tdata[$x][6]) + $fdata["C"];
+										}else{
+											$tdata[$fdata["M"]][$fdata["T"]] = $fdata["C"];
+											$tdata[$fdata["M"]][6] = intval($tdata[$fdata["M"]][6]) + $fdata["C"];
+										}
+									}
 
-										$data->AddCell("ปีงบประมาณ ".($Y + 543));
-										$data->AddCell(number_format($fdata["Construction"]),1);
-										$data->AddCell(number_format($fdata["Production"]),1);
-										$data->AddCell(number_format($fdata["Sale"]),1);
-										$data->AddCell(number_format($fdata["Transpot"]),1);
-										$data->AddCell(number_format($fdata["Construction"] + $fdata["Production"] + $fdata["Sale"] + $fdata["Transpot"]),1);
-										$data->AddCell(number_format($fdata["Construction"] + $fdata["Production"] + $fdata["Sale"] + $fdata["Transpot"]),1);
+									foreach($rdata as $x){
+										$data->AddCell($tdata[$x][0]);
+										for($y=1;$y<=6;$y++){
+											$data->AddCell($tdata[$x][$y],1);
+										}
 									}
 								}
 						break;
 					case 4:
 					case 6:
-								$DB = new ezDB;
 
 								if($mode==0){
 									$total = 12;
@@ -279,7 +185,6 @@ switch($fn){
 								}
 						break;
 					case 5:
-								$DB = new ezDB;
 								if($mode==0){
 									$total = 12;
 									$rdata = array(10,11,12,1,2,3,4,5,6,7,8,9);
@@ -488,67 +393,23 @@ switch($fn){
 				}
 				$data->datasets = array();
 
-				$DB = new exDB;
+				$DB = new ezDB;
 				switch($job){
-					case 1 :
-							$tmpData = array(array());
-							if($mode==0){
-								$DB->GetData("SELECT ? AS Y, ? AS R, ? AS P,gmValue AS H,0 AS CS,0 AS PD,0 AS SL, 0 AS TP,(SELECT SUM(stTax) FROM (SELECT lbRegion, lbProvince, stTax, stReleaseDate FROM `Label`,`Stamp` WHERE LabelID = stLabel) AS ST WHERE MONTH(stReleaseDate) = gmValue AND R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(stReleaseDate + INTERVAL 3 MONTH) = Y) FROM GovMonth",array("iii",$year,$region,$province));
-								while($fdata = $DB->FetchData()){
-									for($x=4;$x<=8;$x++){
-										$tmpData[$x-3][$fdata["H"]] = $fdata[$x];
-									}
-									$tmpData[6][$fdata["H"]] = ($fdata[5]+$fdata[6]+$fdata[7]+$fdata[8]);
-									
-								}
-							}else{
-								$fdata = $DB->GetDataOneRow("SELECT ? AS Y, ? AS R, ? AS P,0,0,0,0,(SELECT SUM(stTax) FROM (SELECT lbRegion, lbProvince, stTax, stReleaseDate FROM `Label`,`Stamp` WHERE LabelID = stLabel) AS ST WHERE R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(stReleaseDate + INTERVAL 3 MONTH) = Y) AS STAX ",array("iii",$year,$region,$province));
-								for($Y=$year-4;$Y<=$year;$Y++){
-									$fdata = $DB->GetDataOneRow("SELECT ? AS Y, ? AS R, ? AS P,0 AS Construction,0 AS Production,0 AS Sale, 0 AS Transpot,(SELECT SUM(stTax) FROM (SELECT lbRegion, lbProvince, stTax, stReleaseDate FROM `Label`,`Stamp` WHERE LabelID = stLabel) AS ST WHERE R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(stReleaseDate + INTERVAL 3 MONTH) = Y) AS STAX",array("iii",$Y,$region,$province));
-
-
-									$tmpData[1][$Y] = $fdata["Construction"];
-									$tmpData[2][$Y] = $fdata["Production"];
-									$tmpData[3][$Y] = $fdata["Sale"];
-									$tmpData[4][$Y] = $fdata["Transpot"];
-									$tmpData[5][$Y] = $fdata["STAX"];
-									$tmpData[6][$Y] = $fdata["Construction"] + $fdata["Production"] + $fdata["Sale"] + $fdata["Transpot"] + $fdata["STAX"];
-								}
-							}
-						break;
 					case 2 :
 							if($mode==0){
-								$DB->GetData("SELECT MONTH(ilActDate) AS H, COUNT(IllegalID) ,SUM(`ilComparativeMoney`), SUM(`ilFine`), SUM(`ilOfficer`), SUM(`ilBribe`), SUM(`IlReward`), SUM(`ilReturn`) FROM `Illegal` WHERE ? IN (0,ilRegion) AND ? IN (0,ilArea) AND YEAR(ilActDate + INTERVAL 3 MONTH) = ? GROUP BY H ORDER BY ilActDate",array("iii",$region,$province,$year));
+								$DB->GetData("SELECT MONTH(DateApprove) AS H, SUM(IF(`TYPE` LIKE 'สุรา',`Fine`,0)) AS T1, SUM(IF(`TYPE` LIKE 'ยาสูบ',`Fine`,0)) AS T2, SUM(IF(`TYPE` LIKE 'ไพ่',`Fine`,0)) AS T3, SUM(IF(`TYPE` NOT IN ('สุรา','ยาสูบ','ไพ่'),`Fine`,0)) AS T4, SUM(`Fine`) AS T5 FROM `illigal_nopoint` WHERE ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND YEAR(DateApprove + INTERVAL 3 MONTH) = ? GROUP BY H ORDER BY DateApprove",array("iii",$region,$province,$year));
 							}else{
-								$DB->GetData("SELECT YEAR(ilActDate + INTERVAL 3 MONTH) AS H, COUNT(IllegalID),SUM(`ilComparativeMoney`),SUM(`ilFine`),SUM(`ilOfficer`),SUM(`ilBribe`),SUM(`IlReward`),SUM(`ilReturn`) FROM `Illegal` WHERE ? IN (0,ilRegion) AND ? IN (0,ilArea) AND YEAR(ilActDate + INTERVAL 3 MONTH) BETWEEN ? AND ? GROUP BY H",array("iiii",$region,$province,$year-4,$year));
+								$DB->GetData("SELECT YEAR(DateApprove + INTERVAL 3 MONTH) AS H, SUM(IF(`TYPE` LIKE 'สุรา',`Fine`,0)) AS T1, SUM(IF(`TYPE` LIKE 'ยาสูบ',`Fine`,0)) AS T2, SUM(IF(`TYPE` LIKE 'ไพ่',`Fine`,0)) AS T3, SUM(IF(`TYPE` NOT IN ('สุรา','ยาสูบ','ไพ่'),`Fine`,0)) AS T4, SUM(`Fine`) AS T5 FROM `illigal_nopoint` WHERE ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND YEAR(DateApprove + INTERVAL 3 MONTH) BETWEEN ? AND ? GROUP BY H ORDER BY DateApprove",array("iiii",$region,$province,$year - 4,$year));
 							}
 						break;
 					case 3 :
-							$tmpData = array(array());
 							if($mode==0){
-								$DB->GetData("SELECT ? AS Y, ? AS R, ? AS P,gmValue AS H,(SELECT COUNT(FactoryID) FROM `Factory` WHERE MONTH(faIssueDate) = gmValue AND R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(faIssueDate + INTERVAL 3 MONTH) = Y) AS Construction,(SELECT COUNT(lbLicense) FROM `Label` WHERE MONTH(lbIssueDate) = gmValue AND R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(lbIssueDate + INTERVAL 3 MONTH) = Y) AS Production,(SELECT COUNT(SaleLicenseID) FROM (SELECT `SaleLicenseID`, `slIssueDate`, `faProvince`,`faRegion` FROM `SaleLicense`,`Factory` WHERE FactoryID = slFactoryID) AS SL WHERE MONTH(slIssueDate) = gmValue AND R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(slIssueDate + INTERVAL 3 MONTH) = Y) AS Sale, (SELECT COUNT(TransportID) FROM `Transport` WHERE MONTH(tpDate) = gmValue AND R IN (0,tpRegion) AND P IN (0,tpProvince) AND YEAR(tpDate + INTERVAL 3 MONTH) = Y) AS Transpot FROM GovMonth",array("iii",$year,$region,$province));
-								while($fdata = $DB->FetchData()){
-									for($x=3;$x<=7;$x++){
-										$tmpData[$x-3][$fdata["H"]] = $fdata[$x];
-									}
-									$tmpData[5][$fdata["H"]] = ($fdata[7]+$fdata[4]+$fdata[5]+$fdata[6]);
-									
-								}
+								$DB->GetData("SELECT MONTH(LIC_DATE) AS H, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS V, COUNT(LIC_NO) AS S FROM ( SELECT LIC_DATE, elRegion, elArea, ltTitle, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE UNION SELECT cdate,ifRegion,ifArea,'2527',`regis_number` FROM Information_excise_registration) AS AllData WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? GROUP BY V,H ORDER BY V",array("iii",$region,$province,$year));
 							}else{
-								for($Y=$year-4;$Y<=$year;$Y++){
-									$fdata = $DB->GetDataOneRow("SELECT ? AS Y, ? AS R, ? AS P,(SELECT COUNT(FactoryID) FROM `Factory` WHERE R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(faIssueDate + INTERVAL 3 MONTH) = Y) AS Construction,(SELECT COUNT(lbLicense) FROM `Label` WHERE R IN (0,lbRegion) AND P IN (0,lbProvince) AND YEAR(lbIssueDate + INTERVAL 3 MONTH) = Y) AS Production,(SELECT COUNT(SaleLicenseID) FROM (SELECT `SaleLicenseID`, `slIssueDate`, `faProvince`,`faRegion` FROM `SaleLicense`,`Factory` WHERE FactoryID = slFactoryID) AS SL WHERE R IN (0,faRegion) AND P IN (0,faProvince) AND YEAR(slIssueDate + INTERVAL 3 MONTH) = Y) AS Sale,(SELECT COUNT(TransportID) FROM `Transport` WHERE R IN (0,tpRegion) AND P IN (0,tpProvince) AND YEAR(tpDate + INTERVAL 3 MONTH) = Y) AS Transpot ",array("iii",$Y,$region,$province));
-
-
-									$tmpData[1][$Y] = $fdata["Construction"];
-									$tmpData[2][$Y] = $fdata["Production"];
-									$tmpData[3][$Y] = $fdata["Sale"];
-									$tmpData[4][$Y] = $fdata["Transpot"];
-									$tmpData[5][$Y] = $fdata["Construction"] + $fdata["Production"] + $fdata["Sale"] + $fdata["Transpot"];
-								}
+								$DB->GetData("SELECT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS H, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS V, COUNT(LIC_NO) AS S FROM ( SELECT LIC_DATE, elRegion, elArea, ltTitle, LIC_NO FROM `Excise_License`,`LicenseType` WHERE LicenseTypeID = LIC_TYPE UNION SELECT cdate,ifRegion,ifArea,'2527',`regis_number` FROM Information_excise_registration) AS AllData WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) BETWEEN ? AND ? GROUP BY V,H ORDER BY V",array("iiii",$region,$province,$year-4,$year));
 							}
 						break;
 					case 4 :
-							$DB = new ezDB;
 							if($mode==0){
 								$DB->GetData("SELECT MONTH(cdate) AS H, IF(`Level`='อุดมศึกษา',1,IF(`Level`='อาชีวศึกษา',2,IF(`Level`='มัธยมศึกษา',3,4))) AS V, COUNT(`no`) AS S FROM `Academy` WHERE YEAR(cdate + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) GROUP BY V,H ORDER BY V",array("iii",$year,$region,$province));
 							}else{
@@ -556,7 +417,6 @@ switch($fn){
 							}
 						break;
 					case 5 :
-							$DB = new ezDB;
 							if($mode==0){
 								$DB->GetData("SELECT MONTH(LIC_DATE) AS H, V, COUNT(id) AS S FROM (SELECT `LIC_DATE`, elRegion, elArea,id, IF(SUBSTR(LIC_TYPE,1,1)='ส',1,IF(SUBSTR(LIC_TYPE,1,1)='ย',2,3)) AS V FROM Excise_License UNION SELECT cdate, ifRegion, ifArea, id, 4 FROM `Information_excise_registration`) AS AllCom WHERE ? IN (0,elRegion) AND ? IN (0,elArea) AND YEAR(LIC_DATE + INTERVAL 3 MONTH) = ? GROUP BY V, H ORDER BY V,LIC_DATE",array("iii",$region,$province,$year));
 							}else{
@@ -564,7 +424,6 @@ switch($fn){
 							}
 						break;
 					case 6 :
-							$DB = new ezDB;
 							if($mode==0){
 								$DB->GetData("SELECT MONTH(cdate) AS H, V, COUNT(V) AS S FROM (SELECT cdate, EXCISECODE, REGCODE, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS V FROM (SELECT * FROM `ACademyLink`,`LicenseType` WHERE prb = LicenseTypeID) AS X1 LEFT JOIN Academy ON AcademyID = `no`
 ) AS X1 WHERE ? IN (0,REGCOE) AND ? IN (0,EXCISECODE) AND YEAR(cdate + INTERVAL 3 MONTH) = ? GROUP BY V, H ORDER BY V,cdate",array("iii",$region,$province,$year));
@@ -595,7 +454,7 @@ switch($fn){
 					}elseif($job==2){
 						$tmpData = array(array());
 						while($fdata = $DB->FetchData()){
-							for($x=1;$x<=7;$x++){
+							for($x=1;$x<=5;$x++){
 								$tmpData[$x][$fdata["H"]] = $fdata[$x];
 							}
 							
@@ -616,6 +475,23 @@ switch($fn){
 							array_push($data->datasets,$sdata);
 						}
 					}elseif($job==3){
+						$CurV = 0;
+						$CountV = 0;
+						$VList = array();
+						$tmpData = array(array());
+						while($fdata = $DB->FetchData()){
+							if($CurV != $fdata["V"]){
+								$CurV = $fdata["V"];
+								array_push($VList,$CurV);
+								$CountV++;
+							}
+							$tmpData[$fdata["V"]][$fdata["H"]] = $fdata["S"];
+							if(isset($tmpData[6][$fdata["H"]])){
+								$tmpData[6][$fdata["H"]] += $fdata["S"];
+							}else{
+								$tmpData[6][$fdata["H"]] = $fdata["S"];
+							}
+						}
 						for($i=1;$i<count($ItemTitle);$i++){
 							$sdata = new exChart_Data;
 							$sdata->label = $ItemTitle[$i];

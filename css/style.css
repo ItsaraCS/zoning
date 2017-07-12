@@ -39,17 +39,7 @@ h1, h2, h3, h4, h5, h6, a {
 .text-center { text-align: center; }
 .text-justify { text-align: justify; }
 
-/* CHART */
-#chart_container {
-    border: 1px solid rgba(0,0,0,0.1);
-    background-color: rgba(240,240,240,1.0);
-    padding: 4px;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 100% !important;
-    box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
-}
+
 .navbar-blue {
     background-color: #0e76bc;
     border-radius: initial;
@@ -612,6 +602,10 @@ ul.nav-sec li a:active{
 
 }
 
+.map{
+  height: 100%; width: 100%;
+}
+
 @media screen and (min-width: 0px) and (max-width: 680px) {
   .export-menu { display : none;} 
   .nav-sec li{ margin-left: 1em;margin-right: 1em;text-align: center;}
@@ -640,8 +634,13 @@ ul.nav-sec li a:active{
   .btn-mobile-center{width: 80%; margin-top: 5px;margin-left: 5vh;}
   .map-mobile{height: auto;}
   .eForm-Zoning-Stamp , .eForm-Zoning-Stamp a{width: 90%;margin-left: 30px;}
-
-}
+  .panel-map , .map-mobile{height: 60vh;}
+  .panel-body-mobile{margin-bottom: 7vh;}
+  .map-mobile{width: auto;} 
+     /* CHART */
+   #chart_container {border: 1px solid rgba(0,0,0,0.1);background-color: rgba(240,240,240,1.0);padding: 4px;position: relative;;right: 0;bottom: 0;width: 100% !important;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.1);}
+  }
 
 @media screen and (min-width: 680px) and (max-width: 9999px) {
   .problem { padding: 0; } 
@@ -656,5 +655,10 @@ ul.nav-sec li a:active{
   .ul-user-mobile{display:none;}
   .user-menu ul {display:none;}
   .eForm-Zoning-Stamp{margin-top: 5px;margin-left: 2px;}
+  .panel-map , .map-mobile{height: 75vh;}
+  .map-mobile{position: fixed;width: 100%;}
+  /* CHART */
+  #chart_container {border: 1px solid rgba(0,0,0,0.1);background-color: rgba(240,240,240,1.0);padding: 4px;position: fixed;right: 0;bottom: 0;width: 100% !important;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.1);}
 }
 

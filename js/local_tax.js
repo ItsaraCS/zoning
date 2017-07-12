@@ -69,33 +69,14 @@ function on_page_loaded() {
 	// Prepare data
 	prepare_region_and_area('data/geojson/excise_area_centroid_compact.geojson');
 	
-	// Insert region list
-	//--EDIT BY ITSARA
-	/*$('#region').append('<option value="01">สรรพสามิตภาคที่ 1</option>');
-	$('#region').append('<option value="02">สรรพสามิตภาคที่ 2</option>');
-	$('#region').append('<option value="03">สรรพสามิตภาคที่ 3</option>');
-	$('#region').append('<option value="04">สรรพสามิตภาคที่ 4</option>');
-	$('#region').append('<option value="05">สรรพสามิตภาคที่ 5</option>');
-	$('#region').append('<option value="06">สรรพสามิตภาคที่ 6</option>');
-	$('#region').append('<option value="07">สรรพสามิตภาคที่ 7</option>');
-	$('#region').append('<option value="08">สรรพสามิตภาคที่ 8</option>');
-	$('#region').append('<option value="09">สรรพสามิตภาคที่ 9</option>');
-	$('#region').append('<option value="10">สรรพสามิตภาคที่ 10</option>');*/
-	
 	// ------------------------------------------------------------
 	// Load map data
 	// ------------------------------------------------------------
 	// vector data
-	load_data_region_polygon('data/geojson/excise_region.geojson');
-	load_data_region_point('data/geojson/point_region.geojson');
-	load_data_area_point('data/geojson/excise_area_centroid_compact.geojson');
-	load_data_area_polygon('data/geojson-update/area_dissolved.geojson');
-	
-	load_data_branch_point('data/geojson/excise_branch_centroid.geojson'); //--สำนักงานสรรพสามิต
-	load_data_academy_point('data/geojson-update/school_points.geojson'); //--สถานศึกษา
-	load_data_zoning_polygon('data/geojson-update/zoning_polygon.geojson'); //--พื้นที่โซนนิ่ง
-	load_data_store_point('data/geojson-update/shop_points.geojson'); //--ร้านค้า
-	load_data_lawbreaker_point('data/geojson-update/illigal_points.geojson'); //--ผู้กระทำผิด
+	load_data_region_polygon('data/geojson-polygon/region_polygon.geojson');
+	load_data_region_point('data/geojson-point/region_points.geojson');
+	load_data_area_polygon('data/geojson-polygon/area_polygon.geojson');
+	load_data_area_point('data/geojson-point/area_points.geojson');
 	
 	// Attribute data
 	load_data_region('API/taxmapAPI.php?data=tax_reg&year=2017');
@@ -120,16 +101,11 @@ function load_data_by_year(year) {
 function process_loaded_data() {
 	b_data_ready = b_region_polygon_loaded
 					&& b_region_point_loaded
-					&& b_area_point_loaded
 					&& b_area_polygon_loaded
+					&& b_area_point_loaded
 					&& b_map_data_loaded
 					&& b_map_data_monthly_loaded
-					&& b_map_data_area_loaded	
-					&& b_branch_point_loaded			
-					&& b_academy_point_loaded
-					&& b_zoning_point_loaded
-					&& b_store_point_loaded
-					&& b_lawbreaker_point_loaded;
+					&& b_map_data_area_loaded;
 	
 	if(b_data_ready == false) { 
 		console.log('...still loading...');
@@ -156,7 +132,7 @@ function process_loaded_data() {
         defaultZoomBtn.innerHTML = '<i class="fa fa-globe" aria-hidden="true"></i>';
 
         var handledefaultZoom = function(e) {
-            map.getView().setCenter(ol.proj.transform([103.0, 8.5], 'EPSG:4326', 'EPSG:3857'));
+            map.getView().setCenter(ol.proj.transform([100, 13], 'EPSG:4326', 'EPSG:3857'));
 			map.getView().setZoom(5);
         };
         defaultZoomBtn.addEventListener('click', handledefaultZoom, false);
@@ -207,24 +183,14 @@ function process_loaded_data() {
 	map.addLayer(vec_area_polygon);
 	map.addLayer(vec_area_point);
 	map.addLayer(vec_region_point);
-	map.addLayer(vec_branch_point);
-	map.addLayer(vec_academy_point);
-	map.addLayer(vec_zoning_point);
-	map.addLayer(vec_store_point);
-	map.addLayer(vec_lawbreaker_point);
 	
 	// Hide some layers by default
 	toggle_map_layer_visibility(vec_area_polygon, false);
 	toggle_map_layer_visibility(vec_area_point, false);
-	toggle_map_layer_visibility(vec_branch_point, false);
-	toggle_map_layer_visibility(vec_academy_point, false);
-	toggle_map_layer_visibility(vec_zoning_point, false);
-	toggle_map_layer_visibility(vec_store_point, false);
-	toggle_map_layer_visibility(vec_lawbreaker_point, false);
 	
 	$('#dvloading').hide().fadeOut();
 	
-	map.getView().setCenter(ol.proj.transform([103.0, 8.5], 'EPSG:4326', 'EPSG:3857'));
+	map.getView().setCenter(ol.proj.transform([100, 13], 'EPSG:4326', 'EPSG:3857'));
 	map.getView().setZoom(5);
 	
 	// Add mouse event listeners
@@ -258,6 +224,41 @@ function process_loaded_data() {
 					  'COUNT');
 }
 
+function load_layer_point(layerType, checked) {
+	switch(layerType) {
+		case 'branch':
+			map.addLayer(vec_branch_point);
+			toggle_map_layer_visibility(vec_branch_point, checked);
+			$('#dvloading').hide().fadeOut();
+
+			break;
+		case 'academy':
+			map.addLayer(vec_academy_point);
+			toggle_map_layer_visibility(vec_academy_point, checked);
+			$('#dvloading').hide().fadeOut();
+
+			break;
+		case 'zoning':
+			map.addLayer(vec_zoning_point);
+			toggle_map_layer_visibility(vec_zoning_point, checked);
+			$('#dvloading').hide().fadeOut();
+
+			break;
+		case 'store':
+			map.addLayer(vec_store_point);
+			toggle_map_layer_visibility(vec_store_point, checked);
+			$('#dvloading').hide().fadeOut();
+
+			break;
+		case 'lawbreaker':
+			map.addLayer(vec_lawbreaker_point);
+			toggle_map_layer_visibility(vec_lawbreaker_point, checked);
+			$('#dvloading').hide().fadeOut();
+
+			break;
+	}
+}
+
 /**
  * Process data for change year
  */
@@ -275,7 +276,7 @@ function process_loaded_data_for_change_year() {
 		$('#popup-closer').trigger('click');
 	}
 
-	map.getView().setCenter(ol.proj.transform([103.0, 8.5], 'EPSG:4326', 'EPSG:3857'));
+	map.getView().setCenter(ol.proj.transform([100, 13], 'EPSG:4326', 'EPSG:3857'));
 	map.getView().setZoom(5);
 	
 	// Show chart
@@ -506,8 +507,7 @@ function show_feature_info(evt) {
 		cj = parseInt(f[0].get('REG_CODE'));
 		for (i = 0; i < map_data.features.length; i++ ) {
 			ci = map_data.features[i].properties.REG_CODE;
-			
-			// Found
+
 			if(cj == ci) {
 				f_count = map_data.features[i].properties.COUNT;
 				f_sum = map_data.features[i].properties.SUM;

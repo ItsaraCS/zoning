@@ -203,7 +203,7 @@ function case_point_style_function(feature, resolution) {
 	);
 
 	return new ol.style.Style({
-		image,
+		image: image,
 		text: text
 	});
 }
@@ -224,7 +224,7 @@ function license_point_style_function(feature, resolution) {
 		);
 
 		return new ol.style.Style({
-			image,
+			image: image,
 			text: text
 		});
 	} else {
@@ -244,11 +244,11 @@ function shop_point_style_function(feature, resolution) {
 			feature, 
 			resolution,
 			my_dom,
-			'CUS_NAME'
+			'COM_NAME'
 		);
 
 		return new ol.style.Style({
-			image,
+			image: image,
 			text: text
 		});
 	} else {
@@ -272,7 +272,7 @@ function school_point_style_function(feature, resolution) {
 		);
 
 		return new ol.style.Style({
-			image,
+			image: image,
 			text: text
 		});
 	} else {
@@ -288,7 +288,7 @@ function search_create_text_style(feature, resolution, dom, field) {
 	var baseline = dom.baseline;
 	var size = dom.size;
 	var offsetX = parseInt(dom.offsetX, 10);
-	var offsetY = parseInt(dom.offsetY, 10);
+	var offsetY = (parseInt(dom.offsetY, 10) + 45);
 	var weight = dom.weight;
 	var rotation = parseFloat(dom.rotation);
 	var font = weight + ' ' + size + ' ' + dom.font;

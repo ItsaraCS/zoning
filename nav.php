@@ -24,7 +24,7 @@
             </ul>  
         </div>
             <div class="col-md-2 " ><select class="form-control input-md" id="year"><option value="" selected>เลือกปีงบประมาณ</option></select></div>
-            <div class="col-md-1" ><select class="form-control input-md" id="region"><option value="" selected>เลือกภาค</option></select></div>
+            <div class="col-md-1 problem" ><select class="form-control input-md" id="region"><option value="" selected>เลือกภาค</option></select></div>
             <div class="col-md-2 "><select class="form-control input-md" id="area"><option value="-999" selected>เลือกพื้นที่</option></select>
             </div>
             <div class="col-md-1" id="btn-view"><a href="#" class="btn btn-danger btn-md btn-mobile-center">แสดงข้อมูล</a></div>
@@ -132,7 +132,7 @@
             </ul> 
         </div>
         <div class="col-md-6 text-right" style="margin-top: 5px;">
-            <span class="label label-success" id="Province" data-provice="0" style="padding: 0 15px; font-size: 2.5vh; border-radius: 0;">อยู่ที่จังหวัด : <span id="ProvinceTXT"></span></span>
+            <!--<span class="label label-success" id="Province" data-provice="0" style="padding: 0 15px; font-size: 2.5vh; border-radius: 0;">อยู่ที่จังหวัด : <span id="ProvinceTXT"></span></span>-->
         </div>
     </div>
 </div>
