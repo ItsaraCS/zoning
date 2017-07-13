@@ -360,7 +360,7 @@
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ระดับ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ละติจูด</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ลองติดจูด</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">จำนวนร้านค้าในโซนนิ่ง</th>' +
+                                                //'<th class="text-nowrap text-center" style="font-size: 10px;">จำนวนร้านค้าในโซนนิ่ง</th>' +
                                             '</thead>' +
                                             '<tbody>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('NAME') +'</th>' +
@@ -370,7 +370,6 @@
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">' + hit.get('LEVEL') +'</th>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('LAT') +'</th>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('LON') +'</th>' +
-                                                '<th class="text-nowrap text-right" style="font-size: 10px;">' + Number(hit.get('NO')).toLocaleString('en', { minimumFractionDigits: 0 }) +'</th>' +
                                             '</tbody>' +
                                         '</table>' +
                                     '</div>' +
@@ -811,14 +810,14 @@
                 });
                 marker_feature.setStyle(marker_style);
                 map.getLayers().setAt(4, layers_marker);
-
-                $('#label-popup').popover('destroy');
             } else {
                 Factory.prototype.utilityService.getPopup({
                     infoMsg: 'ไม่พบค่าพิกัดที่ตั้ง',
                     btnMsg: 'ปิด'
                 });
             }
+
+            $('#label-popup').popover('destroy');
         });
 
         $(document).on('click', '.search-table thead tr th label', function(e) {
@@ -894,7 +893,7 @@
             
             if($(this).find('img').attr('src') != '') {
                 Factory.prototype.utilityService.getPopup({
-                    infoMsg: '<img src="'+ $(this).find('img').attr('src') +'" style="width: 100%;">',
+                    infoMsg: '<div class="text-center"><img src="'+ $(this).find('img').attr('src') +'" style="height: 60vh;"></div>',
                     btnMsg: 'ปิด'
                 });
             } else {

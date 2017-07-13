@@ -23,7 +23,7 @@ function search_load_point_layers() {
 	switch(headerMenuTitle) {
 		case 'search_case.php':
 			getJSON(
-				'data/geojson-update/illigal_points.geojson', //--ผู้กระทำผิด
+				'data/geojson-layer/illigal_points.geojson', //--ผู้กระทำผิด
 				function(data) {
 					vec_case_point = create_vector_layer(data, 'EPSG:3857', case_point_style_function);
 					map.addLayer(vec_case_point);
@@ -36,7 +36,7 @@ function search_load_point_layers() {
 			break;
 		case 'search_license.php':
 			getJSON(
-				'data/geojson-update/shop_points.geojson', //--ผู้ประกอบการ
+				'data/geojson-layer/shop_points.geojson', //--ผู้ประกอบการ
 				function(data) {
 					vec_license_point = create_vector_layer(data, 'EPSG:3857', license_point_style_function);
 					map.addLayer(vec_license_point);
@@ -50,7 +50,7 @@ function search_load_point_layers() {
 		case 'search_company.php':
 			(function getZoningVector() {
 				getJSON(
-					'data/geojson-update/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
+					'data/geojson-layer/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
 					function(data) {
 						vec_zoning_polygon = create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function);
 						map.addLayer(vec_zoning_polygon);
@@ -63,7 +63,7 @@ function search_load_point_layers() {
 
 			function getShopVector() {
 				getJSON(
-					'data/geojson-update/shop_points.geojson', //--ร้านค้า
+					'data/geojson-layer/shop_points.geojson', //--ร้านค้า
 					function(data) {
 						vec_shop_point = create_vector_layer(data, 'EPSG:3857', shop_point_style_function);
 						map.addLayer(vec_shop_point);
@@ -78,7 +78,7 @@ function search_load_point_layers() {
 		case 'search_academy.php':
 			(function getZoningVector() {
 				getJSON(
-					'data/geojson-update/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
+					'data/geojson-layer/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
 					function(data) {
 						vec_zoning_polygon = create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function);
 						map.addLayer(vec_zoning_polygon);
@@ -91,7 +91,7 @@ function search_load_point_layers() {
 
 			function getSchoolVector() {
 				getJSON(
-					'data/geojson-update/school_points.geojson', //--สถานศึกษา
+					'data/geojson-layer/school_points.geojson', //--สถานศึกษา
 					function(data) {
 						vec_school_point = create_vector_layer(data, 'EPSG:3857', school_point_style_function);
 						map.addLayer(vec_school_point);
@@ -106,7 +106,7 @@ function search_load_point_layers() {
 		case 'search_zoning.php':
 			(function getZoningVectorForZoning() {
 				getJSON(
-					'data/geojson-update/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
+					'data/geojson-layer/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
 					function(data) {
 						vec_zoning_polygon = create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function);
 						map.addLayer(vec_zoning_polygon);
@@ -119,7 +119,7 @@ function search_load_point_layers() {
 
 			function getSchoolPolygonVectorForZoning() {
 				getJSON(
-					'data/geojson-update/school_polygon.geojson', //--พื้นที่สถานศึกษา
+					'data/geojson-layer/school_polygon.geojson', //--พื้นที่สถานศึกษา
 					function(data) {
 						vec_school_polygon = create_vector_layer(data, 'EPSG:3857', school_polygon_style_function);
 						map.addLayer(vec_school_polygon);
@@ -132,7 +132,7 @@ function search_load_point_layers() {
 
 			function getShopVectorForZoning() {
 				getJSON(
-					'data/geojson-update/shop_points.geojson', //--ร้านค้า
+					'data/geojson-layer/shop_points.geojson', //--ร้านค้า
 					function(data) {
 						vec_shop_point = create_vector_layer(data, 'EPSG:3857', shop_point_style_function);
 						map.addLayer(vec_shop_point);
@@ -146,7 +146,7 @@ function search_load_point_layers() {
 
 			function getSchoolVectorForZoning() {
 				getJSON(
-					'data/geojson-update/school_points.geojson', //--สถานศึกษา
+					'data/geojson-layer/school_points.geojson', //--สถานศึกษา
 					function(data) {
 						vec_school_point = create_vector_layer(data, 'EPSG:3857', school_point_style_function);
 						map.addLayer(vec_school_point);

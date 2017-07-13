@@ -14,22 +14,21 @@
 
 <div class="nav">
     <div class="container-fluid fixed nav-menu" style="margin-top: -10px; padding: 0;">
-        <div class="col-md-5">
-        <ul class="nav navbar-nav nav-sec">
-                <!--<li><a href="tax.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">งานภาษี</span></a></li>-->
-                <li><a href="case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">งานปราบปราม</span></a></li> 
-                <li><a href="license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">ใบอนุญาต</span></a></li> 
-                <li><a href="company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานประกอบการ</span></a></li>
-                <li><a href="academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานศึกษา</span></a></li>    
+        <div class="col-lg-5">
+            <ul class="nav navbar-nav nav-sec">
+                <li><a href="case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>งานปราบปราม</span></a></li> 
+                <li><a href="license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>ใบอนุญาต</span></a></li> 
+                <li><a href="company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานประกอบการ</span></a></li>
+                <li><a href="academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานศึกษา</span></a></li>    
             </ul>  
         </div>
-            <div class="col-md-2 " ><select class="form-control input-md" id="year"><option value="" selected>เลือกปีงบประมาณ</option></select></div>
-            <div class="col-md-1 problem" ><select class="form-control input-md" id="region"><option value="" selected>เลือกภาค</option></select></div>
-            <div class="col-md-2 "><select class="form-control input-md" id="area"><option value="-999" selected>เลือกพื้นที่</option></select>
-            </div>
-            <div class="col-md-1" id="btn-view"><a href="#" class="btn btn-danger btn-md btn-mobile-center">แสดงข้อมูล</a></div>
+        <div class="col-lg-2 " ><select class="form-control input-md" id="year"><option value="" selected>เลือกปีงบประมาณ</option></select></div>
+        <div class="col-lg-1 problem" ><select class="form-control input-md" id="region"><option value="" selected>เลือกภาค</option></select></div>
+        <div class="col-lg-2 "><select class="form-control input-md" id="area"><option value="-999" selected>เลือกพื้นที่</option></select>
+        </div>
+        <div class="col-lg-1" id="btn-view"><a href="#" class="btn btn-danger btn-md btn-mobile-center">แสดงข้อมูล</a></div>
 
-            <div class="col-md-1 btn-group text-center export-menu">
+            <div class="col-lg-1 btn-group text-center export-menu">
                 <div class="row export-menu">
                     <a href="#" class="btn btn-primary btn-md dropdown-toggle" data-toggle="dropdown"> Export <span class="caret"></span></a>&nbsp;
                     <ul class="dropdown-menu" style="min-width: 100px;">
@@ -56,11 +55,11 @@
         <div class="col-md-6">
         <ul class="nav navbar-nav nav-sec">
                 <!--<li><a href="search_tax.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">งานภาษี</span></a></li>-->
-                <li><a href="search_case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">งานปราบปราม</span></a></li> 
-                <li><a href="search_license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">ใบอนุญาต</span></a></li> 
-                <li><a href="search_company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานประกอบการ</span></a></li>
-                <li><a href="search_academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานศึกษา</span></a></li>  
-                <li><a href="search_zoning.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">ข้อมูลโซนนิ่ง</span></a></li>   
+                <li><a href="search_case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>งานปราบปราม</span></a></li> 
+                <li><a href="search_license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>ใบอนุญาต</span></a></li> 
+                <li><a href="search_company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานประกอบการ</span></a></li>
+                <li><a href="search_academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานศึกษา</span></a></li>  
+                <li><a href="search_zoning.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>ข้อมูลโซนนิ่ง</span></a></li>   
             </ul>  
         </div>
             <div class="col-md-2 nav-select-year" ><select class="form-control input-md" id="year"><option value="" selected="true">เลือกปีงบประมาณ</option></select></div>
@@ -93,11 +92,11 @@
         <div class="col-md-6">
         <ul class="nav navbar-nav nav-sec">
                 <!--<li><a href="report_tax.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">งานภาษี</span></a></li>-->
-                <li><a href="report_case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">งานปราบปราม</span></a></li> 
-                <li><a href="report_license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">ใบอนุญาต</span></a></li> 
-                <li><a href="report_academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานศึกษา</span></a></li> 
-                <li><a href="report_company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานประกอบการ</span></a></li> 
-                <li><a href="report_zoning.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">ข้อมูลโซนนิ่ง</span></a></li>   
+                <li><a href="report_case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>งานปราบปราม</span></a></li> 
+                <li><a href="report_license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>ใบอนุญาต</span></a></li> 
+                <li><a href="report_academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานศึกษา</span></a></li> 
+                <li><a href="report_company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานประกอบการ</span></a></li> 
+                <li><a href="report_zoning.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>ข้อมูลโซนนิ่ง</span></a></li>   
             </ul>  
         </div>
             <div class="col-md-2 nav-select-year" ><select class="form-control input-md" id="year"><option value="" selected="true">เลือกปีงบประมาณ</option></select></div>
@@ -126,9 +125,9 @@
     <div class="container-fluid fixed nav-menu" style="margin-top: -10px; padding: 0;">
         <div class="col-md-6 text-left">
            <ul class="nav navbar-nav nav-sec">
-                <li><a href="e_form_academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานศึกษา</span></a></li> 
-                <li><a href="e_form_company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">สถานประกอบการ</span></a></li> 
-                <li><a href="e_form_illegal.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span style="font-size: 2.5vh;">คดี</span></a></li>  
+                <li><a href="e_form_academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานศึกษา</span></a></li> 
+                <li><a href="e_form_company.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานประกอบการ</span></a></li> 
+                <li><a href="e_form_illegal.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>คดี</span></a></li>  
             </ul> 
         </div>
         <div class="col-md-6 text-right" style="margin-top: 5px;">

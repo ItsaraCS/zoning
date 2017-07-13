@@ -360,7 +360,7 @@
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">วันที่เกิดเหตุ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ผู้กล่าวหา/ผู้ต้องหา</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">สถานที่เกิดเหตุ</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ข้อกล่าวหา</th>' +
+                                                //'<th class="text-nowrap text-center" style="font-size: 10px;">ข้อกล่าวหา</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">เปรียบเทียบปรับ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ศาลปรับ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">พนักงานสอบสวน</th>' +
@@ -373,7 +373,6 @@
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + (dateApprov[2] +'/'+ dateApprov[1] +'/'+ (Number(dateApprov[0]) + 543)) +'</th>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + '(ก)'+ (hit.get('CHARGE_NAM') +' /(ต)'+ hit.get('SUSPECTS_N')) +'</th>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('ADDRESS') +'</th>' +
-                                                '<th class="text-nowrap" style="font-size: 10px;">-</th>' +
                                                 '<th class="text-nowrap text-right" style="font-size: 10px;">' + Number(hit.get('FINE')).toLocaleString('en', { minimumFractionDigits: 2 }) +'</th>' +
                                                 '<th class="text-nowrap text-right" style="font-size: 10px;">' + Number(hit.get('COURT')).toLocaleString('en', { minimumFractionDigits: 2 }) +'</th>' +
                                                 '<th class="text-nowrap text-right" style="font-size: 10px;">' + Number(hit.get('EMPLOYEE')).toLocaleString('en', { minimumFractionDigits: 2 }) +'</th>' +
@@ -820,14 +819,14 @@
                 });
                 marker_feature.setStyle(marker_style);
                 map.getLayers().setAt(3, layers_marker);
-                
-                $('#label-popup').popover('destroy');
             } else {
                 Factory.prototype.utilityService.getPopup({
                     infoMsg: 'ไม่พบค่าพิกัดที่ตั้ง',
                     btnMsg: 'ปิด'
                 });
             }
+
+            $('#label-popup').popover('destroy');
         });
 
         $(document).on('click', '.search-table thead tr th label', function(e) {
@@ -903,7 +902,7 @@
             
             if($(this).find('img').attr('src') != '') {
                 Factory.prototype.utilityService.getPopup({
-                    infoMsg: '<img src="'+ $(this).find('img').attr('src') +'" style="width: 100%;">',
+                    infoMsg: '<div class="text-center"><img src="'+ $(this).find('img').attr('src') +'" style="height: 60vh;"></div>',
                     btnMsg: 'ปิด'
                 });
             } else {

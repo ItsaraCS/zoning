@@ -917,7 +917,7 @@
             
             if($(this).find('img').attr('src') != '') {
                 Factory.prototype.utilityService.getPopup({
-                    infoMsg: '<img src="'+ $(this).find('img').attr('src') +'" style="width: 100%;">',
+                    infoMsg: '<div class="text-center"><img src="'+ $(this).find('img').attr('src') +'" style="height: 60vh;"></div>',
                     btnMsg: 'ปิด'
                 });
             } else {

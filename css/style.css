@@ -481,12 +481,12 @@ ul.ui-autocomplete li div {
 .table thead th {
   vertical-align: middle !important;
   padding: 3px 10px  !important;
-  font-size: 2.5vh;
+  font-size: 1.1em;
 }
 .table tbody td {
   vertical-align: middle !important;
   padding: 4px 10px !important;
-  font-size: 2.5vh;
+  font-size: 1.1em;
 }
 
 .search-detail-table tbody tr.search-detail-total {
@@ -606,10 +606,14 @@ ul.nav-sec li a:active{
   height: 100%; width: 100%;
 }
 
-@media screen and (min-width: 0px) and (max-width: 680px) {
+ul.nav-sec > li > a > span {
+  font-size : 1em;
+}
+
+@media screen and (min-width: 0px) and (max-width: 1024px) {
   .export-menu { display : none;} 
   .nav-sec li{ margin-left: 1em;margin-right: 1em;text-align: center;}
-  .nav-select {width: 42%;float: left;padding: 0; margin-left: 15px;}
+  // .nav-select {width: 42%;float: left;padding: 0; margin-left: 15px;}
   .nav-select select{font-size:15px;}
   .nav-select-year {margin-bottom: 5px;}
   .nav-select-year select{font-size:15px;text-align: center;font-weight: bold;}
@@ -642,7 +646,7 @@ ul.nav-sec li a:active{
     box-shadow: 0px 0px 8px rgba(0,0,0,0.1);}
   }
 
-@media screen and (min-width: 680px) and (max-width: 9999px) {
+@media screen and (min-width: 1025px) and (max-width: 2560px) {
   .problem { padding: 0; } 
   .NumPagination {display:inline-block;}
   .panel-data-table-res{height: 36vh;}

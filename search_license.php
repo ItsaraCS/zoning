@@ -355,20 +355,15 @@
                                             '<thead>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ชื่อผู้ประกอบการ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">เลขทะเบียนสรรพสามิต</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">พรบ.สุรา</th>' +
+                                                /*'<th class="text-nowrap text-center" style="font-size: 10px;">พรบ.สุรา</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">พรบ.ยาสูบ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">พรบ.ไพ่</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">พรบ.2527</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ใบอนุญาตรายวัน</th>' +
+                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ใบอนุญาตรายวัน</th>' +*/
                                             '</thead>' +
                                             '<tbody>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('CUS_NAME') +'</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">' + hit.get('LIC_ID') +'</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + Number(hit.get('BRANCHCODE')).toLocaleString('en', { minimumFractionDigits: 0 }) +'</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + Number(hit.get('BRANCHCODE')).toLocaleString('en', { minimumFractionDigits: 0 }) +'</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + Number(hit.get('BRANCHCODE')).toLocaleString('en', { minimumFractionDigits: 0 }) +'</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + Number(hit.get('BRANCHCODE')).toLocaleString('en', { minimumFractionDigits: 0 }) +'</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">' + hit.get('BRANCHCODE') +'</th>' +
                                             '</tbody>' +
                                         '</table>' +
                                     '</div>' +
@@ -809,14 +804,14 @@
                 });
                 marker_feature.setStyle(marker_style);
                 map.getLayers().setAt(3, layers_marker);
-
-                $('#label-popup').popover('destroy');
             } else {
                 Factory.prototype.utilityService.getPopup({
                     infoMsg: 'ไม่พบค่าพิกัดที่ตั้ง',
                     btnMsg: 'ปิด'
                 });
             }
+
+            $('#label-popup').popover('destroy');
         });
 
         $(document).on('click', '.search-table thead tr th label', function(e) {
@@ -892,7 +887,7 @@
             
             if($(this).find('img').attr('src') != '') {
                 Factory.prototype.utilityService.getPopup({
-                    infoMsg: '<img src="'+ $(this).find('img').attr('src') +'" style="width: 100%;">',
+                    infoMsg: '<div class="text-center"><img src="'+ $(this).find('img').attr('src') +'" style="height: 60vh;"></div>',
                     btnMsg: 'ปิด'
                 });
             } else {

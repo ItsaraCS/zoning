@@ -157,12 +157,12 @@ function load_data_area(url) {
  */
 function process_loaded_data() {
 	b_data_ready = b_region_polygon_loaded
-				&& b_region_point_loaded
-				&& b_area_polygon_loaded
-				&& b_area_point_loaded
-				&& b_map_data_loaded
-				&& b_map_data_monthly_loaded
-				&& b_map_data_area_loaded;
+					&& b_region_point_loaded
+					&& b_area_polygon_loaded
+					&& b_area_point_loaded
+					&& b_map_data_loaded
+					&& b_map_data_monthly_loaded
+					&& b_map_data_area_loaded;
 	
 	if(b_data_ready == false) { 
 		console.log('...still loading...');

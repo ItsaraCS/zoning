@@ -355,14 +355,13 @@
                                             '<thead>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ชื่อผู้ประกอบการ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ประเภทสินค้า</th>' +
-                                                '<th class="text-nowrap text-center" style="font-size: 10px;">ที่อยู่สถานประกอบการ</th>' +
+                                                //'<th class="text-nowrap text-center" style="font-size: 10px;">ที่อยู่สถานประกอบการ</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">ตำแหน่งพิกัด</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">เลขทะเบียนสรรพสามิต</th>' +
                                             '</thead>' +
                                             '<tbody>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('CUS_NAME') +'</th>' +
                                                 '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('SHOPTYPE') +'</th>' +
-                                                '<th class="text-nowrap" style="font-size: 10px;">' + hit.get('FAC_ADDRES') +'</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">' + hit.get('LAT') +','+ hit.get('LONG') +'</th>' +
                                                 '<th class="text-nowrap text-center" style="font-size: 10px;">' + hit.get('LIC_ID') +'</th>' +
                                             '</tbody>' +
@@ -805,14 +804,14 @@
                 });
                 marker_feature.setStyle(marker_style);
                 map.getLayers().setAt(4, layers_marker);
-
-                $('#label-popup').popover('destroy');
             } else {
                 Factory.prototype.utilityService.getPopup({
                     infoMsg: 'ไม่พบค่าพิกัดที่ตั้ง',
                     btnMsg: 'ปิด'
                 });
             }
+
+            $('#label-popup').popover('destroy');
         });
 
         $(document).on('click', '.search-table thead tr th label', function(e) {
@@ -888,7 +887,7 @@
             
             if($(this).find('img').attr('src') != '') {
                 Factory.prototype.utilityService.getPopup({
-                    infoMsg: '<img src="'+ $(this).find('img').attr('src') +'" style="width: 100%;">',
+                    infoMsg: '<div class="text-center"><img src="'+ $(this).find('img').attr('src') +'" style="height: 60vh;"></div>',
                     btnMsg: 'ปิด'
                 });
             } else {
