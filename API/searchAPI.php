@@ -9,7 +9,7 @@ $fn = isset($_POST["fn"])?$_POST["fn"]:"";
 
 switch($fn){
 	case "gettable" :
-				$RPP = 5;
+				$RPP = isset($_POST["rpp"])?$_POST["rpp"]:5;
 				$year = isset($_POST["year"])?$_POST["year"]:0;
 				$region = isset($_POST["region"])?$_POST["region"]:0;
 				$province = isset($_POST["province"])?$_POST["province"]:0;

@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="theme-color" content="#428bca">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Zoning - ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</title>
         <!--jQuery-->
         <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>
@@ -47,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-md-offset-6 col-md-3">
+                            <div class="col-md-offset-4 col-md-5">
                                 <input type="submit" class="form-control btn-info input-lg" id="loginBtn" value="เข้าสู่ระบบ">
                             </div>
                         </div>

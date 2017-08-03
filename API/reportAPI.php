@@ -266,7 +266,6 @@ switch($fn){
 						$sdata->label = "ปีงบประมาณ 2560";
 						array_push($data->year,$sdata);
 					}elseif($data->job == 2){
-						//$DB->GetData("SELECT DISTINCT YEAR(DateApprove + INTERVAL 3 MONTH) AS fYear FROM `illigal_nopoint` WHERE REGCODE IS NOT NULL AND EXCISECODE IS NOT NULL AND YEAR(DateApprove) BETWEEN 1900 AND YEAR(NOW() + INTERVAL 3 MONTH) ORDER BY fYear DESC");
 						$DB->GetData("SELECT DISTINCT YEAR(DateApprove + INTERVAL 3 MONTH) AS fYear FROM `illigal_nopoint` WHERE YEAR(DateApprove) BETWEEN 1900 AND YEAR(NOW() + INTERVAL 3 MONTH) ORDER BY fYear DESC");
 						for($x=1;$fdata = $DB->FetchData();$x++){
 							$sdata = new exItem;
@@ -276,7 +275,7 @@ switch($fn){
 							array_push($data->year,$sdata);
 						}
 					}elseif($data->job == 3){
-						$DB->GetData("SELECT DISTINCT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS fYear FROM `Excise_License` UNION SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Information_excise_registration` GROUP BY fYear ORDER BY fYear DESC");
+						$DB->GetData("SELECT DISTINCT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS fYear FROM `Excise_License` UNION SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Information_excise_registration` ORDER BY fYear DESC");
 						for($x=1;$fdata = $DB->FetchData();$x++){
 							$sdata = new exItem;
 							$sdata->id = $x;
@@ -284,7 +283,7 @@ switch($fn){
 							$sdata->label = "ปีงบประมาณ ".($fdata["fYear"] + 543);
 							array_push($data->year,$sdata);
 						}
-					}elseif(($data->job == 4)){
+					}elseif(($data->job == 4)||($data->job == 6)){
 						$DB->GetData("SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Academy` ORDER BY fYear DESC");
 						for($x=1;$fdata = $DB->FetchData();$x++){
 							$sdata = new exItem;
@@ -294,7 +293,7 @@ switch($fn){
 							array_push($data->year,$sdata);
 						}
 					}elseif(($data->job == 5)){
-						$DB->GetData("SELECT DISTINCT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS fYear FROM `Excise_License` UNION SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Information_excise_registration` GROUP BY fYear ORDER BY fYear DESC");
+						$DB->GetData("SELECT DISTINCT YEAR(LIC_DATE + INTERVAL 3 MONTH) AS fYear FROM `Excise_License` UNION SELECT DISTINCT YEAR(cdate + INTERVAL 3 MONTH) AS fYear FROM `Information_excise_registration` ORDER BY fYear DESC");
 						for($x=1;$fdata = $DB->FetchData();$x++){
 							$sdata = new exItem;
 							$sdata->id = $x;
@@ -411,7 +410,7 @@ switch($fn){
 						break;
 					case 4 :
 							if($mode==0){
-								$DB->GetData("SELECT MONTH(cdate) AS H, IF(`Level`='อุดมศึกษา',1,IF(`Level`='อาชีวศึกษา',2,IF(`Level`='มัธยมศึกษา',3,4))) AS V, COUNT(`no`) AS S FROM `Academy` WHERE YEAR(cdate + INTERVAL 3 MONTH) = ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) GROUP BY V,H ORDER BY V",array("iii",$year,$region,$province));
+								$DB->GetData("SELECT MONTH(cdate) AS H, 		  IF(`Level`='อุดมศึกษา',1,IF(`Level`='อาชีวศึกษา',2,IF(`Level`='มัธยมศึกษา',3,4))) AS V, COUNT(`no`) AS S FROM `Academy` WHERE YEAR(cdate + INTERVAL 3 MONTH) = 	       ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) GROUP BY V,H ORDER BY V",array("iii",$year,$region,$province));
 							}else{
 								$DB->GetData("SELECT YEAR(cdate + INTERVAL 3 MONTH) AS H, IF(`Level`='อุดมศึกษา',1,IF(`Level`='อาชีวศึกษา',2,IF(`Level`='มัธยมศึกษา',3,4))) AS V, COUNT(`no`) AS S FROM `Academy` WHERE YEAR(cdate + INTERVAL 3 MONTH) BETWEEN ? AND ? AND ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) GROUP BY V ORDER BY V",array("iiii",$year - 4,$year,$region,$province));
 							}
@@ -425,10 +424,9 @@ switch($fn){
 						break;
 					case 6 :
 							if($mode==0){
-								$DB->GetData("SELECT MONTH(cdate) AS H, V, COUNT(V) AS S FROM (SELECT cdate, EXCISECODE, REGCODE, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS V FROM (SELECT * FROM `ACademyLink`,`LicenseType` WHERE prb = LicenseTypeID) AS X1 LEFT JOIN Academy ON AcademyID = `no`
-) AS X1 WHERE ? IN (0,REGCOE) AND ? IN (0,EXCISECODE) AND YEAR(cdate + INTERVAL 3 MONTH) = ? GROUP BY V, H ORDER BY V,cdate",array("iii",$region,$province,$year));
+								$DB->GetData("SELECT MONTH(cdate) AS H, V, COUNT(V) AS S FROM (SELECT cdate, EXCISECODE, REGCODE, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS V FROM (SELECT * FROM `ACademyLink`,`LicenseType` WHERE prb = LicenseTypeID) AS X1 LEFT JOIN Academy ON AcademyID = `no`) AS X1 WHERE ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND YEAR(cdate + INTERVAL 3 MONTH) = ? GROUP BY V, H ORDER BY V,cdate",array("iii",$region,$province,$year));
 							}else{
-								$DB->GetData("SELECT YEAR(cdate + INTERVAL 3 MONTH) AS H, V, COUNT(`no`) AS S FROM () X1 WHERE ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND YEAR(cdate + INTERVAL 3 MONTH) BETWEEN ? AND ? GROUP BY V,H ORDER BY V,cdate",array("iiii",$region,$province,$year-4,$year));
+								$DB->GetData("SELECT MONTH(cdate + INTERVAL 3 MONTH) AS H, V, COUNT(V) AS S FROM (SELECT cdate, EXCISECODE, REGCODE, IF(ltTitle='สุรา',1,IF(ltTitle='ยาสูบ',2,IF(ltTitle='ไพ่',3,IF(ltTitle='2527',4,5)))) AS V FROM (SELECT * FROM `ACademyLink`,`LicenseType` WHERE prb = LicenseTypeID) AS X1 LEFT JOIN Academy ON AcademyID = `no`) AS X1 WHERE ? IN (0,REGCODE) AND ? IN (0,EXCISECODE) AND YEAR(cdate + INTERVAL 3 MONTH) BETWEEN ? AND ? GROUP BY V, H ORDER BY V,cdate",array("iiii",$region,$province,$year-4,$year));
 							}
 						break;
 					default :
@@ -507,7 +505,7 @@ switch($fn){
 							}
 							array_push($data->datasets,$sdata);
 						}
-					}elseif($job==4){
+					}elseif(($job==4)||($job==6)){
 						$CurV = 0;
 						$CountV = 0;
 						$VList = array();

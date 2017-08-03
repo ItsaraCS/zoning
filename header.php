@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="msapplication-tap-highlight" content="no">
-     <meta name="theme-color" content="#428bca">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="theme-color" content="#428bca">
     <title>Zoning - ระบบตรวจสอบกำกับและติดตามเพื่อจัดทำฐานข้อมูลการจำหน่ายสุรา บริเวณใกล้เคียงรอบบริเวณสถานศึกษาตามนโยบายรัฐบาล</title>
     <!--jQuery-->
     <script src="lib/jquery/jquery-11.0.min.js" type="text/javascript"></script>

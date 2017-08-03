@@ -14,7 +14,7 @@
 
 <div class="nav">
     <div class="container-fluid fixed nav-menu" style="margin-top: -10px; padding: 0;">
-        <div class="col-lg-5">
+        <div class="col-md-5">
             <ul class="nav navbar-nav nav-sec">
                 <li><a href="case.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>งานปราบปราม</span></a></li> 
                 <li><a href="license.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>ใบอนุญาต</span></a></li> 
@@ -22,13 +22,13 @@
                 <li><a href="academy.php" class="btn-primary" style="margin: 2px;padding: 1.3vh;"><span>สถานศึกษา</span></a></li>    
             </ul>  
         </div>
-        <div class="col-lg-2 " ><select class="form-control input-md" id="year"><option value="" selected>เลือกปีงบประมาณ</option></select></div>
-        <div class="col-lg-1 problem" ><select class="form-control input-md" id="region"><option value="" selected>เลือกภาค</option></select></div>
-        <div class="col-lg-2 "><select class="form-control input-md" id="area"><option value="-999" selected>เลือกพื้นที่</option></select>
+        <div class="col-md-2 " ><select class="form-control input-md" id="year"><option value="" selected>เลือกปีงบประมาณ</option></select></div>
+        <div class="col-md-1 problem" ><select class="form-control input-md" id="region"><option value="" selected>เลือกภาค</option></select></div>
+        <div class="col-md-2 "><select class="form-control input-md" id="area"><option value="-999" selected>เลือกพื้นที่</option></select>
         </div>
-        <div class="col-lg-1" id="btn-view"><a href="#" class="btn btn-danger btn-md btn-mobile-center">แสดงข้อมูล</a></div>
+        <div class="col-md-1" id="btn-view"><a href="#" class="btn btn-danger btn-md btn-mobile-center">แสดงข้อมูล</a></div>
 
-            <div class="col-lg-1 btn-group text-center export-menu">
+            <div class="col-md-1 btn-group text-center export-menu hideDisplay1024">
                 <div class="row export-menu">
                     <a href="#" class="btn btn-primary btn-md dropdown-toggle" data-toggle="dropdown"> Export <span class="caret"></span></a>&nbsp;
                     <ul class="dropdown-menu" style="min-width: 100px;">
@@ -66,11 +66,12 @@
             <div class="col-md-1 problem nav-select" ><select class="form-control input-md" id="region"><option value="" selected="true">เลือกภาค</option></select></div>
             <div class="col-md-2 nav-select"><select class="form-control input-md" id="province"><option value="" selected="true">เลือกจังหวัด</option></select>
             </div>
-            <div class="col-md-1 btn-group text-center export-menu">
+            <div class="col-md-1 btn-group text-center export-menu hideDisplay1024">
                 <div class="row export-menu">
                     <a href="#" class="btn btn-primary btn-md dropdown-toggle" data-toggle="dropdown"> Export <span class="caret"></span></a>&nbsp;
                     <ul class="dropdown-menu" style="min-width: 100px;">
                         <li><a href="#" class="export-file">PDF</a></li>
+                        <li><a href="#" class="export-file">Word</a></li>
                     </ul>
                 </div>
             </div>
@@ -103,11 +104,12 @@
             <div class="col-md-1 problem nav-select" ><select class="form-control input-md" id="region"><option value="" selected="true">เลือกภาค</option></select></div>
             <div class="col-md-2 nav-select"><select class="form-control input-md" id="province"><option value="" selected="true">เลือกจังหวัด</option></select>
             </div>
-            <div class="col-md-1 btn-group text-center export-menu">
+            <div class="col-md-1 btn-group text-center export-menu hideDisplay1024">
                 <div class="row export-menu">
                     <a href="#" class="btn btn-primary btn-md dropdown-toggle" data-toggle="dropdown"> Export <span class="caret"></span></a>&nbsp;
                     <ul class="dropdown-menu" style="min-width: 100px;">
                         <li><a href="#" class="export-file" onclick="tableToExcel('getexc')">Excel</a></li>
+                        <li><a href="#" class="export-file">Word</a></li>
                     </ul>
                 </div>
             </div>

@@ -189,7 +189,7 @@ function process_loaded_data() {
         defaultZoomBtn.innerHTML = '<i class="fa fa-globe" aria-hidden="true"></i>';
 
         var handledefaultZoom = function(e) {
-            map.getView().setCenter(ol.proj.transform([100.0, 13], 'EPSG:4326', 'EPSG:3857'));
+            map.getView().setCenter(ol.proj.transform([100, 13], 'EPSG:4326', 'EPSG:3857'));
 			map.getView().setZoom(5);
         };
         defaultZoomBtn.addEventListener('click', handledefaultZoom, false);

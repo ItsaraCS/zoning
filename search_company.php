@@ -3,7 +3,7 @@
 <!--SECTION-->
 <div class="section" style="margin-top: 10px;">
     <div class="col-md-12">
-        <div class="row">
+        <div class="section-top row">
             <!--DATA-->
             <div class="col-md-4">
                 <div class="panel panel-default" style="border-radius: 0; border: 0;">
@@ -47,16 +47,16 @@
 
     <!--TABLE DATA-->
     <div class="col-md-12" style="margin-top: 10px;">
-        <div class="row">
-            <div class="panel panel-default panel-data-table-res">
+        <div class="section-bottom row">
+            <div class="panel panel-default panel-data-table-res" style="height: 32vh;">
                 <div class="panel-body" style="padding: 0;">
-                    <div class="table-responsive table-data-res">
-                        <table class="table table-striped table-bordered search-table bg-info" style="margin-top: 0;"> 
+                    <div class="table-responsive table-data-res" style="height: 22vh;">
+                        <table class="table table-striped table-bordered search-table bg-info" data-toggle-status="default" data-toggle-rpp="5" style="margin-top: 0;"> 
                             <thead><tr></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
-                    <div class="col-md-12 pagination" style="padding: 0;"></div>
+                    <div class="col-md-12 pagination" style="padding: 0; margin-bottom: 0;"></div>
                 </div>
             </div>
         </div>
@@ -403,7 +403,8 @@
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
                     menu: 0,
                     page: 1,
-                    keyword: $('#FilterKeySearch').val() || ''
+                    keyword: $('#FilterKeySearch').val() || '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
                 };
             }
             
@@ -485,7 +486,8 @@
                     province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
                     menu: 0,
                     page: 1,
-                    keyword: $('#FilterKeySearch').val() || ''
+                    keyword: $('#FilterKeySearch').val() || '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
                 };
             }
             
@@ -594,7 +596,7 @@
             if(params == undefined) {
                 params = {
                     page: 1,
-                    perPage: 5,
+                    perPage: $('.search-table').attr('data-toggle-rpp') || 5,
                     splitPage: 3,
                     total: 0
                 };
@@ -673,7 +675,8 @@
                                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                                 menu: 0,
                                 page: 1,
-                                keyword: ''
+                                keyword: '',
+                                rpp: $('.search-table').attr('data-toggle-rpp') || 5
                             });
                         }
                     });
@@ -687,7 +690,8 @@
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: 0,
                     page: 1,
-                    keyword: ''
+                    keyword: '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
                 });
             }
         });
@@ -726,7 +730,8 @@
                             province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                             menu: 0,
                             page: 1,
-                            keyword: ''
+                            keyword: '',
+                            rpp: $('.search-table').attr('data-toggle-rpp') || 5
                         });
                     }
                 });
@@ -739,7 +744,8 @@
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: 0,
                     page: 1,
-                    keyword: ''
+                    keyword: '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
                 });
             }
         });
@@ -758,11 +764,12 @@
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: 0,
                 page: 1,
-                keyword: ''
+                keyword: '',
+                rpp: $('.search-table').attr('data-toggle-rpp') || 5
             });
         });
 
-        $(document).on('click', '.search-detail-table tbody tr:not(.search-detail-total)', function(e) {
+        $(document).on('click touchstart', '.search-detail-table tbody tr:not(.search-detail-total)', function(e) {
             e.preventDefault();
 
             $(this).closest('tbody').find('tr').removeClass('active-row');
@@ -778,8 +785,11 @@
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $(this)[0].rowIndex || 0,
                 page: 1,
-                keyword: $('#FilterKeySearch').val() || ''
+                keyword: $('#FilterKeySearch').val() || '',
+                rpp: $('.search-table').attr('data-toggle-rpp') || 5
             });
+
+            $('#label-popup').popover('destroy');
         });
 
         $(document).on('click', '.search-table tbody tr', function(e) {
@@ -839,7 +849,8 @@
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: 1,
-                    keyword: $('#FilterKeySearch').val() || ''
+                    keyword: $('#FilterKeySearch').val() || '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
                 });
             }
         });
@@ -855,7 +866,8 @@
                 province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                 menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                 page: $(this).attr('data-page') || 1,
-                keyword: $('#FilterKeySearch').val() || ''
+                keyword: $('#FilterKeySearch').val() || '',
+                rpp: $('.search-table').attr('data-toggle-rpp') || 5
             });
         });
 
@@ -877,7 +889,8 @@
                     province: $('.nav-menu #province').val() || $('.nav-menu #province option:eq(1)').attr('value'),
                     menu: $('.search-detail-table thead tr').attr('data-menu') || 0,
                     page: ($(this).val()).replace(',', '') || 1,
-                    keyword: $('#FilterKeySearch').val() || ''
+                    keyword: $('#FilterKeySearch').val() || '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
                 });
             }
         });
@@ -910,9 +923,127 @@
         $(document).on('click', '.export-file', function(e) {
             e.preventDefault();
 
-            factory.dataService.exportFile('search', {
-                menu: 'ค้นหาสถานประกอบการ'
-            });
+            var exportType = $(this).text() || '';
+            var typeParam = '';
+
+            if(exportType != '') {
+                switch(exportType) {
+                    case 'PDF':
+                        typeParam = 'pdf';
+
+                        break;
+                    case 'Word':
+                        typeParam = 'word';
+
+                        break;
+                }
+            }
+
+            if($('.search-table').attr('data-toggle-status') != 'default') {
+                $('.search-table').attr('data-toggle-status', 'default');
+                $('.search-table').attr('data-toggle-rpp', 5);
+
+                $('.section-top').show();
+                $('.get-map .panel').css({ 'height': '40vh' });
+                $('.get-map .map').css({ 'height': '40vh' });
+                $('.search-table tbody, .pagination').show();
+                $('.section-bottom').parent().css({ 'margin-top': '10px' });
+                $('.section-bottom .panel').css({ 'height': '36vh' });
+                $('.section-bottom .table-responsive').css({ 'height': '26vh' });
+
+                map.updateSize();
+
+                $('.search-table thead th, ' +
+                    '.search-table tbody tr, ' +
+                    '.pagination div').remove();
+                
+                params = {
+                    fn: 'gettable',
+                    job: 4,
+                    year: $('.nav-menu #year option:eq(1)').attr('value'),
+                    region: $('.nav-menu #region option:eq(1)').attr('value') || 0,
+                    province: $('.nav-menu #province option:eq(1)').attr('value') || 0,
+                    menu: 0,
+                    page: 1,
+                    keyword: $('#FilterKeySearch').val() || '',
+                    rpp: $('.search-table').attr('data-toggle-rpp') || 5
+                };
+                
+                factory.connectDBService.sendJSONObj(ajaxUrl, params).done(function(res) {
+                    if(res != undefined) {
+                        var data = JSON.parse(res);
+
+                        zoomMapByArea();
+
+                        var theadContent = '';
+                        $.each(data.label, function(index, item) {
+                            theadContent += '<th class="text-center text-nowrap bg-primary" data-index="'+ index +'">' +
+                                    '<div class="checkbox checkbox-success" style="margin: 0 auto;">' +
+                                        '<input id="'+ item +'" type="checkbox" class="select-export" checked="checked"><label for="'+ item +'" style="font-weight: bold;">'+ item +'</label>' +
+                                    '</div>' +
+                                '</th>';
+                        });
+                        $('.search-table thead tr').append(theadContent);
+                        
+                        if(data.data.length != 0) {
+                            var tbodyContent = '';
+                            var alignContent = 0;
+                            var index = 0;
+                            
+                            $.each(data.latlong, function(latlongIndex, latlongItem) {
+                                if(data.latlong.length != 0)
+                                    tbodyContent = '<tr data-id="'+ data.data[index].id +'" data-lat="'+ latlongItem.Lat +'" data-lon="'+ latlongItem.Long +'">';
+                                else
+                                    tbodyContent = '<tr data-id="'+ data.data[index].id +'" data-lat="0" data-lon="0">';
+
+                                for(var j=1; j<=data.label.length; j++) {
+                                    tdAlign = ({
+                                        '0': 'text-left',
+                                        '1': 'text-right',
+                                        '2': 'text-center',
+                                        '3': 'text-center',
+                                        '4': 'text-center'
+                                    })[data.data[index].align];
+                                    
+                                    if(data.data[index].align == 3)
+                                        tbodyContent += '<td class="'+ tdAlign +' text-nowrap"><a href="#" title="คลิกเพื่อดูรูป" class="show-image"><img src="'+ ((data.data[index].text != '') ? data.data[index].text : 'img/noimages.png') +'" style="width: 50px; height: 50px;"></a></td>';
+                                    else if(data.data[index].align == 4)
+                                        tbodyContent += '<td class="'+ tdAlign +' text-nowrap"><a href="'+ data.data[index].text +'" class="show-link">ดูเพิ่มเติม</a></td>';
+                                    else
+                                        tbodyContent += '<td class="'+ tdAlign +' text-nowrap">'+ data.data[index].text +'</td>';
+
+                                    index += 1;
+                                }
+
+                                tbodyContent += '</tr>';
+                                $('.search-table tbody').append(tbodyContent);
+                            });
+
+                            getPagination({
+                                page: data.cur_page || 1,
+                                perPage: data.row_per_page || 5,
+                                splitPage: 3,
+                                total: data.sum_of_row|| 0
+                            });
+                        } else 
+                            $('.search-table tbody').append('<tr class="disabled"><td colspan="'+ data.label.length +'" style="text-align: center;">ไม่พบข้อมูล</td></tr>');
+
+                        if(typeParam != '') {
+                            factory.dataService.exportFile('search', {
+                                menu: 'ค้นหาสถานประกอบการ',
+                                type: typeParam
+                            });
+                        }
+                    }
+                });
+            } else {
+                if(typeParam != '') {
+                    factory.dataService.exportFile('search', {
+                        menu: 'ค้นหาสถานประกอบการ',
+                        type: typeParam
+                    });
+                }
+            }
         });
 
         $('#FilterKeySearch').autocomplete({ 
@@ -943,6 +1074,55 @@
                     page: 1,
                     keyword: ui.item.value || ''
                 });
+            }
+        });
+
+        $(document).on('click', '.search-table thead', function(e) {
+            e.preventDefault();
+
+            switch($('.search-table').attr('data-toggle-status')) {
+                case 'default':
+                    $('.search-table').attr('data-toggle-status', 'bottom');
+                    $('.search-table').attr('data-toggle-rpp', 5);
+
+                    $('.get-map .panel').css({ 'height': '70vh' });
+                    $('.get-map .map').css({ 'height': '70vh' });
+                    $('.section-bottom .panel').css({ 'height': '0' });
+                    $('.section-bottom .table-responsive').css({ 'height': '5vh' });
+                    $('.search-table tbody, .pagination').hide();
+
+                    getTable();
+                    map.updateSize();
+
+                    break;
+                case 'bottom':
+                    $('.search-table').attr('data-toggle-status', 'top');
+                    $('.search-table').attr('data-toggle-rpp', 15);
+    
+                    $('.section-top').hide();
+                    $('.search-table tbody, .pagination').show();
+                    $('.section-bottom').parent().css({ 'margin-top': '0' });
+                    $('.section-bottom .panel').css({ 'height': '77vh' });
+                    $('.section-bottom .table-responsive').css({ 'height': '67vh' });
+
+                    getTable();
+
+                    break;
+                case 'top':
+                    $('.search-table').attr('data-toggle-status', 'default');
+                    $('.search-table').attr('data-toggle-rpp', 5);
+
+                    $('.section-top').show();
+                    $('.get-map .panel').css({ 'height': '40vh' });
+                    $('.get-map .map').css({ 'height': '40vh' });
+                    $('.section-bottom').parent().css({ 'margin-top': '10px' });
+                    $('.section-bottom .panel').css({ 'height': '32vh' });
+                    $('.section-bottom .table-responsive').css({ 'height': '22vh' });
+
+                    getTable();
+                    map.updateSize();
+
+                    break;
             }
         });
     });

@@ -48,18 +48,26 @@ function search_load_point_layers() {
 
 			break;
 		case 'search_company.php':
-			(function getZoningVector() {
-				getJSON(
-					'data/geojson-layer/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
-					function(data) {
-						vec_zoning_polygon = create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function);
-						map.addLayer(vec_zoning_polygon);
-						getShopVector();
-					}, 
-					function(xhr) {
-					}
-				);
-			})()
+			(function getZoningVectorForZoning() {
+				var zoningPolygon = ['1', '2', '7', '10'];
+				var zoningUrl = '';
+
+				for(var i=0; i<4; i++) {
+					zoningUrl = 'data/geojson-layer/zoning_polygon-'+ zoningPolygon[i] +'.geojson';
+
+					getJSON(
+						zoningUrl, //--พื้นที่โซนนิ่ง
+						function(data) {
+							map.addLayer(create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function));
+							
+							if(map.getLayers().getArray().length == 6)
+								getShopVector();
+						}, 
+						function(xhr) {
+						}
+					);
+				}
+			})();
 
 			function getShopVector() {
 				getJSON(
@@ -76,18 +84,26 @@ function search_load_point_layers() {
 
 			break;
 		case 'search_academy.php':
-			(function getZoningVector() {
-				getJSON(
-					'data/geojson-layer/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
-					function(data) {
-						vec_zoning_polygon = create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function);
-						map.addLayer(vec_zoning_polygon);
-						getSchoolVector();
-					}, 
-					function(xhr) {
-					}
-				);
-			})()
+			(function getZoningVectorForZoning() {
+				var zoningPolygon = ['1', '2', '7', '10'];
+				var zoningUrl = '';
+
+				for(var i=0; i<4; i++) {
+					zoningUrl = 'data/geojson-layer/zoning_polygon-'+ zoningPolygon[i] +'.geojson';
+
+					getJSON(
+						zoningUrl, //--พื้นที่โซนนิ่ง
+						function(data) {
+							map.addLayer(create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function));
+							
+							if(map.getLayers().getArray().length == 6)
+								getSchoolVector();
+						}, 
+						function(xhr) {
+						}
+					);
+				}
+			})();
 
 			function getSchoolVector() {
 				getJSON(
@@ -104,7 +120,7 @@ function search_load_point_layers() {
 
 			break;
 		case 'search_zoning.php':
-			(function getZoningVectorForZoning() {
+			/*(function getZoningVectorForZoning() {
 				getJSON(
 					'data/geojson-layer/zoning_polygon.geojson', //--พื้นที่โซนนิ่ง
 					function(data) {
@@ -115,7 +131,29 @@ function search_load_point_layers() {
 					function(xhr) {
 					}
 				);
-			})()
+			})();*/
+
+			(function getZoningVectorForZoning() {
+				var zoningPolygon = ['1', '2', '7', '10'];
+				var zoningUrl = '';
+
+				for(var i=0; i<4; i++) {
+					zoningUrl = 'data/geojson-layer/zoning_polygon-'+ zoningPolygon[i] +'.geojson';
+
+					getJSON(
+						zoningUrl, //--พื้นที่โซนนิ่ง
+						function(data) {
+							map.addLayer(create_vector_layer(data, 'EPSG:3857', zoning_polygon_style_function));
+							
+							//console.log(map.getLayers().getArray().length);
+							if(map.getLayers().getArray().length == 6)
+								getSchoolPolygonVectorForZoning();
+						}, 
+						function(xhr) {
+						}
+					);
+				}
+			})();
 
 			function getSchoolPolygonVectorForZoning() {
 				getJSON(

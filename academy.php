@@ -16,7 +16,6 @@
                                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                                 <div id="popup-content"></div>
                             </div>
-                            
                             <!--MAP LEGEND AND LAYERS TOGGLERS-->
                             <div id="map_legend"><h3>สัญลักษณ์แผนที่</h3></div>
                             <div id="map_layer_toggler_container">
@@ -25,22 +24,17 @@
                             </div>
                             <div id="map_feature_name" style="display: none;"></div>
                         </div>
-                                  <!--LOADING-->
-                                <div id="dvloading" class="loader"><div></div></div>
+                        <!--LOADING-->
+                        <div id="dvloading" class="loader"><div></div></div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
-
-  
-    
     <!--CHART GRAPH-->
     <div id="chart_container" class="panel">
         <div id="chart_group">
-            <div id="chart_title" class="panel text-center" data-toggle="collapse" href="#collapse1">กราฟ</div>
+            <div id="chart_title" class="panel text-center" data-toggle="collapse" href="#collapse1" style="cursor: pointer;">กราฟ</div>
             <div id="collapse1" class="panel-collapse collapse">
                 <div id="chart_box">
                     <canvas id="my_chart" height="45px"></canvas>
